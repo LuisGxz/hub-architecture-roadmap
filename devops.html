@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DevOps y Azure · dueño del pipeline</title>
+<meta name="description" content="Seis fases para dominar el proceso después del PR: pipeline, secrets, environments, staging y branch policies, sobre el Azure real de Relolink.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body>
+
+<div class="sitebar">
+  <div class="shell">
+    <a class="brand" href="index.html">Ruta del Hub <span>v2</span></a>
+    <nav>
+      <a href="index.html">Hoy</a>
+      <a href="arquitectura.html">Arquitectura</a>
+      <a href="devops.html" aria-current="page">DevOps y Azure</a>
+      <a href="repaso.html">Repaso</a>
+    </nav>
+    <span class="spacer"></span>
+    <span class="pct"></span>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="shell">
+    <h1>De full-stack a dueño del pipeline</h1>
+    <p class="lede">Seis fases para dominar todo el proceso <em>después</em> del PR. La vía de arquitectura decide qué se construye; esta decide cómo llega a los clientes sin romperse. Cada fase tiene tres formas de aprender lo mismo: el vocabulario, el paso a paso en la interfaz, y el prompt para que Claude Code lo acelere una vez que ya lo entendiste a mano.</p>
+    <div class="budget">
+      <div><div class="k">6</div><div class="l">Fases. Una a la vez, sin saltarse el orden: cada una usa el vocabulario de la anterior.</div></div>
+      <div><div class="k">~2 h</div><div class="l">Por fase, por semana. Corre en paralelo a la vía de arquitectura, no la reemplaza.</div></div>
+      <div><div class="k">3</div><div class="l">Pestañas por fase: Términos, Manual, Claude Code. Siempre en ese orden.</div></div>
+      <div><div class="k">2</div><div class="l">Azures distintos: DevOps (pipelines) y Portal (infraestructura). Confundirlos es el error clásico.</div></div>
+    </div>
+  </div>
+</header>
+
+<div class="shell"><div class="grid">
+
+<nav class="toc">
+  <p class="toc-title">Contenido</p>
+  <ol>
+    <li><a href="#metodo">Cómo usar esta vía</a></li>
+    <li><a href="#inventario">El Azure que ya tienes</a></li>
+    <li><a href="#fases">Las seis fases</a>
+      <div class="sub">
+        <a href="#f0">0 · Flujo y vocabulario</a>
+        <a href="#f1">1 · Tu primer build</a>
+        <a href="#f2">2 · Variables y secrets</a>
+        <a href="#f3">3 · Environments y aprobaciones</a>
+        <a href="#f4">4 · Montar staging</a>
+        <a href="#f5">5 · Calidad y branch policies</a>
+      </div>
+    </li>
+    <li><a href="#extra">Copiloto de revisión de PRs</a></li>
+    <li><a href="#otras">Otras formas de usar la conexión</a></li>
+    <li><a href="#panel">El panel de control interno</a></li>
+    <li><a href="#liderazgo">Pista de liderazgo</a></li>
+  </ol>
+</nav>
+
+<main>
+
+<!-- ================================================================ -->
+<section id="metodo">
+  <h2>Cómo usar esta vía</h2>
+
+  <p>Esta es la <strong>vía B</strong>. La vía A (arquitectura) te enseña a decidir qué construir; esta te enseña a ser dueño de lo que pasa después del <i>merge</i>. Las dos corren en paralelo porque se alimentan: no se puede diseñar para la nube sin entender cómo se despliega, y no se puede montar staging sin saber qué hace la aplicación.</p>
+
+  <h3>Las tres pestañas</h3>
+  <p>Cada fase tiene tres pestañas y el orden no es decorativo. <strong>Empieza siempre por Términos</strong>: si no entiendes el vocabulario, el resto no se pega a nada. Después el Manual, que es donde de verdad aprendes, porque lo haces tú con el mouse. Y solo al final Claude Code, para acelerar lo que ya entendiste — nunca para saltártelo.</p>
+
+  <table>
+    <thead><tr><th>Pestaña</th><th>Para qué</th><th>Cuándo</th></tr></thead>
+    <tbody>
+      <tr><td>Términos</td><td>Qué significa cada palabra, con un prompt para profundizar con la IA.</td><td>Primero, siempre. 20 minutos.</td></tr>
+      <tr><td>Manual</td><td>El paso a paso en la interfaz, con clics exactos, para que lo hagas tú.</td><td>El grueso de la fase. 1 hora.</td></tr>
+      <tr><td>Claude Code</td><td>El prompt que genera ejemplos o audita lo real.</td><td>Al final, para contrastar. 30 minutos.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="flag">
+    <h4>Practica en un Azure aparte, no en el de la empresa</h4>
+    <p>Crea una organización personal y gratis en <a href="https://dev.azure.com" target="_blank" rel="noopener">dev.azure.com</a> con un proyecto y un repo de prueba. Ahí rompes, experimentas y dejas pipelines de práctica sin ensuciar el entorno real. La única excepción son las auditorías en <strong>solo lectura</strong> sobre el repo de Relolink: esas no crean ni modifican nada, y son las que convierten el ejercicio en trabajo útil.</p>
+  </div>
+
+  <div class="stop">
+    <h4>La regla que ordena esta vía también</h4>
+    <p>Igual que en la vía de arquitectura: <strong>si al final de la fase no hay artefacto, la fase no cuenta</strong>. Un diagrama del pipeline real, un YAML que corre, un inventario de secrets, un environment con aprobación, un runbook. Cinco de esos seis artefactos son cosas que la empresa hoy no tiene, y eso —no las horas de estudio— es lo que se lleva a una conversación de sueldo.</p>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<section id="inventario">
+  <h2>El Azure que ya tienes</h2>
+
+  <p>Antes de aprender Azure con ejemplos inventados, mira lo que ya corre y ya pagan. Todo esto lo puedes leer hoy, sin permisos nuevos y sin tocar nada. Es el inventario que sale de los pipelines y la configuración del repositorio.</p>
+
+  <table>
+    <thead><tr><th>Pieza</th><th>Qué hay en Relolink</th><th>Fase donde se usa</th></tr></thead>
+    <tbody>
+      <tr><td>App Service</td><td><code>relolink-api-qa</code> con slot <code>staging</code> en <code>RelolinkQARG</code>; producción en <code>RelolinkProdRg</code></td><td>Fases 1, 3 y 4</td></tr>
+      <tr><td>Function Apps</td><td><code>relolink-notification-center-function</code> y el procesador de facturación</td><td>Fases 1 y 4</td></tr>
+      <tr><td>Storage</td><td>Contenedor blob <code>private</code>; colas <code>send-notification-email</code> y <code>reminders</code></td><td>Fase 2 (connection strings)</td></tr>
+      <tr><td>Service Bus / Notification Hubs</td><td>Namespace de notificaciones push, con su cadena de acceso</td><td>Fase 2</td></tr>
+      <tr><td>Otros servicios</td><td>Azure SignalR, Redis, SQL Server, Entra ID</td><td>Fase 2 y vía A</td></tr>
+      <tr><td>Pipelines</td><td><code>back-deploy-qa.yml</code>, <code>back-deploy-prod.yml</code> y cuatro del front</td><td>Fases 0, 1 y 3</td></tr>
+      <tr><td>Service connection</td><td><code>RelolinkQA-Azure</code></td><td>Fases 2 y 4</td></tr>
+      <tr><td>Emulador local</td><td><b>Azurite</b> ya corriendo en tu máquina (<code>UseDevelopmentStorage=true</code>)</td><td>Práctica gratis, todas</td></tr>
+    </tbody>
+  </table>
+
+  <div class="anchor">
+    <h5>Tres cosas que faltan, y son exactamente las fases 2 a 5</h5>
+    <ul>
+      <li><b>No hay environments ni aprobaciones.</b> Los pipelines son de un solo stage: compilan y despliegan de corrido. Nada se detiene a esperar que alguien apruebe.</li>
+      <li><b>Los secrets viven en el repositorio.</b> <code>APIs/RLL.Api/appsettings.json</code> tiene committeados la clave de firma del JWT, una connection string y el endpoint de notificaciones con su token. No hay Key Vault en la cadena.</li>
+      <li><b>Los tests corren pero no bloquean.</b> Hay un <code>VSTest@2</code> en el pipeline y un proyecto <code>RLL.UnitTesting</code> con pruebas reales, pero ninguna política exige build verde para mergear.</li>
+    </ul>
+    <p>Esa lista no es una crítica: es tu plan de trabajo de las próximas seis semanas, ya priorizado por riesgo.</p>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<section id="fases">
+  <h2>Las seis fases</h2>
+  <p>Una por semana, en orden. Cada una deja un artefacto.</p>
+
+  <!-- ===== F0 ===== -->
+  <article class="module" id="f0">
+    <div class="module-head">
+      <div><span class="n">Fase 0 · <span data-weekrange="1">Semana 1</span></span><h3>Entender el flujo y el vocabulario</h3></div>
+      <div class="meta">~2 h · Solo lectura · Sin riesgo</div>
+    </div>
+    <div class="module-body">
+      <p class="why">Cómo viaja hoy el código desde el commit hasta producción, y las palabras base. Es la fase más barata y la que más rinde: sin el vocabulario, todo lo demás suena a ruido y terminas copiando YAML sin saber qué hace.</p>
+
+      <div class="tabs" role="tablist">
+        <button type="button" data-tab="t" aria-selected="true">Términos</button>
+        <button type="button" data-tab="m" aria-selected="false">Manual</button>
+        <button type="button" data-tab="c" aria-selected="false">Claude Code</button>
+      </div>
+
+      <div class="tabpane" data-pane="t">
+        <h4>El vocabulario base</h4>
+        <div class="glossary">
+          <div><b>CI / CD</b><small>Integración y entrega continuas: automatizar el construir y el publicar para no hacerlo a mano.</small></div>
+          <div><b>pipeline</b><small>La receta automatizada que construye y despliega tu app. Como una línea de producción.</small></div>
+          <div><b>stage</b><small>Una etapa grande del pipeline. Por ejemplo: Build, Deploy a QA, Deploy a Producción.</small></div>
+          <div><b>job</b><small>Un grupo de pasos que corre junto en una misma máquina.</small></div>
+          <div><b>step / task</b><small>Una acción concreta: compilar, copiar, publicar. La <i>task</i> es un paso predefinido y reutilizable.</small></div>
+          <div><b>artifact</b><small>El resultado del build que luego se despliega: el paquete, el .dll, el bundle.</small></div>
+          <div><b>agent</b><small>La máquina donde corre el pipeline. En Relolink, <code>vmImage: windows-latest</code>.</small></div>
+        </div>
+
+        <div class="prompt">
+          <div class="bar"><span>enseñar · vocabulario de CI/CD</span><button type="button" data-copy>Copiar</button></div>
+<pre>Estoy empezando en DevOps y vengo de desarrollo full-stack en .NET y Angular/Ionic.
+
+Explícame con una analogía simple y un ejemplo de mi stack qué es: pipeline, stage, job, step, task, artifact y agent.
+
+Reglas: en español, sin asumir que sé DevOps, y después de explicar cada término hazme una pregunta para verificar que lo entendí antes de pasar al siguiente. No me des la lista completa de golpe.</pre>
+        </div>
+      </div>
+
+      <div class="tabpane" data-pane="m" hidden>
+        <h4>Explóralo en la interfaz</h4>
+        <ol class="clicks">
+          <li>Entra a <a href="https://dev.azure.com" target="_blank" rel="noopener">dev.azure.com</a> y abre la organización de Relolink (solo para mirar) o la tuya de práctica.</li>
+          <li>En el menú izquierdo: <b>Pipelines &rarr; Pipelines</b>.</li>
+          <li>Abre una corrida (<i>run</i>) existente. Verás cómo se divide en <b>Stages &rarr; Jobs &rarr; Steps</b>.</li>
+          <li>Haz clic en un step para ver su <b>log</b>: ahí ves exactamente qué comando corrió.</li>
+          <li>Ve a <b>Repos &rarr; Pull requests</b> y abre uno: observa su relación con los work items.</li>
+          <li>Ve a <b>Pipelines &rarr; Environments</b> y mira qué entornos hay definidos. <b>Anota lo que encuentres</b> — es el punto de partida de la fase 3.</li>
+        </ol>
+        <p>Objetivo de hoy: no tocar nada. Solo reconocer en la pantalla las piezas que acabas de aprender en la pestaña de términos.</p>
+      </div>
+
+      <div class="tabpane" data-pane="c" hidden>
+        <h4>Que Claude Code te lo mapee</h4>
+        <p>Analizar es <strong>solo lectura</strong>, así que es seguro hacerlo sobre el repo real — no crea ni cambia nada.</p>
+        <div class="prompt">
+          <div class="bar"><span>auditar · pipeline real</span><button type="button" data-copy>Copiar</button></div>
+<pre># Rol: auditor de CI/CD. Solo lectura, no modifiques nada.
+
+Analiza este repositorio y su configuración de Azure DevOps.
+Stack: .NET, Angular, Ionic, T-SQL, SQL Server.
+
+Devuélveme en Markdown:
+1. Los stages/jobs de cada pipeline y qué hace cada uno
+2. Cómo se construye el front y el back, y qué artifact produce cada uno
+3. Qué entornos existen y cómo se despliega a cada uno (incluidos slots)
+4. Los 3 puntos más frágiles que detectes, ordenados por riesgo
+
+Cita rutas de archivo exactas. No inventes: si algo no está en el repo, dilo.</pre>
+        </div>
+        <p><b>Qué esperar:</b> un reporte de tu pipeline real para contrastarlo con lo que viste a mano. Si el reporte dice algo que no viste en la interfaz, uno de los dos está mal — y averiguar cuál es el ejercicio.</p>
+      </div>
+
+      <div class="anchor">
+        <h5>Lo que vas a encontrar en Relolink</h5>
+        <p>Los dos pipelines del back (<code>back-deploy-qa.yml</code> y <code>back-deploy-prod.yml</code>) son de estilo clásico: sin <code>stages</code>, una lista plana de tasks que restaura NuGet, compila la solución con <code>VSBuild</code>, corre <code>VSTest</code>, publica el artifact <code>drop</code> y despliega API y Functions con <code>AzureRmWebAppDeployment</code>. El de QA despliega al slot <code>staging</code> de <code>relolink-api-qa</code>; el de producción no usa slot. El front tiene cuatro pipelines distintos (<code>qa</code>, <code>qa2</code>, <code>qa-dev</code>, <code>web-production-deploy</code>) — averiguar por qué son cuatro y no uno parametrizado es una pregunta de arquitecto, no de DevOps.</p>
+      </div>
+
+      <div class="artifact"><b>Artefacto de salida:</b> un diagrama de una página del flujo real de Relolink —commit &rarr; PR &rarr; build &rarr; artifact &rarr; QA &rarr; producción— con las piezas nombradas con el vocabulario correcto. Es el documento que la empresa hoy no tiene y el que abre la conversación con tu jefe.</div>
+    </div>
+  </article>
+
+  <!-- ===== F1 ===== -->
+  <article class="module" id="f1">
+    <div class="module-head">
+      <div><span class="n">Fase 1 · <span data-weekrange="2">Semana 2</span></span><h3>Tu primer build pipeline en YAML</h3></div>
+      <div class="meta">~2 h · Sandbox propio</div>
+    </div>
+    <div class="module-body">
+      <p class="why">Leer y crear la estructura básica de un pipeline para tu stack. La diferencia entre copiar YAML y entenderlo es saber qué pasa si borras una línea — y eso solo se aprende borrándola en un sitio donde no importe.</p>
+
+      <div class="tabs" role="tablist">
+        <button type="button" data-tab="t" aria-selected="true">Términos</button>
+        <button type="button" data-tab="m" aria-selected="false">Manual</button>
+        <button type="button" data-tab="c" aria-selected="false">Claude Code</button>
+      </div>
+
+      <div class="tabpane" data-pane="t">
+        <h4>Los términos del build</h4>
+        <div class="glossary">
+          <div><b>YAML</b><small>El formato de texto donde se define el pipeline. Indentado, sin llaves, y la indentación es sintaxis: un espacio de más lo rompe.</small></div>
+          <div><b>trigger</b><small>Qué dispara el pipeline. En Relolink, <code>trigger: - qa</code>: cualquier push a la rama <code>qa</code>.</small></div>
+          <div><b>task</b><small>Una acción predefinida que reutilizas: <code>DotNetCoreCLI</code>, <code>Npm</code>, <code>PublishBuildArtifacts</code>.</small></div>
+          <div><b>pool</b><small>El conjunto de agents donde puede correr. Relolink usa <code>vmImage: windows-latest</code>.</small></div>
+          <div><b>artifact</b><small>Lo que el build empaqueta y publica para que el deploy posterior lo consuma.</small></div>
+          <div><b>variables</b><small>Valores reutilizables dentro del pipeline. Relolink define <code>solution</code>, <code>buildPlatform</code>, <code>buildConfiguration</code>.</small></div>
+        </div>
+        <div class="prompt">
+          <div class="bar"><span>enseñar · estructura de un pipeline</span><button type="button" data-copy>Copiar</button></div>
+<pre>Explícame la estructura de un pipeline YAML de Azure DevOps: trigger, stages, jobs, steps, tasks y artifacts.
+
+Dame un ejemplo mínimo para .NET y otro para Angular/Ionic, comentados línea por línea.
+
+Después hazme tres preguntas sobre el ejemplo para comprobar que lo entendí. No me des las respuestas hasta que yo conteste.</pre>
+        </div>
+      </div>
+
+      <div class="tabpane" data-pane="m" hidden>
+        <h4>Créalo tú en tu Azure de práctica</h4>
+        <ol class="clicks">
+          <li>En tu organización personal: <b>Pipelines &rarr; Pipelines &rarr; New pipeline</b>.</li>
+          <li>En "Where is your code?", elige <b>Azure Repos Git</b> y selecciona tu repo de prueba.</li>
+          <li>Elige <b>Starter pipeline</b>: te abre un YAML básico y editable.</li>
+          <li>Usa <b>Show assistant</b> (panel derecho) para insertar tasks sin escribirlas a mano.</li>
+          <li><b>Save and run</b> &rarr; confirma el commit &rarr; observa la corrida con los stages que aprendiste.</li>
+          <li><b>Rompe cosas a propósito:</b> cambia el nombre de una task, quita una indentación, apunta a un proyecto que no existe. Lee el log del error completo antes de arreglarlo.</li>
+        </ol>
+        <p>Aprendes el doble cuando algo se rompe en un entorno donde no importa. Un pipeline que nunca falló no te enseñó a leer un log.</p>
+      </div>
+
+      <div class="tabpane" data-pane="c" hidden>
+        <h4>Que Code te genere un ejemplo comentado</h4>
+        <div class="prompt">
+          <div class="bar"><span>generar · pipeline de build</span><button type="button" data-copy>Copiar</button></div>
+<pre># Rol: ingeniero de DevOps. Ejemplo didáctico para un sandbox.
+# No toques ningún repositorio real.
+
+Crea un azure-pipelines.yml de BUILD (no deploy) para un proyecto
+.NET (backend) + Angular/Ionic (frontend).
+
+- Comenta CADA bloque en inglés (trigger, stages, jobs, steps)
+- Incluye: restore/build/publish de .NET; npm ci + ng build;
+  y la publicación de artifacts
+- Usa la sintaxis moderna con stages, no la lista plana de tasks
+
+Después del YAML, dame una tabla en español explicando cada
+sección en una línea, y señala qué haría distinto de un pipeline
+clásico con VSBuild y por qué.</pre>
+        </div>
+      </div>
+
+      <div class="anchor">
+        <h5>El contraste con Relolink</h5>
+        <p>El pipeline que acabas de escribir usa <code>stages</code> y <code>DotNetCoreCLI</code>. El de Relolink usa una lista plana de tasks con <code>VSBuild</code> y <code>NuGetCommand</code>, que es el estilo de .NET Framework heredado. <b>Ninguno de los dos está mal</b>, y esa es la lección: sabrás que entendiste la fase cuando puedas explicar qué gana y qué pierde cada estilo, en vez de decir que el viejo "hay que migrarlo".</p>
+      </div>
+
+      <div class="artifact"><b>Artefacto de salida:</b> un pipeline de build funcionando en tu organización personal, y media página comparándolo con el de Relolink: qué hace igual, qué hace distinto, y una mejora concreta que propondrías con su costo.</div>
+    </div>
+  </article>
+
+  <!-- ===== F2 ===== -->
+  <article class="module" id="f2">
+    <div class="module-head">
+      <div><span class="n">Fase 2 · <span data-weekrange="3">Semana 3</span></span><h3>Variables, secrets y configuración</h3></div>
+      <div class="meta">~2 h · Sandbox + auditoría real</div>
+    </div>
+    <div class="module-body">
+      <p class="why">Por qué algo "solo falla en producción", y cómo evitarlo. Es la fase de mayor impacto inmediato en Relolink, porque ahí hay un riesgo real y documentable — y arreglarlo es un entregable, no una tarea.</p>
+
+      <div class="tabs" role="tablist">
+        <button type="button" data-tab="t" aria-selected="true">Términos</button>
+        <button type="button" data-tab="m" aria-selected="false">Manual</button>
+        <button type="button" data-tab="c" aria-selected="false">Claude Code</button>
+      </div>
+
+      <div class="tabpane" data-pane="t">
+        <h4>Términos de configuración</h4>
+        <div class="glossary">
+          <div><b>variable</b><small>Un valor que cambia según el entorno: una URL, un flag, un nombre de recurso.</small></div>
+          <div><b>variable group</b><small>Un conjunto de variables reutilizable entre pipelines, guardado en la <i>Library</i>.</small></div>
+          <div><b>secret</b><small>Una variable sensible que se oculta y no se imprime en los logs.</small></div>
+          <div><b>Key Vault</b><small>La bóveda de Azure para guardar secrets de forma centralizada, con control de acceso y auditoría de quién los leyó.</small></div>
+          <div><b>service connection</b><small>El puente autenticado entre Azure DevOps y tu suscripción de Azure. En Relolink: <code>RelolinkQA-Azure</code>.</small></div>
+          <div><b>connection string</b><small>La cadena que conecta la app a SQL Server. Nunca debe ir en el código, y en Relolink hoy sí va.</small></div>
+          <div><b>rotación</b><small>Cambiar un secret periódicamente, o de urgencia cuando se expone. Si rotar duele, el diseño está mal.</small></div>
+        </div>
+        <div class="prompt">
+          <div class="bar"><span>enseñar · variable groups y Key Vault</span><button type="button" data-copy>Copiar</button></div>
+<pre>Explícame la diferencia entre un variable group de Azure DevOps y Azure Key Vault: cuándo usar cada uno y cómo se combinan.
+
+Después explícame la forma segura de manejar la connection string de SQL Server en una app .NET desplegada en App Service, incluyendo qué es managed identity y por qué elimina el problema de raíz.
+
+En español. Al final hazme cinco preguntas de examen sobre lo anterior, una a la vez, sin darme las respuestas.</pre>
+        </div>
+      </div>
+
+      <div class="tabpane" data-pane="m" hidden>
+        <h4>Crea un variable group</h4>
+        <ol class="clicks">
+          <li>Ve a <b>Pipelines &rarr; Library</b>.</li>
+          <li>Clic en <b>+ Variable group</b> y ponle un nombre, por ejemplo <code>qa-config</code>.</li>
+          <li>Agrega variables clave/valor, por ejemplo <code>ApiUrl</code>.</li>
+          <li>Para una sensible, haz clic en el <b>candado</b> junto al valor: la convierte en secret y deja de imprimirse en los logs.</li>
+          <li>Opcional pero importante: activa <b>Link secrets from an Azure key vault</b> y conecta un Key Vault.</li>
+          <li>En tu YAML, referencia el grupo con <code>variables: - group: qa-config</code>.</li>
+          <li>Para conectar con Azure: engranaje <b>Project settings</b> (abajo a la izquierda) &rarr; <b>Service connections</b> &rarr; New service connection.</li>
+        </ol>
+      </div>
+
+      <div class="tabpane" data-pane="c" hidden>
+        <h4>Audita la configuración real</h4>
+        <div class="prompt">
+          <div class="bar"><span>auditar · secrets y configuración</span><button type="button" data-copy>Copiar</button></div>
+<pre># Rol: auditor de configuración. Solo analiza, no modifiques nada.
+
+Revisa cómo se maneja la configuración por entorno en este repo
+(.NET + Angular/Ionic + SQL Server). Repórtame en Markdown:
+
+1. Dónde se definen variables y secrets (archivos y rutas exactas)
+2. Cómo se manejan las connection strings de SQL Server
+3. Cualquier secret hardcodeado o expuesto, marcado como riesgo
+   y clasificado por severidad
+4. Si se usa Azure Key Vault o no, y qué haría falta para usarlo
+
+NO imprimas el valor de ningún secret, solo su ubicación y su tipo.
+Termina con un plan de remediación en pasos ejecutables, ordenado
+por riesgo, indicando cuáles requieren rotar una credencial.</pre>
+        </div>
+      </div>
+
+      <div class="anchor">
+        <h5>El caso real de Relolink</h5>
+        <p><code>APIs/RLL.Api/appsettings.json</code> está versionado en el repositorio y contiene, en texto plano: la <b>clave de firma del JWT</b> (<code>Jwt:Key</code>), una connection string a la base y el endpoint de Notification Hubs con su token de acceso compartido. Cualquiera con permiso de lectura sobre el repo —o sobre cualquier copia, clon o respaldo de él— puede <b>firmar tokens válidos</b> para el sistema.</p>
+        <p>Este hallazgo tiene dos partes, y conviene no mezclarlas: la <b>urgente</b> es rotar la clave y sacarla del repositorio; la <b>estructural</b> es que no existe una cadena de secrets, y esa se resuelve con Key Vault más managed identity. Preséntalas por separado, con su costo cada una. Presentar solo la urgente te hace el que apaga fuegos; presentar las dos te hace el que diseña.</p>
+      </div>
+      <div class="bridge"><span class="ico">&rarr;</span><p>El <a href="arquitectura.html#m6">módulo 6 de la vía de arquitectura</a> es la otra mitad: allá decides qué proteger y con qué criterio; aquí aprendes la mecánica para hacerlo.</p></div>
+
+      <div class="artifact"><b>Artefacto de salida:</b> el inventario de secrets de Relolink (cada uno: dónde vive, quién lo lee, qué pasa si se filtra, cómo se rota) y un plan de migración a Key Vault en pasos que otra persona pueda ejecutar sin ti.</div>
+    </div>
+  </article>
+
+  <!-- ===== F3 ===== -->
+  <article class="module" id="f3">
+    <div class="module-head">
+      <div><span class="n">Fase 3 · <span data-weekrange="4">Semana 4</span></span><h3>Releases, environments y aprobaciones</h3></div>
+      <div class="meta">~2 h · Sandbox propio</div>
+    </div>
+    <div class="module-body">
+      <p class="why">Controlar quién aprueba y cómo se publica a clientes. Aquí es donde dejas de ser el que escribe código y pasas a ser el que es dueño de la puerta: nada llega a un cliente sin que alguien lo decida a propósito.</p>
+
+      <div class="tabs" role="tablist">
+        <button type="button" data-tab="t" aria-selected="true">Términos</button>
+        <button type="button" data-tab="m" aria-selected="false">Manual</button>
+        <button type="button" data-tab="c" aria-selected="false">Claude Code</button>
+      </div>
+
+      <div class="tabpane" data-pane="t">
+        <h4>Términos de release</h4>
+        <div class="glossary">
+          <div><b>environment</b><small>Un destino de despliegue con nombre (QA, Staging, Production) sobre el que puedes poner reglas.</small></div>
+          <div><b>approval</b><small>Una pausa que exige que una persona apruebe antes de continuar a ese environment.</small></div>
+          <div><b>gate</b><small>Una verificación automática antes de avanzar: que no haya bugs abiertos, que una query de monitoreo esté sana.</small></div>
+          <div><b>deployment job</b><small>Un tipo de job que despliega a un environment y deja registrado su historial: qué versión, cuándo, quién aprobó.</small></div>
+          <div><b>rollback</b><small>Volver a la versión anterior cuando algo sale mal. Con slots, es intercambiarlos de nuevo.</small></div>
+          <div><b>slot swap</b><small>Intercambiar el contenido del slot de staging con el de producción. Instantáneo y reversible.</small></div>
+        </div>
+        <div class="prompt">
+          <div class="bar"><span>enseñar · environments, approvals y gates</span><button type="button" data-copy>Copiar</button></div>
+<pre>Explícame qué es un environment, un approval y un gate en Azure DevOps, en qué se diferencian y cuándo usar cada uno en un equipo pequeño.
+
+Después explícame las dos formas más simples de tener rollback en App Service, y cuál elegirías para un equipo de menos de diez personas.
+
+Usa un ejemplo concreto: una API .NET desplegada en App Service con un slot de staging ya existente. En español.</pre>
+        </div>
+      </div>
+
+      <div class="tabpane" data-pane="m" hidden>
+        <h4>Pon una aprobación antes de Producción</h4>
+        <ol class="clicks">
+          <li><b>Pipelines &rarr; Environments &rarr; New environment</b>. Nómbralo <code>Production</code>.</li>
+          <li>Abre el environment y haz clic en el botón <b>"⋮"</b> (arriba a la derecha) &rarr; <b>Approvals and checks</b>.</li>
+          <li>Clic en <b>+</b> &rarr; <b>Approvals</b> &rarr; agrégate como approver &rarr; <b>Create</b>.</li>
+          <li>En tu YAML, usa un <code>deployment job</code> que apunte a <code>environment: Production</code>.</li>
+          <li>Corre el pipeline: antes de Production <b>se detendrá</b> esperando tu aprobación.</li>
+          <li>Apruébalo desde la corrida y observa cómo continúa. Mira después el historial del environment: queda registrado quién aprobó qué versión y cuándo.</li>
+        </ol>
+        <p>Acabas de crear el control de release. Ese historial, además, es la trazabilidad que hoy no existe y que cualquier auditoría de un cliente grande va a pedir.</p>
+      </div>
+
+      <div class="tabpane" data-pane="c" hidden>
+        <h4>Que Code arme el multi-stage</h4>
+        <div class="prompt">
+          <div class="bar"><span>generar · pipeline multi-stage con aprobación</span><button type="button" data-copy>Copiar</button></div>
+<pre># Rol: ingeniero de release. Ejemplo comentado para sandbox.
+
+Crea un azure-pipelines.yml multi-stage que:
+- construya la app (.NET + Angular/Ionic) una sola vez
+- despliegue a QA automáticamente
+- despliegue a Producción SOLO tras aprobación manual
+
+Requisitos:
+- Usa environments con approvals y deployment jobs
+- Comenta cada bloque en inglés
+- Muestra dónde iría un gate y cómo sería un rollback por slot swap
+- Explica en una nota final qué parte se configura en la UI y no
+  en el YAML, porque esa distinción es la que más confunde
+
+El artifact debe construirse una vez y reutilizarse en los dos
+deploys: explica por qué eso importa.</pre>
+        </div>
+      </div>
+
+      <div class="anchor">
+        <h5>Lo que esto cambiaría en Relolink</h5>
+        <p>Hoy <code>back-deploy-prod.yml</code> despliega a producción de corrido: el push a la rama dispara build y deploy sin ninguna pausa. Y el pipeline <b>reconstruye</b> en vez de reutilizar el artifact ya probado en QA, así que lo que se publica no es literalmente lo mismo que se validó. Las dos cosas se arreglan con lo de esta fase, y las dos son argumentos que se explican en una frase a alguien que no es técnico.</p>
+        <p><b>Ejercicio (solo lectura):</b> escribe la propuesta en media página — qué cambia, qué riesgo elimina, cuánto cuesta implementarlo, qué se rompe si no se hace. Esa media página vale más que el YAML.</p>
+      </div>
+
+      <div class="artifact"><b>Artefacto de salida:</b> un pipeline multi-stage con aprobación funcionando en tu sandbox, más la propuesta de media página para llevar los environments al pipeline real de Relolink.</div>
+    </div>
+  </article>
+
+  <!-- ===== F4 ===== -->
+  <article class="module" id="f4">
+    <div class="module-head">
+      <div><span class="n">Fase 4 · <span data-weekrange="5">Semana 5</span></span><h3>Montar el entorno de staging</h3></div>
+      <div class="meta">~2 h · Los dos Azure</div>
+    </div>
+    <div class="module-body">
+      <p class="why">El entorno intermedio entre QA y Producción: ejecutar tu propia propuesta de mejora de proceso. Aquí entran <strong>los dos Azure</strong>, y confundirlos es el error clásico: la infraestructura de staging vive en el <b>Azure Portal</b>, y el stage que despliega ahí vive en <b>Azure DevOps</b>.</p>
+
+      <div class="tabs" role="tablist">
+        <button type="button" data-tab="t" aria-selected="true">Términos</button>
+        <button type="button" data-tab="m" aria-selected="false">Manual</button>
+        <button type="button" data-tab="c" aria-selected="false">Claude Code</button>
+      </div>
+
+      <div class="tabpane" data-pane="t">
+        <h4>Términos de staging</h4>
+        <div class="glossary">
+          <div><b>staging</b><small>Un entorno de preproducción que replica producción, para validar antes de publicar.</small></div>
+          <div><b>parity / paridad</b><small>Que staging tenga la misma configuración y comportamiento que producción. Sin paridad, staging miente.</small></div>
+          <div><b>smoke test</b><small>Una prueba mínima y rápida tras el deploy: ¿enciende y funciona lo crítico?</small></div>
+          <div><b>deployment slot</b><small>En App Service, una copia paralela donde despliegas sin afectar producción, y que después intercambias.</small></div>
+          <div><b>warm-up</b><small>Precalentar el slot antes del swap para que el primer usuario no pague el arranque en frío.</small></div>
+        </div>
+        <div class="prompt">
+          <div class="bar"><span>enseñar · staging y slots</span><button type="button" data-copy>Copiar</button></div>
+<pre>Explícame qué es un entorno de staging y por qué reduce los incidentes de configuración.
+
+Después la diferencia entre crear un App Service de staging aparte y usar un deployment slot dentro del mismo App Service: costo, paridad, riesgos y cuándo elegir cada uno.
+
+Contexto: una API .NET en App Service que ya tiene un slot llamado "staging" creado pero que se usa solo como destino de despliegue de QA, sin swap. Dime qué se está desaprovechando ahí. En español.</pre>
+        </div>
+      </div>
+
+      <div class="tabpane" data-pane="m" hidden>
+        <h4>Móntalo (tocando los dos Azure)</h4>
+        <ol class="clicks">
+          <li><b>Azure Portal</b> (<a href="https://portal.azure.com" target="_blank" rel="noopener">portal.azure.com</a>): crea un App Service <code>miapp-staging</code>, o mejor, un <b>deployment slot</b> llamado <code>staging</code> dentro de tu App Service.</li>
+          <li><b>Azure DevOps</b>: <b>Pipelines &rarr; Environments &rarr; New environment &rarr; Staging</b>.</li>
+          <li>En tu YAML, agrega un stage <code>Deploy_Staging</code> entre QA y Production.</li>
+          <li>Apunta ese stage a la infraestructura de staging mediante la <b>service connection</b>.</li>
+          <li>Tras el deploy a staging, corre tu <b>smoke test</b>. Al principio, manual con una checklist de cinco puntos.</li>
+          <li>Solo si el smoke test pasa, deja que avance a Production — idealmente con un <b>swap</b> de slots, que además te da el rollback gratis.</li>
+        </ol>
+        <p>Empieza por <b>un solo servicio</b>, el de más incidencias. No hace falta montarlo para todo de golpe, y hacerlo de golpe es la forma más común de que no se haga nunca.</p>
+      </div>
+
+      <div class="tabpane" data-pane="c" hidden>
+        <h4>Que Code proponga el stage</h4>
+        <div class="prompt">
+          <div class="bar"><span>proponer · stage de staging</span><button type="button" data-copy>Copiar</button></div>
+<pre># Rol: ingeniero de DevOps. Analiza primero, luego propón.
+# No apliques cambios; solo proponlos.
+
+Quiero añadir un entorno de staging entre QA y Producción para UN
+servicio piloto (.NET + Angular/Ionic + SQL Server en App Service).
+
+1. Identifica en este repo qué se necesita para insertar el stage
+2. Propón el bloque YAML del nuevo stage, comentado en inglés
+3. Lista qué crear del lado de infraestructura (App Service o slot,
+   base de datos de staging, variables) en pasos concretos
+4. Dime qué datos usaría staging y cómo evitar que toque datos
+   reales de clientes
+5. Propón los 5 puntos del smoke test para este servicio</pre>
+        </div>
+      </div>
+
+      <div class="anchor">
+        <h5>Lo que ya existe en Relolink y nadie está usando</h5>
+        <p>El pipeline de QA ya despliega al slot <code>staging</code> de <code>relolink-api-qa</code> (<code>deployToSlotOrASE: true</code>, <code>SlotName: 'staging'</code>). Es decir: <b>la pieza ya está comprada y configurada</b>, pero se usa como un destino más, no como una etapa de validación con swap. El de producción ni siquiera usa slot.</p>
+        <p>Eso cambia por completo tu propuesta al jefe: no estás pidiendo infraestructura nueva ni presupuesto, estás proponiendo <b>usar bien lo que ya se paga</b>. Es el tipo de propuesta que se aprueba.</p>
+      </div>
+      <div class="bridge"><span class="ico">&rarr;</span><p>Los patrones de despliegue sin caída (blue-green, canary, feature flags) se ven en el <a href="arquitectura.html#m8">módulo 8 de la vía de arquitectura</a>. El slot swap es el blue-green del pobre, y para el tamaño de Relolink es exactamente el correcto.</p></div>
+
+      <div class="artifact"><b>Artefacto de salida:</b> staging funcionando de punta a punta en tu sandbox, con smoke test, y el plan técnico de un servicio piloto para Relolink con su checklist de infraestructura.</div>
+    </div>
+  </article>
+
+  <!-- ===== F5 ===== -->
+  <article class="module" id="f5">
+    <div class="module-head">
+      <div><span class="n">Fase 5 · <span data-weekrange="6">Semana 6</span></span><h3>Calidad y branch policies</h3></div>
+      <div class="meta">~2 h · Sandbox + propuesta real</div>
+    </div>
+    <div class="module-body">
+      <p class="why">Garantizar que nada entra sin PR, sin build verde y sin ticket. Es la fase que convierte tu checklist de calidad en una regla del repositorio, en vez de un "acuérdate de" que depende de que alguien esté de buen humor.</p>
+
+      <div class="tabs" role="tablist">
+        <button type="button" data-tab="t" aria-selected="true">Términos</button>
+        <button type="button" data-tab="m" aria-selected="false">Manual</button>
+        <button type="button" data-tab="c" aria-selected="false">Claude Code</button>
+      </div>
+
+      <div class="tabpane" data-pane="t">
+        <h4>Términos de calidad</h4>
+        <div class="glossary">
+          <div><b>branch policy</b><small>Reglas sobre una rama que obligan a cumplir requisitos antes de mergear.</small></div>
+          <div><b>build validation</b><small>Política que exige que el build pase para poder completar el PR.</small></div>
+          <div><b>required reviewer</b><small>Persona o número mínimo de revisores que deben aprobar.</small></div>
+          <div><b>quality gate</b><small>Un umbral de calidad —tests, cobertura, vulnerabilidades— que debe cumplirse para avanzar.</small></div>
+          <div><b>linked work item</b><small>El ticket ligado al PR. Forzarlo da trazabilidad: es tu indicador y la base de las release notes.</small></div>
+          <div><b>runbook</b><small>El documento de "qué hacer cuando esto se rompa". Se escribe antes de que se rompa, no después.</small></div>
+        </div>
+        <div class="prompt">
+          <div class="bar"><span>enseñar · branch policies</span><button type="button" data-copy>Copiar</button></div>
+<pre>Explícame qué es una branch policy en Azure DevOps y para qué sirve cada opción (reviewers mínimos, build validation, linked work items, comment resolution) en un equipo pequeño de menos de diez personas.
+
+Para cada opción dime: qué problema real previene, qué fricción añade, y si la activarías desde el día uno o después.
+
+En español, y sé concreto: prefiero "esto evita que X" antes que "mejora la calidad".</pre>
+        </div>
+      </div>
+
+      <div class="tabpane" data-pane="m" hidden>
+        <h4>Protege la rama principal</h4>
+        <ol class="clicks">
+          <li>Ve a <b>Repos &rarr; Branches</b>.</li>
+          <li>En la rama principal, clic en <b>"⋮" &rarr; Branch policies</b>.</li>
+          <li>Activa <b>Require a minimum number of reviewers</b> (empieza con 1).</li>
+          <li>Activa <b>Check for linked work items</b>: esto fuerza la trazabilidad.</li>
+          <li>En <b>Build Validation</b>, agrega tu build pipeline como obligatorio.</li>
+          <li>Guarda y prueba a mergear sin cumplir alguna: mira exactamente cómo se bloquea y qué mensaje sale.</li>
+        </ol>
+        <p>Ahora nadie mergea sin PR aprobado, build verde y ticket ligado. Y lo importante: ya no depende de que alguien se acuerde.</p>
+      </div>
+
+      <div class="tabpane" data-pane="c" hidden>
+        <h4>Audita la calidad y escribe el runbook</h4>
+        <div class="prompt">
+          <div class="bar"><span>auditar · calidad y runbook</span><button type="button" data-copy>Copiar</button></div>
+<pre># Rol: auditor de calidad de CI/CD. Solo analiza, no modifiques.
+
+Revisa este repo y su configuración de Azure DevOps y repórtame:
+1. Si corren tests automáticos en el pipeline, dónde, y si su
+   resultado bloquea el despliegue o solo se reporta
+2. Qué branch policies hay y cómo están configuradas
+3. Si hay notificaciones cuando un deploy falla
+4. Qué falta para un quality gate básico
+
+Devuélvelo en Markdown y propón el primer paso de cada faltante,
+ordenado por relación impacto/esfuerzo.
+
+Después ayúdame a redactar un runbook corto en inglés:
+"qué hacer cuando un deploy falla" — pasos numerados, qué mirar
+primero, cómo revertir, y a quién avisar.</pre>
+        </div>
+      </div>
+
+      <div class="anchor">
+        <h5>Lo que ya hay y lo que falta en Relolink</h5>
+        <ul>
+          <li><b>Hay tests reales:</b> el proyecto <code>RLL.UnitTesting</code> tiene pruebas de cosas que importan — matemática de facturación de consultores, validador de contraseñas, layout de reportes de payables, reglas de colapso de notificaciones, filtros de escuelas por ciudad.</li>
+          <li><b>Corren en el pipeline</b> con <code>VSTest@2</code>… pero sin política que exija que pasen. Un test que no bloquea es documentación, no una red de seguridad.</li>
+          <li><b>No hay runbook.</b> Cuando un deploy falla, el procedimiento vive en tu cabeza.</li>
+        </ul>
+        <p>El orden correcto para proponerlo: primero <i>linked work items</i> (fricción casi cero, trazabilidad inmediata), después <i>build validation</i>, y al final el número de revisores, que es el que toca la política del equipo y conviene negociar, no imponer.</p>
+      </div>
+      <div class="bridge"><span class="ico">&rarr;</span><p>Las reglas que vas a exigir salen del <code>STANDARDS.md</code> del <a href="arquitectura.html#m5">módulo 5</a>. Y el mismo archivo alimenta el <a href="#extra">copiloto de revisión de PRs</a> de aquí abajo: se escribe una vez y se usa en tres lados.</p></div>
+
+      <div class="artifact"><b>Artefacto de salida:</b> las branch policies activas en tu sandbox, el diagnóstico de calidad del repo real, y el runbook de "deploy fallido" en inglés, listo para el repositorio de la empresa.</div>
+    </div>
+  </article>
+</section>
+
+<!-- ================================================================ -->
+<section id="extra">
+  <h2>Claude Code como copiloto de revisión de PRs</h2>
+
+  <p>Más allá de las seis fases. Conectas Azure DevOps, defines tus estándares y revisas cada PR antes de que entre a QA — un control de calidad que hoy no hace nadie. No es un pipeline: es una rutina que corres tú cuando quieres.</p>
+
+  <div class="flag">
+    <h4>Solo lectura, siempre</h4>
+    <p>Conectas con un PAT limitado a permisos de lectura: <code>Code (Read)</code>, <code>Work Items (Read)</code>, <code>Build (Read)</code>. Así la herramienta <strong>físicamente no puede</strong> modificar PRs, código ni tickets — solo te reporta. Tú decides qué hacer con cada hallazgo. Y cuando termines de usar el PAT, revócalo.</p>
+  </div>
+
+  <h3>Paso 1 · Conectar</h3>
+  <p>Usa el servidor MCP oficial de Microsoft, que corre local. Una sola vez.</p>
+  <div class="prompt">
+    <div class="bar"><span>configurar · .mcp.json</span><button type="button" data-copy>Copiar</button></div>
+<pre># 1. Genera un PAT en Azure DevOps con permisos de SOLO LECTURA:
+#    Code (Read), Work Items (Read), Build (Read). Nada de escritura.
+# 2. Crea un .mcp.json en la raíz de tu proyecto:
+
+{
+  "servers": {
+    "ado": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@azure-devops/mcp", "TU_ORG"]
+    }
+  }
+}
+
+# 3. Dentro de Claude Code, verifica la conexión:
+/mcp
+# debe aparecer: ado (connected)</pre>
+  </div>
+  <p>La guía oficial paso a paso está en <a href="https://github.com/microsoft/azure-devops-mcp" target="_blank" rel="noopener">github.com/microsoft/azure-devops-mcp</a>.</p>
+
+  <h3>Paso 2 · Definir tus estándares</h3>
+  <p>La IA no conoce las reglas de tu equipo. Se las das una vez, en un archivo que lee siempre. Este es el mismo <code>STANDARDS.md</code> del módulo 5 de la vía de arquitectura.</p>
+  <div class="prompt">
+    <div class="bar"><span>plantilla · STANDARDS.md</span><button type="button" data-copy>Copiar</button></div>
+<pre># Estándares de PR
+# Stack: .NET, Angular, Ionic, T-SQL, SQL Server
+
+DEFINICIÓN PREVIA:
+- El PR debe estar ligado a un work item
+- Debe incluir guía de testeo: cómo probar + edge cases
+- Reutiliza componentes y estilos existentes; no inventa estilos
+
+MULTI-TENANT (lo más caro de equivocarse):
+- Todo endpoint filtra por suscripción
+- Heredar de EntityBase NO da aislamiento; verificar el SQL generado
+
+CALIDAD DE CÓDIGO:
+- Métodos .NET con summary XML; TypeScript con bloque summary
+- Sin queries N+1; sin recursión innecesaria; sin loops infinitos
+- Validaciones en el back, no solo en el front
+- Sin secrets ni connection strings en el código
+
+CONVENCIONES:
+- Nombres claros; sin código comentado ni muerto
+- Migraciones revisables y reversibles</pre>
+  </div>
+  <p>Lo que hace útil a este archivo es que cada regla sea <strong>verificable leyendo un diff</strong>. "Cuidar el multi-tenant" no es una regla; "todo endpoint filtra por suscripción" sí.</p>
+
+  <h3>Paso 3 · La revisión diaria</h3>
+  <div class="prompt">
+    <div class="bar"><span>revisar · PRs abiertos</span><button type="button" data-copy>Copiar</button></div>
+<pre># Rol: revisor de PRs. SOLO LECTURA.
+# No modifiques nada, no postees comentarios. Solo repórtame.
+
+Lee los pull requests abiertos en Azure DevOps que apuntan a la
+rama de QA. Para CADA PR, evalúalo contra STANDARDS.md.
+
+Devuélveme un reporte ordenado por estado:
+
+## PRs que cumplen
+- PR #__ — título — listo para QA
+
+## PRs con observaciones
+- PR #__ — título
+  - Qué falla (cita archivo y línea exactos)
+  - Qué estándar incumple
+  - Qué debe corregir el autor, concreto
+
+## PRs que no deben entrar a QA
+- PR #__ — título — motivo bloqueante
+
+No uses datos cacheados de consultas previas.</pre>
+  </div>
+  <div class="artifact"><b>Lo que ganas:</b> te vuelves el filtro de calidad antes de QA sin leer cada línea a mano. Es tu propia propuesta de proceso —definición previa y guía de testeo— aplicada de forma sistemática. Y como es lectura, es seguro.</div>
+</section>
+
+<!-- ================================================================ -->
+<section id="otras">
+  <h2>Otras formas de usar la conexión</h2>
+  <p>Lo mismo que ya descubriste con los tickets, llevado a más tareas del día.</p>
+
+  <table>
+    <thead><tr><th>Tarea</th><th>Qué hace</th><th>Estado</th></tr></thead>
+    <tbody>
+      <tr><td>Generar tickets desde tu trabajo</td><td>Le describes lo que hiciste y crea el work item ya formateado.</td><td>Ya lo haces</td></tr>
+      <tr><td>Detectar tickets "no listos"</td><td>Revisa los work items contra tu checklist de definición previa y marca a cuáles les faltan criterios de aceptación, edge cases o referencia visual — antes de que entren a desarrollo.</td><td>Pendiente</td></tr>
+      <tr><td>Triage de bugs por severidad</td><td>Pegas el reporte y sugiere Sev 1/2/3 según tu tabla, para priorizar sin discutir.</td><td>Pendiente</td></tr>
+      <tr><td>Guía de testeo en el PR</td><td>Toma el diff del PR y genera "cómo probar + edge cases", listo para pegar en la descripción.</td><td>Pendiente</td></tr>
+      <tr><td>Release notes</td><td>Desde los PRs y work items cerrados del sprint, redacta el borrador de la nota de versión.</td><td>Ya lo haces · acelerable</td></tr>
+      <tr><td>Rastrear un incidente</td><td>"¿Qué PR y qué release metió este bug?" Traza el commit por su PR, build y release.</td><td>Pendiente</td></tr>
+    </tbody>
+  </table>
+
+  <p>Todo en modo lectura. La idea no es que la IA decida por ti, sino que te deje el trabajo masticado para que tú apruebes, ajustes o ejecutes. Eso es agilizar sin perder el control.</p>
+</section>
+
+<!-- ================================================================ -->
+<section id="panel">
+  <h2>El siguiente nivel: tu panel de control interno</h2>
+
+  <p>Cuando la revisión de PRs ya sea parte de tu día, el paso natural es construir una herramienta tuya: un <strong>panel local</strong> en tu propio stack (.NET + Azure REST API + SQL Server + Angular) que muestre los PRs de hoy, valide cada uno contra tus reglas y guarde el historial, para poder <strong>demostrar con números</strong> que el proceso mejoró.</p>
+
+  <ul class="know">
+    <li>Tablero de "PRs de hoy" por tipo y por autor.</li>
+    <li>Veredicto por PR: cumple / con observaciones / no entra a QA.</li>
+    <li>Exporta un Markdown crudo que pegas donde quieras para redactar el mensaje al autor.</li>
+    <li>Historial y tendencias, por persona y globales. Esa es la carta de negociación.</li>
+  </ul>
+
+  <div class="bridge"><span class="ico">&rarr;</span><p>Este panel es, además, un proyecto de portafolio: consume una API externa, guarda estado, mide y presenta. Encaja con los proyectos de portafolio de las etapas post-V1 de la <a href="arquitectura.html#largo">vía de arquitectura</a>.</p></div>
+</section>
+
+<!-- ================================================================ -->
+<section id="liderazgo">
+  <h2>Pista de liderazgo de equipo</h2>
+  <p class="why">La carta futura: si algún día tomas planificación de sprints, capacidad y coordinación — sin que te coma la vida.</p>
+
+  <div class="stop">
+    <h4>Esto no se toma el lunes</h4>
+    <p>Es la carta que dejas abierta ("abierto a aprenderla con el tiempo"). Está aquí para que sepas cómo se vería y cómo la IA la haría ligera cuando decidas jugarla. <strong>El riesgo a vigilar</strong> es que se sume al código sin pagarse ni acotarse. Si la tomas, que sea con título, número y límites claros.</p>
+  </div>
+
+  <h3>Qué asumirías</h3>
+  <ul class="know">
+    <li>Planificación de sprints y refinamiento del backlog.</li>
+    <li>Estimación de capacidad antes de comprometer fechas.</li>
+    <li>Coordinación de vacaciones y carga del equipo.</li>
+    <li>Comunicar a clientes qué entra en cada trimestre.</li>
+  </ul>
+
+  <h3>Cómo la IA la hace ligera</h3>
+  <div class="prompt">
+    <div class="bar"><span>preparar · standup y estado del sprint</span><button type="button" data-copy>Copiar</button></div>
+<pre># Rol: asistente de planificación. Solo lectura.
+
+Lee los work items del sprint actual en Azure DevOps y prepárame
+para el standup:
+1. Qué se completó desde ayer
+2. Qué está en progreso y quién lo lleva
+3. Qué está bloqueado o en riesgo de no entrar al sprint
+4. Una alerta si algo lleva demasiados días sin moverse
+
+No uses datos cacheados de consultas previas.</pre>
+  </div>
+  <p>El estado del sprint listo en segundos, sin navegar el tablero columna por columna. La gestión deja de comerte la mañana, que es la única condición bajo la que vale la pena aceptarla.</p>
+</section>
+
+</main>
+</div></div>
+
+<footer>
+  <div class="shell">
+    Vía B · Arquitectura del proceso &nbsp;·&nbsp; Documento personal &nbsp;·&nbsp;
+    <a href="index.html">Hoy</a> · <a href="arquitectura.html">Arquitectura</a> · <a href="repaso.html">Repaso</a>
+  </div>
+</footer>
+
+<script src="assets/app.js"></script>
+</body>
+</html>
