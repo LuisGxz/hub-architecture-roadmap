@@ -375,6 +375,40 @@
     });
   }
 
+  /* ---------- movil: "que hago hoy" primero ---------- */
+  // En el telefono el panel del dia es lo unico que se abre a diario, asi
+  // que sube por encima de la portada; en escritorio vuelve a su sitio.
+  function mobileTodayFirst() {
+    var sec = document.getElementById('hoy');
+    var hero = document.querySelector('header.hero');
+    if (!sec || !hero) return;
+
+    var mark = document.getElementById('hoy-anchor');
+    if (!mark) {
+      mark = document.createElement('div');
+      mark.id = 'hoy-anchor';
+      mark.hidden = true;
+      sec.parentNode.insertBefore(mark, sec);
+      var box = document.createElement('div');
+      box.id = 'hoy-mobile';
+      box.className = 'shell';
+      hero.parentNode.insertBefore(box, hero);
+    }
+    var holder = document.getElementById('hoy-mobile');
+
+    var narrow = window.matchMedia('(max-width: 640px)');
+    var sync = function () {
+      if (narrow.matches) {
+        if (sec.parentNode !== holder) holder.appendChild(sec);
+      } else if (sec.parentNode === holder) {
+        mark.parentNode.insertBefore(sec, mark.nextSibling);
+      }
+    };
+    sync();
+    if (narrow.addEventListener) narrow.addEventListener('change', sync);
+    else if (narrow.addListener) narrow.addListener(sync);
+  }
+
   /* ---------- movil: indice plegable ---------- */
   // El indice ocupa hasta 885px en movil. Se convierte en un <details>
   // cerrado por debajo de 900px y siempre abierto por encima.
@@ -558,6 +592,7 @@
     injectStates();
     labelTables();
     collapsibleToc();
+    mobileTodayFirst();
     initDelegation();
     initTabs();
     initCopy();
