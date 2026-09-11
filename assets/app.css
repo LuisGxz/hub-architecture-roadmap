@@ -282,6 +282,19 @@
   .toc-d>summary{display:none}
   .toc-d>ol{margin-top:0}
 
+
+  /* Por debajo de 900px el indice deja de ser barra lateral: si sigue
+     desplegado empuja el contenido media pantalla hacia abajo. */
+  @media (max-width:900px){
+    nav.toc{padding:18px 0 4px;border-bottom:none}
+    .toc-d{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius)}
+    .toc-d>summary{display:block;padding:13px 18px;font-size:14.5px;color:var(--ink)}
+    .toc-d>summary::before{content:"+ ";color:var(--teal);font-family:'IBM Plex Mono',monospace}
+    .toc-d[open]>summary{border-bottom:1px solid var(--line)}
+    .toc-d[open]>summary::before{content:"3 "}
+    .toc-d>ol{padding:8px 10px 12px}
+  }
+
   @media (max-width:640px){
     .shell{padding:0 18px}
     main{padding:26px 0 64px}
@@ -306,15 +319,6 @@
     .budget>div{padding:14px 18px;display:grid;grid-template-columns:auto 1fr;gap:0 16px;align-items:baseline}
     .budget .k{font-size:22px}
     .budget .l{margin-top:0;font-size:13.5px}
-
-    /* --- Indice plegado --- */
-    nav.toc{padding:18px 0 4px;border-bottom:none}
-    .toc-d{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius)}
-    .toc-d>summary{display:block;padding:13px 18px;font-size:14.5px;color:var(--ink)}
-    .toc-d>summary::before{content:"+ ";color:var(--teal);font-family:'IBM Plex Mono',monospace}
-    .toc-d[open]>summary{border-bottom:1px solid var(--line)}
-    .toc-d[open]>summary::before{content:"\2013 "}
-    .toc-d>ol{padding:8px 10px 12px}
 
     /* --- Tablas apiladas: cada fila es una tarjeta, cada celda su etiqueta.
            Elimina el scroll horizontal sin encoger el texto. --- */

@@ -427,7 +427,7 @@
     toc.appendChild(det);
     toc.setAttribute('data-collapsible', '1');
 
-    var wide = window.matchMedia('(min-width: 641px)');
+    var wide = window.matchMedia('(min-width: 901px)');
     var sync = function () { det.open = wide.matches; };
     sync();
     if (wide.addEventListener) wide.addEventListener('change', sync);
