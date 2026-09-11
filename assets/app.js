@@ -357,6 +357,49 @@
     });
   }
 
+  /* ---------- movil: tablas apiladas ---------- */
+  // En pantallas estrechas cada fila se dibuja como tarjeta y cada celda
+  // necesita su propia etiqueta, que es la cabecera de su columna.
+  function labelTables() {
+    Array.prototype.forEach.call(document.querySelectorAll('table'), function (table) {
+      var heads = table.querySelectorAll('thead th');
+      if (!heads.length) return;
+      var labels = Array.prototype.map.call(heads, function (th) { return th.textContent.trim(); });
+      Array.prototype.forEach.call(table.querySelectorAll('tbody tr'), function (tr) {
+        Array.prototype.forEach.call(tr.children, function (td, i) {
+          if (td.hasAttribute('data-l')) return;
+          var span = Number(td.getAttribute('colspan') || 1);
+          td.setAttribute('data-l', span > 1 ? '' : (labels[i] || ''));
+        });
+      });
+    });
+  }
+
+  /* ---------- movil: indice plegable ---------- */
+  // El indice ocupa hasta 885px en movil. Se convierte en un <details>
+  // cerrado por debajo de 900px y siempre abierto por encima.
+  function collapsibleToc() {
+    var toc = document.querySelector('nav.toc');
+    if (!toc || toc.getAttribute('data-collapsible')) return;
+    var list = toc.querySelector('ol');
+    if (!list) return;
+    var det = document.createElement('details');
+    det.className = 'toc-d';
+    var sum = document.createElement('summary');
+    sum.textContent = 'Contenido';
+    det.appendChild(sum);
+    det.appendChild(list);
+    toc.innerHTML = '';
+    toc.appendChild(det);
+    toc.setAttribute('data-collapsible', '1');
+
+    var wide = window.matchMedia('(min-width: 641px)');
+    var sync = function () { det.open = wide.matches; };
+    sync();
+    if (wide.addEventListener) wide.addEventListener('change', sync);
+    else if (wide.addListener) wide.addListener(sync);
+  }
+
   /* ---------- pestanas ---------- */
   function initTabs() {
     Array.prototype.forEach.call(document.querySelectorAll('.tabs'), function (tabs) {
@@ -513,6 +556,8 @@
   /* ---------- arranque ---------- */
   document.addEventListener('DOMContentLoaded', function () {
     injectStates();
+    labelTables();
+    collapsibleToc();
     initDelegation();
     initTabs();
     initCopy();
