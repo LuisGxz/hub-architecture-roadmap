@@ -17,10 +17,10 @@
   // Modulos de la via A (arquitectura) y fases de la via B (devops).
   var MODULES = [
     { id: 'm1', via: 'a', n: 'M1', t: 'Identidad y tenencia' },
-    { id: 'm2', via: 'a', n: 'M2', t: 'Modelo del catalogo' },
-    { id: 'm3', via: 'a', n: 'M3', t: 'Busqueda y reviews' },
-    { id: 'm4', via: 'a', n: 'M4', t: 'Azure y estimacion' },
-    { id: 'm5', via: 'a', n: 'M5', t: 'Fase 0 y estandares' },
+    { id: 'm2', via: 'a', n: 'M2', t: 'Modelo del catálogo' },
+    { id: 'm3', via: 'a', n: 'M3', t: 'Búsqueda y reviews' },
+    { id: 'm4', via: 'a', n: 'M4', t: 'Azure y estimación' },
+    { id: 'm5', via: 'a', n: 'M5', t: 'Fase 0 y estándares' },
     { id: 'm6', via: 'a', n: 'M6', t: 'Seguridad aplicada' },
     { id: 'm7', via: 'a', n: 'M7', t: 'Performance de datos' },
     { id: 'm8', via: 'a', n: 'M8', t: 'Patrones cloud' },
@@ -29,7 +29,7 @@
     { id: 'f0', via: 'b', n: 'F0', t: 'El flujo y el vocabulario' },
     { id: 'f1', via: 'b', n: 'F1', t: 'Tu primer build pipeline' },
     { id: 'f2', via: 'b', n: 'F2', t: 'Variables, secrets y config' },
-    { id: 'f3', via: 'b', n: 'F3', t: 'Releases, environments, aprobaciones' },
+    { id: 'f3', via: 'b', n: 'F3', t: 'Environments y aprobaciones' },
     { id: 'f4', via: 'b', n: 'F4', t: 'Montar staging' },
     { id: 'f5', via: 'b', n: 'F5', t: 'Calidad y branch policies' }
   ];
@@ -169,7 +169,7 @@
     if (!el) return;
     var pr = progressPct();
     var due = dueCards().length;
-    el.textContent = pr.done + '/' + pr.total + ' modulos' + (due ? '  ·  ' + due + ' de repaso' : '');
+    el.textContent = pr.done + '/' + pr.total + ' módulos' + (due ? '  ·  ' + due + ' de repaso' : '');
   }
 
   /* ---------- repeticion espaciada ---------- */
@@ -230,9 +230,9 @@
         } else if (s.status === 'dominado') {
           box.innerHTML = '<b>Dominado</b>Vuelve el ' + fmt(s.next);
         } else if (s.status === 'toca') {
-          box.innerHTML = '<b>Toca repasar</b>Ultimo: ' + fmt(s.last);
+          box.innerHTML = '<b>Toca repasar</b>Último: ' + fmt(s.last);
         } else {
-          box.innerHTML = '<b>Al dia</b>Vuelve el ' + fmt(s.next);
+          box.innerHTML = '<b>Al día</b>Vuelve el ' + fmt(s.next);
         }
       }
       card.classList.toggle('mastered', s.status === 'dominado');
@@ -244,11 +244,11 @@
       var due = dueCards();
       if (!due.length) {
         panel.className = 'due empty';
-        panel.innerHTML = '<h3>Nada que repasar hoy</h3><p>Las ocho tarjetas estan al dia. Vuelve cuando el panel te llame; repasar lo que ya sabes es tiempo robado a lo que no.</p>';
+        panel.innerHTML = '<h3>Nada que repasar hoy</h3><p>Las ocho tarjetas están al día. Vuelve cuando el panel te llame; repasar lo que ya sabes es tiempo robado a lo que no.</p>';
       } else {
         panel.className = 'due';
         panel.innerHTML = '<h3>Hoy toca repasar: ' + due.length + (due.length === 1 ? ' tarjeta' : ' tarjetas') + '</h3>' +
-          '<p>Veinte minutos, no mas. Contesta las preguntas de diagnostico en voz alta antes de mirar nada.</p><ul>' +
+          '<p>Veinte minutos, no más. Contesta las preguntas de diagnóstico en voz alta antes de mirar nada.</p><ul>' +
           due.map(function (c) { return '<li><a href="#' + c.id + '">' + c.t + '</a></li>'; }).join('') +
           '</ul>';
       }
@@ -268,7 +268,7 @@
 
     if (w === 0) {
       titulo = 'El plan arranca el ' + fmt(start);
-      texto = 'Faltan ' + daysBetween(today(), start) + ' dias. Lo unico util de aqui a entonces: crear el repo <code>hub-lab</code> vacio y la organizacion personal en dev.azure.com. Cinco minutos, y la semana 1 empieza sin friccion.';
+      texto = 'Faltan ' + daysBetween(today(), start) + ' días. Lo único útil de aquí a entonces: crear el repo <code>hub-lab</code> vacío y la organización personal en dev.azure.com. Cinco minutos, y la semana 1 empieza sin fricción.';
       acciones.push(['repaso.html', 'Diagnosticar el repaso', 'ghost']);
     } else {
       var byId = function (id) {
@@ -287,16 +287,16 @@
       });
       focus = focus || doing[0] || pend[0];
       if (!focus) {
-        titulo = 'Terminaste las dos vias';
-        texto = 'Diez modulos y seis fases con artefacto entregado. Lo que sigue esta en las etapas post-V1 de la via de arquitectura.';
+        titulo = 'Terminaste las dos vías';
+        texto = 'Diez módulos y seis fases con artefacto entregado. Lo que sigue está en las etapas post-V1 de la vía de arquitectura.';
       } else if (due > 0) {
         titulo = 'Repaso primero: ' + due + (due === 1 ? ' tarjeta' : ' tarjetas') + ' vencidas';
-        texto = 'Veinte minutos de repaso y despues sigues con <b>' + focus.n + ' · ' + focus.t + '</b>. El repaso vencido se acumula y deja de servir.';
+        texto = 'Veinte minutos de repaso y después sigues con <b>' + focus.n + ' · ' + focus.t + '</b>. El repaso vencido se acumula y deja de servir.';
         acciones.push(['repaso.html', 'Ir al repaso', '']);
         acciones.push([(focus.via === 'a' ? 'arquitectura.html' : 'devops.html') + '#' + focus.id, 'Seguir con ' + focus.n, 'ghost']);
       } else {
         titulo = focus.n + ' · ' + focus.t;
-        texto = 'Semana ' + w + '. ' + (doing.length ? 'Lo tienes marcado en curso: cierra el artefacto antes del domingo.' : 'Sin empezar. Abre el modulo y arranca por el bloque de estudio.');
+        texto = 'Semana ' + w + '. ' + (doing.length ? 'Lo tienes marcado en curso: cierra el artefacto antes del domingo.' : 'Sin empezar. Abre el módulo y arranca por el bloque de estudio.');
         acciones.push([(focus.via === 'a' ? 'arquitectura.html' : 'devops.html') + '#' + focus.id, 'Abrir ' + focus.n, '']);
       }
     }
@@ -318,7 +318,7 @@
       var pr = progressPct();
       bar.querySelector('i').style.width = pr.pct + '%';
       var lbl = document.getElementById('pbar-label');
-      if (lbl) lbl.textContent = pr.done + ' de ' + pr.total + ' modulos con artefacto entregado  ·  ' + pr.pct + '%';
+      if (lbl) lbl.textContent = pr.done + ' de ' + pr.total + ' módulos con artefacto entregado  ·  ' + pr.pct + '%';
     }
 
     var vias = document.querySelectorAll('.via [data-via-count]');
@@ -411,13 +411,13 @@
         return el ? el.value.trim() : '';
       };
       var w = currentWeek();
-      var md = '# Bitacora - semana ' + (w || 0) + ' (' + iso(today()) + ')\n\n' +
-        '**Modulo:** ' + (v('modulo') || '-') + '\n\n' +
+      var md = '# Bitácora — semana ' + (w || 0) + ' (' + iso(today()) + ')\n\n' +
+        '**Módulo:** ' + (v('modulo') || '-') + '\n\n' +
         '## Artefacto entregado\n' + (v('artefacto') || '-') + '\n\n' +
-        '## Lo que no entendi\n' + (v('dudas') || '-') + '\n\n' +
-        '## Lo que la IA hizo por mi y deberia saber hacer solo\n' + (v('ia') || '-') + '\n\n' +
-        '## Decision tomada esta semana\n' + (v('decision') || '-') + '\n\n' +
-        '## Siguiente accion concreta\n' + (v('next') || '-') + '\n';
+        '## Lo que no entendí\n' + (v('dudas') || '-') + '\n\n' +
+        '## Lo que la IA hizo por mí y debería saber hacer solo\n' + (v('ia') || '-') + '\n\n' +
+        '## Decisión tomada esta semana\n' + (v('decision') || '-') + '\n\n' +
+        '## Siguiente acción concreta\n' + (v('next') || '-') + '\n';
       out.value = md;
     };
     Array.prototype.forEach.call(form.querySelectorAll('input,textarea,select'), function (el) {
@@ -476,14 +476,14 @@
     if (imp) {
       imp.addEventListener('click', function () {
         var ta = document.getElementById('export-out');
-        if (!ta || !ta.value.trim()) { ta.hidden = false; ta.placeholder = 'Pega aqui el JSON exportado y vuelve a pulsar Importar.'; return; }
+        if (!ta || !ta.value.trim()) { ta.hidden = false; ta.placeholder = 'Pega aquí el JSON exportado y vuelve a pulsar Importar.'; return; }
         try {
           var d = JSON.parse(ta.value);
           if (d.start) write(K.start, d.start);
           if (d.progress) write(K.prog, d.progress);
           if (d.repaso) write(K.rep, d.repaso);
           location.reload();
-        } catch (e) { ta.value = 'JSON invalido: ' + e.message; }
+        } catch (e) { ta.value = 'JSON inválido: ' + e.message; }
       });
     }
   }
