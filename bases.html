@@ -1,0 +1,1807 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bases · el temario de los pilares</title>
+<meta name="description" content="Temario de estudio de los fundamentos: objetos, interfaces, SOLID, datos, red, arquitectura y oficio. Veintisiete lecciones con prompts para estudiarlas con Claude.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/app.css?v=6">
+</head>
+<body>
+
+<div class="sitebar">
+  <div class="shell">
+    <a class="brand" href="index.html">Ruta del Hub <span>v2</span></a>
+    <nav>
+      <a href="index.html">Hoy</a>
+      <a href="bases.html" aria-current="page">Bases</a>
+      <a href="arquitectura.html">Arquitectura</a>
+      <a href="devops.html">DevOps<span class="wide"> y Azure</span></a>
+    </nav>
+    <span class="spacer"></span>
+    <span class="pct"></span>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="shell">
+    <h1>Los pilares, otra vez y bien</h1>
+    <p class="lede">Esto ya no es una zona de repaso con tarjetas: es un <strong>temario de estudio</strong>. Ocho bloques y veintisiete lecciones que van desde qué es un objeto hasta cómo se ordena un sistema, cada una con su temario copiable y su prompt para estudiarla en conversación. El orden importa: cada bloque se apoya en el anterior. Y el bloque 2 es el que motivó todo esto — interfaces, cuatro lecciones, desde cero.</p>
+    <div class="budget">
+      <div><div class="k">8</div><div class="l">Bloques, en orden. No se saltan: el 3 no se entiende sin el 2.</div></div>
+      <div><div class="k">27</div><div class="l">Lecciones, cada una con temario, prompt, prueba y ejercicio.</div></div>
+      <div><div class="k">45 min</div><div class="l">Por lección. Dos por semana es el ritmo sostenible mientras corren las otras dos vías.</div></div>
+      <div><div class="k">1</div><div class="l">Criterio para darla por cerrada: poder explicarla sin mirar.</div></div>
+    </div>
+  </div>
+</header>
+
+<div class="shell"><div class="grid">
+
+<nav class="toc">
+  <p class="toc-title">Contenido</p>
+  <ol>
+    <li><a href="#metodo">Cómo se estudia esto</a></li>
+    <li><a href="#arranque">El prompt de arranque</a></li>
+    <li><a href="#b1">B1 · Objetos: qué son y qué problema resuelven</a></li>
+    <li><a href="#b2">B2 · Interfaces, a fondo</a></li>
+    <li><a href="#b3">B3 · Diseño: SOLID con las manos</a></li>
+    <li><a href="#b4">B4 · El lenguaje y la plataforma</a></li>
+    <li><a href="#b5">B5 · Los datos</a></li>
+    <li><a href="#b6">B6 · La red y la identidad</a></li>
+    <li><a href="#b7">B7 · Cómo se ordena un sistema</a></li>
+    <li><a href="#b8">B8 · El oficio</a></li>
+    <li><a href="#control">El control final</a></li>
+  </ol>
+</nav>
+
+<main>
+
+<div id="siguiente" class="due"></div>
+
+<section id="metodo" style="padding-top:12px">
+  <h2>Cómo se estudia esto</h2>
+
+  <p>Los fundamentos no se te olvidaron por falta de capacidad: se te olvidaron porque durante años el trabajo se pudo hacer sin recuperarlos, y lo que no se recupera se pierde. Escribir código con ayuda de una IA acelera la entrega y elimina justo el momento en que antes te tocaba entender. Esta página devuelve ese momento, y lo hace con la única regla que importa:</p>
+
+  <div class="flag">
+    <h4>La regla de esta página</h4>
+    <p><strong>Tú explicas, la IA corrige.</strong> Una lección no está aprobada cuando terminas de leer la explicación de Claude: está aprobada cuando se la explicas tú, entera, sin mirar, y te corrige menos de lo que te corrigió la vez anterior. Leer explicaciones produce la sensación de entender; producirlas es lo único que produce entendimiento.</p>
+  </div>
+
+  <p>Cada lección tiene cuatro partes y se usan en este orden:</p>
+
+  <table>
+    <thead><tr><th>Parte</th><th>Qué haces con ella</th></tr></thead>
+    <tbody>
+      <tr><td><b>Al terminar tienes que poder</b></td><td>Léela primero. Es el criterio con el que vas a juzgar si la lección se cerró o no.</td></tr>
+      <tr><td><b>Temario</b></td><td>Es la lista de lo que hay que cubrir. Va dentro del prompt, y también te sirve para detectar si la conversación se desvió.</td></tr>
+      <tr><td><b>Prompt</b></td><td>Lo copias, lo pegas en Claude y te explayas: pregunta, discute, pide otro ejemplo, sal por la tangente y vuelve. La conversación es el material.</td></tr>
+      <tr><td><b>La prueba y el ejercicio</b></td><td>Se hacen <i>después</i> de cerrar la conversación y sin mirar la página. Si necesitas mirar, la lección sigue abierta.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Los tres estados</h3>
+  <p>Cada lección se marca abajo del todo, y el estado se guarda solo en este navegador.</p>
+  <table>
+    <thead><tr><th>Estado</th><th>Qué significa</th></tr></thead>
+    <tbody>
+      <tr><td><b>Pendiente</b></td><td>No la has abierto, o la abriste y no terminaste la conversación.</td></tr>
+      <tr><td><b>Estudiando</b></td><td>Ya tuviste la sesión con Claude, pero todavía no pasas la prueba sin mirar. Es el estado normal durante varios días.</td></tr>
+      <tr><td><b>Lo puedo explicar</b></td><td>Se la explicaste entera a Claude sin mirar y te corrigió poco. Solo entonces. Marcarla antes es mentirse en una página que nadie más va a leer.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="stop">
+    <h4>El error que va a costar más caro</h4>
+    <p>Pedirle a Claude que te haga el ejercicio. En el momento en que la IA produce y tú apruebas, se acabó el aprendizaje: aprobar no es decidir, y reconocer una respuesta correcta no es saber producirla. Es exactamente el mecanismo por el que llegaste hasta aquí sin poder explicar qué es una interfaz. En esta página la IA explica y corrige; el código y las explicaciones los produces tú.</p>
+  </div>
+
+  <h3>El ritmo</h3>
+  <p>Dos lecciones por semana mientras corren las vías de arquitectura y DevOps: unos noventa minutos, partidos en dos sesiones. A ese ritmo los bloques 1 y 2 —objetos e interfaces, que es lo que más falta te hace hoy— están cerrados en cinco semanas, y el temario completo cae dentro de los seis meses del plan. Si una semana solo da para una lección, que sea del bloque que estés cursando: <strong>terminar un bloque vale más que picotear de tres</strong>.</p>
+
+  <div class="legend">
+    <span><span class="badge gen">GENERAL</span> Conocimiento portable a cualquier proyecto o entrevista.</span>
+    <span><span class="badge relo">RELOLINK</span> El ejercicio usa código real de la empresa, siempre en solo lectura.</span>
+  </div>
+</section>
+
+<section id="arranque">
+  <h2>El prompt de arranque</h2>
+
+  <p>Este se pega <strong>una vez</strong>, al abrir la conversación, antes de cualquier lección. Define quién eres, cómo quieres que te enseñen y qué está prohibido. Después pegas el prompt de la lección que toque, y a partir de ahí te explayas todo lo que quieras: es una conversación, no un examen.</p>
+
+    <div class="prompt">
+      <div class="bar"><span>arranque · pégalo una vez al abrir la conversación</span><button type="button" data-copy>Copiar</button></div>
+<pre>Vas a ser mi profesor en una serie de sesiones para reaprender los fundamentos de la programación orientada a objetos, el diseño de software y todo lo que hay debajo. Antes de empezar, lee cómo quiero que enseñes.
+
+Quién soy: desarrollador .NET y Angular con años de oficio. Llevo mucho tiempo apoyándome en IA para escribir código y he perdido los fundamentos: hoy no sé explicar bien qué es una interfaz ni por qué existe la mitad de lo que uso todos los días. No doy nada por sabido: si un concepto se apoya en otro anterior, explícame también el anterior.
+
+Cómo quiero que enseñes cada tema, en este orden:
+1. El problema que existía ANTES del concepto. Qué dolía sin él.
+2. La definición exacta, en una o dos frases, sin metáforas.
+3. El ejemplo mínimo en C# (y en TypeScript cuando aplique), corto y compilable.
+4. El mismo ejemplo mal hecho, y qué se rompe exactamente, con el bug concreto.
+5. Tres preguntas para mí. Paras y esperas mi respuesta.
+
+Reglas de la sesión:
+- Nada de analogías con coches, animales, enchufes ni figuras geométricas. Usa dominios reales: facturación, usuarios, permisos, notificaciones, pedidos.
+- Si te pido continuar sin haber contestado tus preguntas, recuérdamelo y no continúes.
+- Cuando yo te explique algo con mis palabras, corrígeme sin suavizar: dime qué está MAL, no solo qué falta, y cita mi frase.
+- Si detectas que estoy repitiendo una definición de memoria sin entenderla, dímelo y hazme una pregunta de caso.
+- No me felicites. No resumas lo que acabo de decir para hacerlo sonar mejor.
+- Cuando una pregunta mía se salga de la lección, contéstala en dos líneas y anótala como pendiente en vez de abrir un tema nuevo.
+
+Confirma en dos líneas que lo entendiste y espera a que te pegue el temario de la lección.</pre>
+    </div>
+
+  <div class="artifact"><b>Sugerencia práctica:</b> una conversación por bloque, no una por lección. Dentro del mismo hilo, Claude conserva lo que ya te corrigió y puede engancharlo con lo nuevo — que es justo lo que hace que el bloque se sienta como un curso y no como ocho consultas sueltas.</div>
+</section>
+
+<!-- ===================================================== Bloque 1 -->
+<section id="b1">
+  <h2>Bloque 1 · Objetos: qué son y qué problema resuelven</h2>
+  <p>Aquí no se da nada por sabido. Un objeto no es «una cosa del mundo real»: es estado más comportamiento, con una frontera que decide quién puede tocar qué. Todo lo que viene después —interfaces, SOLID, inyección de dependencias— es consecuencia de esta frontera. Si este bloque queda flojo, los siete siguientes se estudian de memoria.</p>
+
+<article class="lesson" id="l1">
+  <div class="l-head">
+    <div><span class="n">Lección 1</span><h3>Clase, objeto, estado y encapsulamiento <span class="badge gen">GENERAL</span></h3></div>
+    <div class="l-status"></div>
+  </div>
+  <div class="l-body">
+    <h4>Al terminar tienes que poder</h4>
+    <ul class="know">
+      <li>Explicar la diferencia entre clase y objeto sin usar la palabra «molde».</li>
+      <li>Decir qué pasa exactamente en memoria cuando haces <code>new</code>.</li>
+      <li>Justificar un campo privado con una consecuencia concreta, no con «es buena práctica».</li>
+    </ul>
+    <h4>Temario · esto es lo que le pegas a Claude</h4>
+    <ul class="concepts">
+      <li>Qué es una clase y qué es una instancia<small>Y por qué la distinción importa al hablar de estado.</small></li>
+      <li>Campos, propiedades y métodos<small>Qué es el estado de un objeto y quién lo puede cambiar.</small></li>
+      <li>Encapsulamiento<small>Qué significa que un objeto proteja sus invariantes. Qué es un invariante.</small></li>
+      <li>Modificadores de acceso en C#<small><code>private</code>, <code>protected</code>, <code>internal</code>, <code>public</code>: qué abre cada uno y a quién.</small></li>
+      <li>Constructores<small>Por qué un objeto no debería poder existir en un estado inválido.</small></li>
+      <li>Propiedades autoimplementadas y <code>readonly</code><small>El coste real de un <code>set</code> público.</small></li>
+    </ul>
+    <h4>Prompt para estudiarla</h4>
+    <div class="prompt">
+      <div class="bar"><span>estudiar · L1 Clase, objeto, estado y encapsulamiento</span><button type="button" data-copy>Copiar</button></div>
+<pre>Soy desarrollador .NET y Angular con años de oficio, pero llevo mucho tiempo apoyándome en IA y he perdido los fundamentos. Quiero reaprender esto de cero, sin saltos.
+
+Enséñame la lección 1: clase, objeto, estado y encapsulamiento.
+
+Temario que quiero cubrir:
+- Qué es una clase y qué es una instancia, y por qué la distinción importa
+- Campos, propiedades y métodos: qué es el estado de un objeto
+- Encapsulamiento e invariantes: qué protege exactamente un campo privado
+- private, protected, internal y public en C#: qué abre cada uno y frente a quién
+- Constructores: por qué un objeto no debería poder existir en estado inválido
+- Propiedades autoimplementadas y readonly: el coste real de un set público
+
+Cómo quiero que lo enseñes, en este orden:
+1. El problema que existía antes del concepto. Qué dolía sin él.
+2. La definición exacta, en dos frases, sin metáforas.
+3. Un ejemplo mínimo en C#, corto y compilable, de un dominio real (facturación o usuarios), nunca de coches ni animales.
+4. El mismo ejemplo mal hecho y qué se rompe exactamente, con el bug concreto.
+5. Tres preguntas para mí. Para y espera mi respuesta antes de continuar.
+
+Corrígeme sin suavizar cuando conteste: dime qué está mal, no solo qué falta. No me felicites.</pre>
+    </div>
+    <h4>La prueba · contesta sin mirar nada</h4>
+    <ol class="diag">
+      <li>Enséñame una clase tuya con un campo privado y dime qué se rompería si lo hicieras público. Si no puedes nombrar un bug concreto, el campo está privado por costumbre, no por diseño.</li>
+      <li>¿Qué es un invariante de clase? Da uno de un sistema de facturación.</li>
+    </ol>
+    <div class="drill"><b>Ejercicio con las manos:</b> Coge una clase cualquiera de tu trabajo y escribe, para cada campo público, la frase «si alguien le asigna X desde fuera, pasa Y». Los campos donde no puedas terminar la frase son los que no necesitaban ser públicos.</div>
+  </div>
+</article>
+
+<article class="lesson" id="l2">
+  <div class="l-head">
+    <div><span class="n">Lección 2</span><h3>Referencias, valores, null e igualdad <span class="badge gen">GENERAL</span></h3></div>
+    <div class="l-status"></div>
+  </div>
+  <div class="l-body">
+    <p class="why">Esta lección está aquí y no más adelante porque la mitad de los bugs raros que has visto —el objeto que cambió solo, la comparación que dio falso, el null de madrugada— salen de aquí.</p>
+    <h4>Al terminar tienes que poder</h4>
+    <ul class="know">
+      <li>Predecir si al modificar un objeto dentro de un método cambia también fuera.</li>
+      <li>Explicar por qué dos objetos «iguales» pueden dar <code>false</code> al compararlos.</li>
+      <li>Decir qué hace <code>?</code>, <code>??</code> y <code>!</code> en C# y qué NO garantiza cada uno.</li>
+    </ul>
+    <h4>Temario · esto es lo que le pegas a Claude</h4>
+    <ul class="concepts">
+      <li>Tipos por valor y por referencia<small><code>struct</code> contra <code>class</code>, y qué se copia al pasar un parámetro.</small></li>
+      <li>Qué es null de verdad<small>Una referencia que no apunta a nada, no «un valor vacío».</small></li>
+      <li>Nullable reference types<small>Qué te promete el compilador y qué no puede prometerte.</small></li>
+      <li>Igualdad por referencia contra igualdad por valor<small><code>==</code>, <code>Equals</code>, <code>GetHashCode</code> y por qué van juntos.</small></li>
+      <li><code>record</code> en C# moderno<small>Qué te resuelve gratis y cuándo no lo quieres.</small></li>
+      <li>Mutabilidad compartida<small>Dos variables apuntando al mismo objeto: el bug clásico de las listas.</small></li>
+    </ul>
+    <h4>Prompt para estudiarla</h4>
+    <div class="prompt">
+      <div class="bar"><span>estudiar · L2 Referencias, valores, null e igualdad</span><button type="button" data-copy>Copiar</button></div>
+<pre>Soy desarrollador .NET reaprendiendo fundamentos desde cero. Enséñame la lección 2: referencias, valores, null e igualdad.
+
+Temario:
+- Tipos por valor y por referencia: qué se copia exactamente al pasar un parámetro
+- Qué es null realmente, y por qué no es lo mismo que &quot;vacío&quot;
+- Nullable reference types: qué garantiza el compilador y qué no
+- Igualdad por referencia contra igualdad por valor: ==, Equals y GetHashCode, y por qué van juntos
+- record: qué resuelve gratis y cuándo no lo quiero
+- Mutabilidad compartida: dos variables apuntando al mismo objeto
+
+Reglas: empieza por el problema que existía antes del concepto, luego la definición exacta sin metáforas, luego un ejemplo mínimo en C# de un dominio real, luego el mismo ejemplo mal hecho y el bug concreto que produce. Dibuja con texto qué hay en la pila y qué en el montón cuando haga falta.
+
+Quiero especialmente que me pongas tres casos de &quot;¿qué imprime esto?&quot; con código corto, y que esperes mi respuesta antes de darme la solución. Corrígeme sin suavizar. No me felicites.</pre>
+    </div>
+    <h4>La prueba · contesta sin mirar nada</h4>
+    <ol class="diag">
+      <li>Paso una lista a un método, el método hace <code>lista.Add(...)</code>. ¿Ve el cambio quien la pasó? ¿Y si el método hace <code>lista = new List&lt;T&gt;()</code>? Explica los dos casos con lo que pasa en memoria.</li>
+      <li>¿Por qué si sobrescribes <code>Equals</code> tienes que sobrescribir <code>GetHashCode</code>? ¿Qué se rompe si no lo haces?</li>
+    </ol>
+    <div class="drill"><b>Ejercicio con las manos:</b> Escribe en un archivo cinco fragmentos de diez líneas donde tú predigas la salida antes de ejecutarlos. Ejecuta después. Cada acierto por la razón equivocada cuenta como fallo: anótalo.</div>
+  </div>
+</article>
+
+<article class="lesson" id="l3">
+  <div class="l-head">
+    <div><span class="n">Lección 3</span><h3>Métodos, firmas y contratos <span class="badge gen">GENERAL</span></h3></div>
+    <div class="l-status"></div>
+  </div>
+  <div class="l-body">
+    <h4>Al terminar tienes que poder</h4>
+    <ul class="know">
+      <li>Leer una firma y decir qué promete y qué exige, sin ver el cuerpo.</li>
+      <li>Distinguir una excepción que es un fallo de programación de una que es un caso de negocio.</li>
+      <li>Explicar por qué un método que devuelve <code>bool</code> y además modifica estado es difícil de usar.</li>
+    </ul>
+    <h4>Temario · esto es lo que le pegas a Claude</h4>
+    <ul class="concepts">
+      <li>Qué es una firma<small>Nombre, parámetros, tipo de retorno. Qué forma parte del contrato y qué no.</small></li>
+      <li>Precondiciones y postcondiciones<small>Lo que el método exige y lo que promete. El contrato como idea, antes de las interfaces.</small></li>
+      <li>Sobrecarga contra parámetros opcionales<small>Cuál elige el compilador y cuándo eso sorprende.</small></li>
+      <li>Excepciones<small>Fallo de programación contra caso de negocio esperado. Cuándo NO lanzar.</small></li>
+      <li>Efectos secundarios<small>Comando contra consulta: por qué mezclarlos complica todo lo demás.</small></li>
+      <li><code>static</code><small>Qué significa que un método no necesite instancia, y por qué eso lo hace difícil de sustituir.</small></li>
+    </ul>
+    <h4>Prompt para estudiarla</h4>
+    <div class="prompt">
+      <div class="bar"><span>estudiar · L3 Métodos, firmas y contratos</span><button type="button" data-copy>Copiar</button></div>
+<pre>Soy desarrollador .NET reaprendiendo fundamentos. Enséñame la lección 3: métodos, firmas y contratos.
+
+Temario:
+- Qué es exactamente una firma y qué parte de ella es el contrato
+- Precondiciones y postcondiciones: lo que un método exige y lo que promete
+- Sobrecarga contra parámetros opcionales: cuál resuelve el compilador y cuándo sorprende
+- Excepciones: fallo de programación contra caso de negocio, y cuándo NO lanzar
+- Efectos secundarios y la separación entre comando y consulta
+- static: por qué un método estático es cómodo y a la vez difícil de sustituir
+
+Reglas: problema antes de definición, definición exacta sin metáforas, ejemplo mínimo en C# de un dominio real (facturación, permisos, notificaciones), y después el mismo ejemplo mal hecho con el bug que produce.
+
+Esta lección me importa porque es la antesala de las interfaces: quiero entender &quot;contrato&quot; antes de que aparezca la palabra interface. Insiste en eso.
+
+Termina con tres preguntas y espera mi respuesta. Corrígeme sin suavizar y no me felicites.</pre>
+    </div>
+    <h4>La prueba · contesta sin mirar nada</h4>
+    <ol class="diag">
+      <li>Dame la firma de un método que hayas escrito esta semana y di, sin mirar el cuerpo, qué exige del que lo llama y qué le garantiza. Si tienes que abrir el cuerpo para contestar, la firma miente.</li>
+      <li>¿Cuándo un método debería devolver un resultado en vez de lanzar excepción? Da la regla, no un ejemplo.</li>
+    </ol>
+    <div class="drill"><b>Ejercicio con las manos:</b> Abre un servicio real y elige sus cinco métodos públicos más usados. Escribe la precondición y la postcondición de cada uno en una línea. Los que no puedas escribir sin abrir el cuerpo son los que hay que rediseñar.</div>
+  </div>
+</article>
+
+<article class="lesson" id="l4">
+  <div class="l-head">
+    <div><span class="n">Lección 4</span><h3>Herencia y polimorfismo: cómo elige el runtime <span class="badge gen">GENERAL</span></h3></div>
+    <div class="l-status"></div>
+  </div>
+  <div class="l-body">
+    <h4>Al terminar tienes que poder</h4>
+    <ul class="know">
+      <li>Explicar qué ocurre en tiempo de ejecución cuando llamas a un método <code>virtual</code>.</li>
+      <li>Decir en qué se diferencian <code>virtual</code>/<code>override</code> de <code>new</code> (shadowing) y qué bug produce confundirlos.</li>
+      <li>Nombrar un caso donde la herencia fue la decisión equivocada y por qué.</li>
+    </ul>
+    <h4>Temario · esto es lo que le pegas a Claude</h4>
+    <ul class="concepts">
+      <li>Herencia<small>Qué se hereda exactamente: estado, comportamiento y contrato.</small></li>
+      <li><code>abstract</code> contra <code>virtual</code><small>Método sin cuerpo contra método con cuerpo sustituible.</small></li>
+      <li>Despacho dinámico<small>Cómo decide el runtime qué implementación ejecutar. La tabla de métodos virtuales, por encima.</small></li>
+      <li>Shadowing con <code>new</code><small>El caso donde el tipo de la variable cambia el método que se ejecuta.</small></li>
+      <li>Clase base sellada y <code>sealed</code><small>Por qué cerrar una jerarquía a veces es la decisión correcta.</small></li>
+      <li>Polimorfismo<small>La definición real: un mismo mensaje, distintas respuestas, decididas en ejecución.</small></li>
+    </ul>
+    <h4>Prompt para estudiarla</h4>
+    <div class="prompt">
+      <div class="bar"><span>estudiar · L4 Herencia y polimorfismo: cómo elige el runtime</span><button type="button" data-copy>Copiar</button></div>
+<pre>Soy desarrollador .NET reaprendiendo fundamentos. Enséñame la lección 4: herencia y polimorfismo.
+
+Temario:
+- Qué hereda exactamente una clase derivada: estado, comportamiento y contrato
+- abstract contra virtual, y qué obliga cada uno
+- Despacho dinámico: cómo decide el runtime qué implementación ejecutar
+- Shadowing con new: el caso donde el tipo de la variable cambia el método que corre
+- sealed: por qué cerrar una jerarquía puede ser correcto
+- La definición real de polimorfismo
+
+Reglas: problema antes de definición, sin metáforas, ejemplo mínimo en C# de un dominio real. Nada de figuras geométricas ni animales.
+
+Quiero dos cosas sí o sí: (a) un ejemplo de &quot;¿qué imprime esto?&quot; con virtual/override contra new donde yo tenga que predecir la salida, y (b) una explicación por encima de cómo se resuelve la llamada en ejecución, para que entienda que el polimorfismo no es magia.
+
+Tres preguntas al final, espera mi respuesta, corrígeme sin suavizar. No me felicites.</pre>
+    </div>
+    <h4>La prueba · contesta sin mirar nada</h4>
+    <ol class="diag">
+      <li>Variable declarada como clase base, objeto de clase derivada, método <code>virtual</code> sobrescrito: ¿cuál corre? ¿Y si en vez de <code>override</code> el derivado usó <code>new</code>? Explica por qué cambia.</li>
+      <li>¿Qué es exactamente el polimorfismo? Defínelo sin usar la palabra «herencia».</li>
+    </ol>
+    <div class="drill"><b>Ejercicio con las manos:</b> Busca en tu código una jerarquía de herencia de tres niveles o más. Dibújala. Para cada nivel escribe qué añade. Si algún nivel solo añade un campo o solo reenvía llamadas, tienes ahí el caso que la lección 5 va a desmontar.</div>
+  </div>
+</article>
+
+<article class="lesson" id="l5">
+  <div class="l-head">
+    <div><span class="n">Lección 5</span><h3>Composición: la alternativa por defecto <span class="badge gen">GENERAL</span></h3></div>
+    <div class="l-status"></div>
+  </div>
+  <div class="l-body">
+    <p class="why">El consejo «composición sobre herencia» lo has oído mil veces. Esta lección es para que dejes de repetirlo y puedas defenderlo con un caso.</p>
+    <h4>Al terminar tienes que poder</h4>
+    <ul class="know">
+      <li>Convertir una jerarquía de herencia en composición y explicar qué ganaste.</li>
+      <li>Nombrar el problema de la clase base frágil con un ejemplo.</li>
+      <li>Decidir entre herencia y composición con un criterio, no con una preferencia.</li>
+    </ul>
+    <h4>Temario · esto es lo que le pegas a Claude</h4>
+    <ul class="concepts">
+      <li>Composición<small>Un objeto que tiene otro y le delega. La relación «tiene un».</small></li>
+      <li>Delegación<small>Reenviar una llamada a un colaborador, y por qué eso no es una capa de paso inútil.</small></li>
+      <li>El problema de la clase base frágil<small>Cambiar la base rompe derivadas que nunca tocaste.</small></li>
+      <li>Herencia de implementación contra herencia de contrato<small>La distinción que lleva directamente al bloque 2.</small></li>
+      <li>Criterio de decisión<small>Cuándo la herencia sigue siendo la respuesta correcta.</small></li>
+      <li>Acoplamiento<small>Qué significa que dos clases estén acopladas y cómo se mide en la práctica.</small></li>
+    </ul>
+    <h4>Prompt para estudiarla</h4>
+    <div class="prompt">
+      <div class="bar"><span>estudiar · L5 Composición: la alternativa por defecto</span><button type="button" data-copy>Copiar</button></div>
+<pre>Soy desarrollador .NET reaprendiendo fundamentos. Enséñame la lección 5: composición frente a herencia.
+
+Temario:
+- Composición y delegación: un objeto que tiene otro y le delega
+- El problema de la clase base frágil, con un cambio concreto que rompe derivadas
+- Herencia de implementación contra herencia de contrato
+- Un criterio de decisión utilizable, no una preferencia estética
+- Acoplamiento: qué es y cómo lo detecto en código que ya existe
+
+Reglas: problema antes de definición, sin metáforas, ejemplo mínimo en C# de un dominio real.
+
+Hazlo así: dame una jerarquía de herencia razonable de tres niveles, pídeme que yo la convierta a composición, y solo después enséñame tu versión y compárala con la mía señalando qué perdí o qué gané.
+
+Termina con tres preguntas, espera mi respuesta y corrígeme sin suavizar. No me felicites.</pre>
+    </div>
+    <h4>La prueba · contesta sin mirar nada</h4>
+    <ol class="diag">
+      <li>Coge una jerarquía tuya de tres niveles y reescríbela con composición. ¿Qué código creció? ¿Qué acoplamiento desapareció? Si no desapareció ninguno, la herencia estaba bien puesta.</li>
+      <li>Explica el problema de la clase base frágil con un cambio concreto en una clase base concreta.</li>
+    </ol>
+    <div class="drill"><b>Ejercicio con las manos:</b> Toma la jerarquía que dibujaste en L4 y reescribe el nivel más profundo con composición. No la integres en el proyecto: el ejercicio es la comparación, no el refactor.</div>
+  </div>
+</article>
+
+  <div class="check">
+    <h4>Cierre del bloque 1 · explícaselo tú</h4>
+    <p>Cuando las 5 lecciones estén en «lo puedo explicar», abre una conversación nueva y pega esto. No lo hagas en el mismo hilo donde estudiaste: ahí Claude ya sabe lo que te enseñó y tú ya lo tienes delante.</p>
+    <div class="prompt">
+      <div class="bar"><span>cierre · bloque 1</span><button type="button" data-copy>Copiar</button></div>
+<pre>Voy a explicarte con mis palabras todo el bloque 1: clase y objeto, estado e invariantes, encapsulamiento, referencias contra valores, null e igualdad, firmas y contratos, herencia, polimorfismo y composición.
+
+Escúchame entero sin interrumpir. Después:
+1. Señala todo lo que dije mal o impreciso, citando mi frase.
+2. Señala lo que no mencioné y debería haber mencionado.
+3. Hazme tres preguntas de caso (código corto, yo decido) sobre lo que peor expliqué.
+4. Al final dime, sin suavizar, si estoy listo para el bloque de interfaces o qué lección tengo que repetir antes.
+
+Empiezo:</pre>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================== Bloque 2 -->
+<section id="b2">
+  <h2>Bloque 2 · Interfaces, a fondo</h2>
+  <p>Este es el bloque que motivó la página. Una interfaz no es «una buena práctica» ni un requisito del framework: es la forma que tiene un lenguaje de tipos de escribir un contrato sin decir quién lo cumple. Cuatro lecciones: qué es, en qué se diferencia de una clase abstracta, para qué sirve de verdad, y por qué en TypeScript funciona de otra manera y eso te ha estado confundiendo.</p>
+
+<article class="lesson" id="l6">
+  <div class="l-head">
+    <div><span class="n">Lección 6</span><h3>Qué es una interfaz, exactamente <span class="badge gen">GENERAL</span></h3></div>
+    <div class="l-status"></div>
+  </div>
+  <div class="l-body">
+    <h4>Al terminar tienes que poder</h4>
+    <ul class="know">
+      <li>Definir interfaz en una frase, sin la palabra «contrato»… y después con ella, sabiendo qué añade.</li>
+      <li>Escribir una interfaz y dos implementaciones de memoria, sin copiar de ningún sitio.</li>
+      <li>Decir exactamente qué comprueba el compilador cuando una clase dice <code>: IAlgo</code>.</li>
+    </ul>
+    <h4>Temario · esto es lo que le pegas a Claude</h4>
+    <ul class="concepts">
+      <li>Qué es una interfaz<small>Un conjunto de firmas que un tipo se compromete a tener. Sin estado, sin cuerpo (salvo lo que verás abajo).</small></li>
+      <li>Qué puede contener<small>Métodos, propiedades, eventos, indexadores. Y qué NO: campos, constructores, estado.</small></li>
+      <li>Implementar una interfaz<small>Qué exige el compilador exactamente, y qué error te da cuando falta algo.</small></li>
+      <li>Un tipo, muchas interfaces<small>Por qué C# permite varias interfaces y una sola clase base.</small></li>
+      <li>Implementación explícita<small><code>void IAlgo.Hacer()</code>: qué resuelve y por qué casi nunca lo vas a necesitar.</small></li>
+      <li>Métodos por defecto en interfaces<small>C# 8 en adelante: qué cambió y por qué no borra la diferencia con una clase abstracta.</small></li>
+      <li>Convención <code>I</code><small>Solo una convención. Qué es convención y qué es regla del lenguaje.</small></li>
+    </ul>
+    <h4>Prompt para estudiarla</h4>
+    <div class="prompt">
+      <div class="bar"><span>estudiar · L6 Qué es una interfaz, exactamente</span><button type="button" data-copy>Copiar</button></div>
+<pre>Soy desarrollador .NET con años de experiencia, pero he perdido los fundamentos y ahora mismo NO sé explicar qué es una interfaz. Empieza como si nunca lo hubiera visto.
+
+Enséñame la lección 6: qué es una interfaz, exactamente.
+
+Temario:
+- Qué es una interfaz: definición precisa, sin la muletilla de &quot;es un contrato&quot; hasta que me hayas explicado qué significa eso
+- Qué puede contener una interfaz y qué no puede contener, y por qué no puede tener estado
+- Qué exige exactamente el compilador cuando una clase declara que implementa una interfaz
+- Por qué C# permite varias interfaces pero una sola clase base
+- Implementación explícita de interfaz: qué problema resuelve
+- Métodos por defecto en interfaces desde C# 8: qué cambió
+- La convención del prefijo I: qué es convención y qué es regla
+
+Cómo enseñarlo:
+1. Empieza por el problema real que existía antes de las interfaces: enséñame código que duele sin ellas.
+2. Después la definición exacta en dos frases.
+3. Después el ejemplo mínimo en C#, de un dominio real (notificaciones, pagos, permisos), con una interfaz y DOS implementaciones distintas.
+4. Después enséñame tres errores de compilación típicos al implementar una interfaz y qué significa cada mensaje.
+5. Tres preguntas para mí, y esperas.
+
+Nada de analogías con enchufes, coches ni animales. Si uso mal la palabra &quot;contrato&quot;, corrígeme. Corrige sin suavizar y no me felicites.</pre>
+    </div>
+    <h4>La prueba · contesta sin mirar nada</h4>
+    <ol class="diag">
+      <li>Escribe de memoria, en papel, una interfaz con dos métodos y dos clases que la implementen de forma distinta. Sin IDE, sin autocompletado, sin IA. Después compílala y cuenta los errores.</li>
+      <li>¿Qué comprueba el compilador cuando escribes <code>class Servicio : IServicio</code>? Enumera las comprobaciones.</li>
+      <li>¿Puede una interfaz tener un campo? ¿Por qué no? La respuesta buena habla de estado, no de sintaxis.</li>
+    </ol>
+    <div class="drill"><b>Ejercicio con las manos:</b> Sin IDE: escribe a mano <code>INotificador</code> con dos métodos, y dos implementaciones (email y cola). Después pásalo a Visual Studio y cuenta cuántos errores tuviste. Repite al día siguiente hasta llegar a cero.</div>
+    <div class="anchor">
+      <h5>Dónde vive en Relolink</h5>
+      <ul>
+        <li><code>APIs/RLL.Api/Program.cs</code> — decenas de <code>AddScoped&lt;IAlgo, Algo&gt;</code>. Cada línea es una interfaz y su implementación. Abre cinco y mira la interfaz de cada una.</li>
+        <li><code>IJwtProvider</code> — una interfaz pequeña y real de tu propio sistema. Léela entera: son pocas firmas y las entiendes en cinco minutos.</li>
+      </ul>
+    </div>
+  </div>
+</article>
+
+<article class="lesson" id="l7">
+  <div class="l-head">
+    <div><span class="n">Lección 7</span><h3>Interfaz contra clase abstracta contra clase base <span class="badge gen">GENERAL</span></h3></div>
+    <div class="l-status"></div>
+  </div>
+  <div class="l-body">
+    <h4>Al terminar tienes que poder</h4>
+    <ul class="know">
+      <li>Elegir entre las tres con un criterio que puedas defender ante otro desarrollador.</li>
+      <li>Explicar qué puede una clase abstracta que una interfaz no puede, incluso con métodos por defecto.</li>
+      <li>Detectar el caso en que alguien usó clase abstracta solo para compartir código.</li>
+    </ul>
+    <h4>Temario · esto es lo que le pegas a Claude</h4>
+    <ul class="concepts">
+      <li>Clase abstracta<small>Qué es, qué puede tener que una interfaz no: estado, constructor, lógica compartida.</small></li>
+      <li>La comparación honesta<small>Tabla de qué permite cada una: herencia múltiple, estado, versionado, visibilidad.</small></li>
+      <li>Compartir contrato contra compartir código<small>La distinción que resuelve la mayoría de las discusiones.</small></li>
+      <li>Versionar<small>Añadir un método a una interfaz publicada rompe a todos. A una clase abstracta, no. Qué implica.</small></li>
+      <li>Clase base concreta<small>El tercer caso: cuándo simplemente quieres una clase normal.</small></li>
+      <li>Criterio de decisión<small>Tres preguntas en orden que te dan la respuesta casi siempre.</small></li>
+    </ul>
+    <h4>Prompt para estudiarla</h4>
+    <div class="prompt">
+      <div class="bar"><span>estudiar · L7 Interfaz contra clase abstracta contra clase base</span><button type="button" data-copy>Copiar</button></div>
+<pre>Soy desarrollador .NET reaprendiendo fundamentos. Enséñame la lección 7: interfaz contra clase abstracta contra clase base concreta.
+
+Temario:
+- Qué es una clase abstracta y qué puede tener que una interfaz no
+- Comparación honesta entre las tres: herencia múltiple, estado, constructores, lógica compartida, versionado
+- Compartir contrato contra compartir código: la distinción que resuelve la discusión
+- Qué pasa cuando añado un miembro a una interfaz ya publicada, y qué pasa si lo añado a una clase abstracta
+- Cuándo la respuesta correcta es simplemente una clase normal
+- Un criterio de decisión en forma de tres preguntas ordenadas
+
+Cómo enseñarlo: empieza por un caso real donde alguien eligió mal y lo pagó. Después la definición, después una tabla comparativa, después un ejemplo en C# donde la misma necesidad se resuelve de las tres formas y me señalas qué se pierde en cada una.
+
+Después dame tres escenarios y pídeme que yo elija, uno a uno, y me corriges antes de pasar al siguiente. No me des la respuesta antes de que yo elija.
+
+Corrígeme sin suavizar. No me felicites.</pre>
+    </div>
+    <h4>La prueba · contesta sin mirar nada</h4>
+    <ol class="diag">
+      <li>Tienes tres clases que comparten la mitad del código y toda la firma pública. ¿Interfaz, clase abstracta o las dos? Defiende la respuesta y di qué pierdes con cada opción.</li>
+      <li>¿Qué se rompe si añades un método a una interfaz que ya usan veinte clases? ¿Y si lo añades a una clase abstracta? Explica la diferencia.</li>
+    </ol>
+    <div class="drill"><b>Ejercicio con las manos:</b> Busca en tu solución una clase abstracta. Contesta: ¿está ahí por el contrato o por el código compartido? Si es por el código, prueba mentalmente a sustituirla por una interfaz más una clase colaboradora. ¿Mejora o empeora? Escribe la respuesta.</div>
+  </div>
+</article>
+
+<article class="lesson" id="l8">
+  <div class="l-head">
+    <div><span class="n">Lección 8</span><h3>Para qué sirven de verdad: sustituir, testear, invertir <span class="badge relo">RELOLINK</span></h3></div>
+    <div class="l-status"></div>
+  </div>
+  <div class="l-body">
+    <p class="why">Aquí se contesta la pregunta que todo el mundo se hace y casi nadie responde bien: si solo hay una implementación, ¿para qué la interfaz? La respuesta buena no es «por si mañana hay otra».</p>
+    <h4>Al terminar tienes que poder</h4>
+    <ul class="know">
+      <li>Nombrar los tres usos reales de una interfaz y dar un ejemplo propio de cada uno.</li>
+      <li>Escribir un test con un doble sin usar librería de mocking, a mano.</li>
+      <li>Decidir cuándo una interfaz sobra, con argumento.</li>
+    </ul>
+    <h4>Temario · esto es lo que le pegas a Claude</h4>
+    <ul class="concepts">
+      <li>Uso 1 · varias implementaciones<small>Strategy en su forma más simple: elegir comportamiento en ejecución.</small></li>
+      <li>Uso 2 · sustituir en pruebas<small>Dobles a mano: stub, fake, mock y spy. Qué es cada uno.</small></li>
+      <li>Uso 3 · invertir la dependencia<small>La capa de arriba define el contrato, la de abajo lo cumple. El adelanto de la D de SOLID.</small></li>
+      <li>El caso de una sola implementación<small>Cuándo la interfaz sigue valiendo la pena y cuándo es ruido.</small></li>
+      <li>Interfaces que no deberían existir<small>La que copia una clase método por método: qué olor es ese.</small></li>
+      <li>Coste real<small>Un salto más al leer código, una indirección más al depurar. El precio existe.</small></li>
+    </ul>
+    <h4>Prompt para estudiarla</h4>
+    <div class="prompt">
+      <div class="bar"><span>estudiar · L8 Para qué sirven de verdad: sustituir, testear, invertir</span><button type="button" data-copy>Copiar</button></div>
+<pre>Soy desarrollador .NET reaprendiendo fundamentos. Ya sé qué es una interfaz y en qué se diferencia de una clase abstracta. Ahora enséñame la lección 8: para qué sirven de verdad.
+
+Temario:
+- Uso 1: varias implementaciones intercambiables, elegidas en ejecución
+- Uso 2: sustituir dependencias en pruebas. Stub, fake, mock y spy, con la diferencia exacta entre los cuatro
+- Uso 3: invertir la dependencia, para que la capa de arriba no dependa de la de abajo
+- El caso incómodo: una sola implementación y ninguna prueba, ¿sobra la interfaz?
+- Interfaces que no deberían existir: la que replica una clase método por método
+- El coste real de cada interfaz: indirección al leer y al depurar
+
+Cómo enseñarlo: para cada uso, primero el código SIN interfaz con el problema concreto que genera, y después con interfaz mostrando qué se arregló. Nada de &quot;es más flexible&quot;: quiero el problema, con nombre.
+
+En el uso 2, enséñame a escribir un doble a mano, sin librería de mocking, para que entienda qué hace Moq por debajo.
+
+Al final, dame tres casos reales y pídeme que decida si la interfaz aporta o sobra, uno a uno, corrigiéndome antes del siguiente.
+
+Corrígeme sin suavizar. No me felicites.</pre>
+    </div>
+    <h4>La prueba · contesta sin mirar nada</h4>
+    <ol class="diag">
+      <li>Dame un ejemplo tuyo de cada uno de los tres usos. Si para alguno no encuentras ejemplo, ese uso todavía no lo entiendes.</li>
+      <li>Tienes <code>IUserService</code> con una sola implementación <code>UserService</code> que nunca se va a sustituir y no se testea. ¿Sobra la interfaz? Defiende la respuesta.</li>
+      <li>Escribe un doble de <code>IEmailSender</code> a mano, sin Moq, que registre lo que se le envió.</li>
+    </ol>
+    <div class="drill"><b>Ejercicio con las manos:</b> Elige de <code>Program.cs</code> un <code>AddScoped&lt;IAlgo, Algo&gt;</code> cualquiera y contesta por escrito: ¿cuál de los tres usos justifica esa interfaz? Si ninguno, escribe qué pasaría si se registrara la clase concreta. Hazlo con cinco servicios distintos.</div>
+    <div class="anchor">
+      <h5>Dónde vive en Relolink</h5>
+      <ul>
+        <li><code>APIs/RLL.Api/Program.cs</code> — inversión de dependencias aplicada de forma sistemática. Este archivo es tu libro de texto: cada registro es una decisión de diseño.</li>
+        <li><code>RLL.UnitTesting/ConsultantBillingMathTests.cs</code> y <code>Helpers/PasswordValidatorTests.cs</code> — tests sobre reglas de negocio. Mira qué dependencias se sustituyen y cuáles no.</li>
+        <li><code>IJwtProvider</code> — busca sus implementaciones. Cuenta cuántas hay y contesta por qué existe la interfaz.</li>
+      </ul>
+    </div>
+  </div>
+</article>
+
+<article class="lesson" id="l9">
+  <div class="l-head">
+    <div><span class="n">Lección 9</span><h3>Interfaces en TypeScript: otro mecanismo con el mismo nombre <span class="badge gen">GENERAL</span></h3></div>
+    <div class="l-status"></div>
+  </div>
+  <div class="l-body">
+    <p class="why">Parte de tu confusión con interfaces viene de aquí: en C# y en TypeScript la palabra es la misma y el mecanismo no. En TS el tipado es estructural y las interfaces no existen en ejecución.</p>
+    <h4>Al terminar tienes que poder</h4>
+    <ul class="know">
+      <li>Explicar por qué en TypeScript una clase puede cumplir una interfaz sin declararlo.</li>
+      <li>Decir qué queda de una interfaz de TS después de compilar, y qué consecuencia tiene.</li>
+      <li>Elegir entre <code>interface</code> y <code>type</code> con un criterio.</li>
+    </ul>
+    <h4>Temario · esto es lo que le pegas a Claude</h4>
+    <ul class="concepts">
+      <li>Tipado estructural<small>Si tiene la forma, vale. La diferencia de raíz con C#.</small></li>
+      <li>Borrado de tipos<small>Las interfaces desaparecen al compilar: no puedes preguntar <code>instanceof</code> por una interfaz.</small></li>
+      <li><code>interface</code> contra <code>type</code><small>Qué puede cada uno, cuál se puede extender y cuál se puede fusionar.</small></li>
+      <li><code>implements</code> en TypeScript<small>Qué comprueba y por qué no cambia el tipo resultante.</small></li>
+      <li>Interfaces en Angular<small><code>OnInit</code>, <code>OnDestroy</code>: por qué son interfaces y qué pasa si no las declaras.</small></li>
+      <li>Tokens de inyección<small>Por qué Angular no puede inyectar por interfaz y qué se usa en su lugar.</small></li>
+      <li><code>unknown</code>, <code>any</code> y <code>as</code><small>Por qué un <code>as</code> es casi siempre una derrota, en términos de contrato.</small></li>
+    </ul>
+    <h4>Prompt para estudiarla</h4>
+    <div class="prompt">
+      <div class="bar"><span>estudiar · L9 Interfaces en TypeScript: otro mecanismo con el mismo nombre</span><button type="button" data-copy>Copiar</button></div>
+<pre>Soy desarrollador Angular y .NET. Acabo de reaprender interfaces en C# y ahora quiero entender por qué en TypeScript parecen otra cosa. Enséñame la lección 9.
+
+Temario:
+- Tipado estructural contra tipado nominal: la diferencia de raíz entre TypeScript y C#
+- Borrado de tipos: qué queda de una interfaz después de compilar y qué consecuencias tiene
+- interface contra type: qué puede cada uno, extensión y fusión de declaraciones
+- implements en TypeScript: qué comprueba realmente
+- Interfaces de ciclo de vida en Angular (OnInit, OnDestroy): por qué son interfaces y qué pasa si no las declaro
+- Por qué Angular no puede inyectar por interfaz, y qué son los InjectionToken
+- unknown, any y as: por qué un as rompe el contrato
+
+Cómo enseñarlo: para cada punto, el mismo ejemplo en C# y en TypeScript en paralelo, señalando dónde se separan los dos lenguajes. Ese contraste es lo que quiero.
+
+Ponme al menos dos casos de &quot;¿compila esto?&quot; en los que yo tenga que responder antes de que me lo digas.
+
+Corrígeme sin suavizar. No me felicites.</pre>
+    </div>
+    <h4>La prueba · contesta sin mirar nada</h4>
+    <ol class="diag">
+      <li>¿Puedes inyectar por interfaz en Angular? Explica por qué no y qué se usa en su lugar. Esta es la pregunta que separa a quien entendió el borrado de tipos de quien no.</li>
+      <li>Un objeto literal cumple la forma de <code>Usuario</code> pero nunca lo declaró. ¿Compila? ¿Y en C#? Explica la diferencia de raíz.</li>
+      <li>Tu componente implementa <code>OnInit</code> pero escribiste <code>ngOnInt</code>. ¿Te avisa el compilador? ¿Por qué?</li>
+    </ol>
+    <div class="drill"><b>Ejercicio con las manos:</b> En el front, busca un componente que implemente <code>OnInit</code>. Quita el <code>implements OnInit</code> dejando el método <code>ngOnInit</code>. ¿Sigue funcionando? Explica por qué. Después escribe mal el nombre del método y observa qué pasa (y qué no pasa).</div>
+    <div class="anchor">
+      <h5>Dónde vive en Relolink</h5>
+      <ul>
+        <li>El front en Angular 16 con Ionic 8: los componentes compartidos y <code>FormModalService</code>. Mira qué interfaces declaran sus componentes y cuáles se cumplen por forma sin declararse.</li>
+      </ul>
+    </div>
+  </div>
+</article>
+
+  <div class="check">
+    <h4>Cierre del bloque 2 · explícaselo tú</h4>
+    <p>Cuando las 4 lecciones estén en «lo puedo explicar», abre una conversación nueva y pega esto. No lo hagas en el mismo hilo donde estudiaste: ahí Claude ya sabe lo que te enseñó y tú ya lo tienes delante.</p>
+    <div class="prompt">
+      <div class="bar"><span>cierre · bloque 2</span><button type="button" data-copy>Copiar</button></div>
+<pre>Voy a explicarte con mis palabras todo el bloque 2 sobre interfaces: qué son, qué exige el compilador, en qué se diferencian de una clase abstracta, sus tres usos reales, cuándo sobran, y por qué en TypeScript el mecanismo es distinto.
+
+Escúchame entero. Después:
+1. Cita cada frase mía que sea imprecisa y corrígela.
+2. Dime qué concepto importante no mencioné.
+3. Ponme un ejercicio de código: dame un fragmento con una interfaz mal usada y que yo diagnostique.
+4. Dime sin suavizar si ya puedo explicar interfaces a otra persona o qué lección tengo que repetir.
+
+Empiezo:</pre>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================== Bloque 3 -->
+<section id="b3">
+  <h2>Bloque 3 · Diseño: SOLID con las manos</h2>
+  <p>SOLID no son cinco frases para una entrevista: son cinco síntomas con nombre. Este bloque va después de interfaces porque tres de las cinco letras no se pueden explicar sin ellas. La regla del bloque: cada principio se estudia sobre código tuyo, no sobre el ejemplo canónico de internet.</p>
+
+<article class="lesson" id="l10">
+  <div class="l-head">
+    <div><span class="n">Lección 10</span><h3>SRP, cohesión y acoplamiento <span class="badge relo">RELOLINK</span></h3></div>
+    <div class="l-status"></div>
+  </div>
+  <div class="l-body">
+    <h4>Al terminar tienes que poder</h4>
+    <ul class="know">
+      <li>Definir «una sola razón para cambiar» y aplicarla a una clase real.</li>
+      <li>Distinguir cohesión de tamaño: una clase de 40 líneas puede violar SRP y una de 400 puede no violarlo.</li>
+      <li>Proponer el primer corte de un servicio grande sin refactorizar nada.</li>
+    </ul>
+    <h4>Temario · esto es lo que le pegas a Claude</h4>
+    <ul class="concepts">
+      <li>Responsabilidad única<small>«Una sola razón para cambiar»: quién es ese «quién» que pide el cambio.</small></li>
+      <li>Cohesión<small>Qué significa que los métodos de una clase usen el mismo estado. Cómo se mide a ojo.</small></li>
+      <li>Acoplamiento<small>Aferente y eferente: quién depende de mí y de quién dependo yo.</small></li>
+      <li>Síntomas<small>La clase que se toca en todos los PR. El servicio con seis dependencias inyectadas de áreas distintas.</small></li>
+      <li>Cómo se corta<small>Agrupar por estado compartido y por actor que pide el cambio, no por «parece que va junto».</small></li>
+    </ul>
+    <h4>Prompt para estudiarla</h4>
+    <div class="prompt">
+      <div class="bar"><span>estudiar · L10 SRP, cohesión y acoplamiento</span><button type="button" data-copy>Copiar</button></div>
+<pre>Soy desarrollador .NET reaprendiendo diseño. Enséñame la lección 10: responsabilidad única, cohesión y acoplamiento.
+
+Temario:
+- &quot;Una sola razón para cambiar&quot;: quién es el actor que pide el cambio
+- Cohesión: qué significa y cómo se mide a ojo en una clase existente
+- Acoplamiento aferente y eferente
+- Los síntomas de una violación de SRP en código real
+- Cómo se decide dónde cortar una clase grande
+
+Reglas: no uses el ejemplo del informe y la impresora ni ningún ejemplo canónico de libro. Usa un servicio realista de un sistema de gestión con métodos mezclados.
+
+Hazlo así: enséñame un servicio de unas 80 líneas con tres responsabilidades mezcladas, pídeme que yo identifique los cortes y solo después me das tu versión y comparas con la mía. No adelantes tu respuesta.
+
+Corrígeme sin suavizar. No me felicites.</pre>
+    </div>
+    <h4>La prueba · contesta sin mirar nada</h4>
+    <ol class="diag">
+      <li>Coge la clase más grande que tengas y di quién pide cada tipo de cambio que ha recibido este año. Si son tres actores distintos, tienes tres clases.</li>
+      <li>¿Puede una clase de 40 líneas violar SRP? Da el ejemplo.</li>
+    </ol>
+    <div class="drill"><b>Ejercicio con las manos:</b> Abre <code>InitiationServices.cs</code>, lee SOLO los nombres de los métodos públicos y agrúpalos en tres o cuatro responsabilidades. Escribe qué servicios saldrían y qué dependencia tendría cada uno. No refactorices: el ejercicio es ver la frontera, no moverla.</div>
+    <div class="anchor">
+      <h5>Dónde vive en Relolink</h5>
+      <ul>
+        <li><code>RLL.SERV.Services/Assignee/InitiationServices.cs</code> — 7.648 líneas en una clase. El caso de estudio de responsabilidad única más caro que vas a encontrar, y lo tienes en casa.</li>
+      </ul>
+    </div>
+  </div>
+</article>
+
+<article class="lesson" id="l11">
+  <div class="l-head">
+    <div><span class="n">Lección 11</span><h3>OCP y LSP: extender sin tocar, sustituir sin romper <span class="badge gen">GENERAL</span></h3></div>
+    <div class="l-status"></div>
+  </div>
+  <div class="l-body">
+    <h4>Al terminar tienes que poder</h4>
+    <ul class="know">
+      <li>Dar un ejemplo propio de código abierto a extensión y cerrado a modificación.</li>
+      <li>Explicar LSP con un caso donde la jerarquía compila pero miente.</li>
+      <li>Reconocer el <code>switch</code> por tipo como el síntoma clásico de OCP.</li>
+    </ul>
+    <h4>Temario · esto es lo que le pegas a Claude</h4>
+    <ul class="concepts">
+      <li>Abierto/cerrado<small>Qué significa extender sin modificar, y por qué el <code>switch</code> que crece es el síntoma.</small></li>
+      <li>Cómo se consigue<small>Con polimorfismo o con composición. Las interfaces del bloque 2, en su primer uso serio.</small></li>
+      <li>Sustitución de Liskov<small>La regla exacta: precondiciones no se endurecen, postcondiciones no se debilitan.</small></li>
+      <li>Violaciones que compilan<small>El método heredado que lanza <code>NotSupportedException</code>. La derivada que ignora un parámetro.</small></li>
+      <li>Cuándo NO aplicar OCP<small>Abstraer antes de tener dos casos reales cuesta más de lo que ahorra.</small></li>
+    </ul>
+    <h4>Prompt para estudiarla</h4>
+    <div class="prompt">
+      <div class="bar"><span>estudiar · L11 OCP y LSP: extender sin tocar, sustituir sin romper</span><button type="button" data-copy>Copiar</button></div>
+<pre>Soy desarrollador .NET reaprendiendo diseño. Enséñame la lección 11: abierto/cerrado y sustitución de Liskov.
+
+Temario:
+- Abierto a extensión y cerrado a modificación: qué significa en código que ya existe
+- Cómo se consigue con polimorfismo y con composición
+- El switch por tipo que crece: por qué es el síntoma clásico
+- Liskov con la regla exacta sobre precondiciones y postcondiciones
+- Violaciones de Liskov que compilan perfectamente y explotan en ejecución
+- Cuándo NO aplicar OCP, porque abstraer demasiado pronto también se paga
+
+Prohibido el ejemplo de cuadrado y rectángulo y el de las aves que no vuelan. Quiero ejemplos de sistemas reales: métodos de pago, tipos de descuento, canales de notificación.
+
+Dame dos fragmentos que violen Liskov de forma sutil y pídeme que yo encuentre la violación antes de explicármela.
+
+Corrígeme sin suavizar. No me felicites.</pre>
+    </div>
+    <h4>La prueba · contesta sin mirar nada</h4>
+    <ol class="diag">
+      <li>Explica la L de SOLID con un ejemplo que hayas escrito tú, no con cuadrados y rectángulos.</li>
+      <li>Tienes un <code>switch</code> por tipo que crece cada trimestre. ¿Qué principio viola y cuál es el cambio mínimo?</li>
+    </ol>
+    <div class="drill"><b>Ejercicio con las manos:</b> Busca en tu código un <code>switch</code> o una cadena de <code>if</code> sobre un tipo o un enum que haya crecido con el tiempo. Escribe cómo quedaría con polimorfismo y cuántos archivos habría que tocar para añadir el siguiente caso, antes y después.</div>
+  </div>
+</article>
+
+<article class="lesson" id="l12">
+  <div class="l-head">
+    <div><span class="n">Lección 12</span><h3>ISP y DIP: por qué existen las interfaces, versión final <span class="badge relo">RELOLINK</span></h3></div>
+    <div class="l-status"></div>
+  </div>
+  <div class="l-body">
+    <p class="why">Esta lección cierra el círculo del bloque 2. La D de SOLID es la razón por la que tu <code>Program.cs</code> tiene decenas de registros, y hasta que no la entiendes, la inyección de dependencias parece burocracia.</p>
+    <h4>Al terminar tienes que poder</h4>
+    <ul class="know">
+      <li>Explicar la inversión de dependencias con las flechas dibujadas, señalando cuál se invirtió.</li>
+      <li>Decir de quién es la interfaz: de quien la implementa o de quien la usa.</li>
+      <li>Reconocer una interfaz gorda y partirla por cliente.</li>
+    </ul>
+    <h4>Temario · esto es lo que le pegas a Claude</h4>
+    <ul class="concepts">
+      <li>Segregación de interfaces<small>Interfaces por cliente, no por implementación. El síntoma: implementar cinco métodos y usar uno.</small></li>
+      <li>Inversión de dependencias<small>Los detalles dependen de las abstracciones, no al revés. Qué flecha se invierte exactamente.</small></li>
+      <li>De quién es la interfaz<small>Pertenece al que la consume. Esta frase es el 80% de la lección.</small></li>
+      <li>Inyección de dependencias<small>El mecanismo que hace posible la inversión. Constructor, propiedad y método.</small></li>
+      <li>El contenedor<small>Qué hace realmente un contenedor de IoC. Cómo sería hacerlo a mano.</small></li>
+      <li>Falsa inversión<small>Poner una interfaz encima de cada clase sin cambiar ninguna dirección de dependencia.</small></li>
+    </ul>
+    <h4>Prompt para estudiarla</h4>
+    <div class="prompt">
+      <div class="bar"><span>estudiar · L12 ISP y DIP: por qué existen las interfaces, versión final</span><button type="button" data-copy>Copiar</button></div>
+<pre>Soy desarrollador .NET reaprendiendo diseño. Ya entiendo qué es una interfaz y para qué sirve. Enséñame la lección 12: segregación de interfaces e inversión de dependencias.
+
+Temario:
+- Segregación de interfaces: interfaces por cliente, y el síntoma de la interfaz gorda
+- Inversión de dependencias: qué flecha se invierte exactamente, dibujada
+- De quién es la interfaz: por qué pertenece al que la consume y no al que la implementa
+- Inyección de dependencias por constructor, propiedad y método: cuál usar
+- Qué hace realmente un contenedor de IoC, y cómo sería hacer lo mismo a mano
+- Falsa inversión: poner una interfaz encima de cada clase sin invertir nada
+
+Enséñame el punto de la dirección de las dependencias con diagramas en texto, antes y después, y asegúrate de que yo pueda señalar la flecha que cambió. Si no lo puedo señalar, no sigas.
+
+Después, escribe un contenedor de inyección mínimo, de veinte líneas, para que vea que no es magia.
+
+Corrígeme sin suavizar. No me felicites.</pre>
+    </div>
+    <h4>La prueba · contesta sin mirar nada</h4>
+    <ol class="diag">
+      <li>¿Cuál es la diferencia práctica entre inyectar una interfaz y la clase concreta si solo hay una implementación? La respuesta buena no es «por si mañana hay otra».</li>
+      <li>Dibuja las dependencias de un servicio que llama a un repositorio. Ahora invierte la dependencia. ¿Dónde vive la interfaz en cada caso y por qué?</li>
+    </ol>
+    <div class="drill"><b>Ejercicio con las manos:</b> Elige en Relolink una interfaz de servicio y contesta: ¿está declarada en el proyecto del que la usa o en el del que la implementa? Dibuja la flecha. Después di si la dependencia está realmente invertida o solo disfrazada.</div>
+    <div class="anchor">
+      <h5>Dónde vive en Relolink</h5>
+      <ul>
+        <li><code>APIs/RLL.Api/Program.cs</code> — los registros del contenedor. Busca un <code>Singleton</code> y razona si es correcto.</li>
+        <li>Compara con <code>InitiationServices.cs</code>: la misma base de código hace una cosa bien (inversión sistemática) y otra mal (responsabilidad única).</li>
+      </ul>
+    </div>
+  </div>
+</article>
+
+<article class="lesson" id="l13">
+  <div class="l-head">
+    <div><span class="n">Lección 13</span><h3>Patrones que sí vas a usar (y cuándo estorban) <span class="badge gen">GENERAL</span></h3></div>
+    <div class="l-status"></div>
+  </div>
+  <div class="l-body">
+    <h4>Al terminar tienes que poder</h4>
+    <ul class="know">
+      <li>Implementar strategy, factory, repository, adapter y decorator de memoria.</li>
+      <li>Nombrar el problema que resuelve cada uno en una frase.</li>
+      <li>Decir por qué un patrón mal traído es peor que no usar ninguno.</li>
+    </ul>
+    <h4>Temario · esto es lo que le pegas a Claude</h4>
+    <ul class="concepts">
+      <li>Strategy<small>Elegir algoritmo en ejecución. El uso número uno de las interfaces, con nombre propio.</small></li>
+      <li>Factory<small>Quién decide qué implementación se crea, y por qué eso no debería estar repartido.</small></li>
+      <li>Repository<small>Qué problema resuelve de verdad y por qué sobre EF Core suele ser una capa de paso.</small></li>
+      <li>Adapter<small>Adaptar lo ajeno a tu contrato. El patrón que protege tus fronteras.</small></li>
+      <li>Decorator<small>Añadir comportamiento sin tocar la clase: caché, logging, reintento.</small></li>
+      <li>Sobreingeniería<small>La regla de las dos ocurrencias. Por qué CQRS y event sourcing no van en una V1.</small></li>
+    </ul>
+    <h4>Prompt para estudiarla</h4>
+    <div class="prompt">
+      <div class="bar"><span>estudiar · L13 Patrones que sí vas a usar (y cuándo estorban)</span><button type="button" data-copy>Copiar</button></div>
+<pre>Soy desarrollador .NET reaprendiendo diseño. Enséñame la lección 13: los patrones que voy a usar de verdad.
+
+Temario, y de cada uno quiero el problema primero y el patrón después:
+- Strategy
+- Factory (y factory method)
+- Repository, incluyendo la discusión de si sobra encima de EF Core
+- Adapter
+- Decorator, con un caso de caché y otro de logging
+
+Cierra con: la regla de las dos ocurrencias, y por qué CQRS, event sourcing y microservicios son la tentación equivocada en la primera versión de un producto hecho por una persona.
+
+Para cada patrón: el código sin patrón con el dolor concreto, el código con patrón, y qué complejidad añadió. Quiero el precio, no solo el beneficio.
+
+Después ponme cuatro situaciones y que yo diga qué patrón usaría o si ninguno. Corrígeme una a una.
+
+Corrígeme sin suavizar. No me felicites.</pre>
+    </div>
+    <h4>La prueba · contesta sin mirar nada</h4>
+    <ol class="diag">
+      <li>Implementa de memoria un decorator que añada caché a un servicio existente sin tocar su código. Si no te sale sin mirar, no entendiste las interfaces todavía.</li>
+      <li>¿Qué gana un repository encima de un <code>DbContext</code>, que ya es un repository? Defiende las dos posturas.</li>
+    </ol>
+    <div class="drill"><b>Ejercicio con las manos:</b> Escribe un decorator de caché sobre una interfaz real de tu solución, en un proyecto aparte. Diez minutos. El objetivo es comprobar que puedes envolver una implementación sin tocarla.</div>
+  </div>
+</article>
+
+  <div class="check">
+    <h4>Cierre del bloque 3 · explícaselo tú</h4>
+    <p>Cuando las 4 lecciones estén en «lo puedo explicar», abre una conversación nueva y pega esto. No lo hagas en el mismo hilo donde estudiaste: ahí Claude ya sabe lo que te enseñó y tú ya lo tienes delante.</p>
+    <div class="prompt">
+      <div class="bar"><span>cierre · bloque 3</span><button type="button" data-copy>Copiar</button></div>
+<pre>Voy a explicarte con mis palabras el bloque 3 completo: los cinco principios SOLID, cohesión y acoplamiento, y los patrones strategy, factory, repository, adapter y decorator.
+
+Escúchame entero. Después:
+1. Cita mis frases imprecisas y corrígelas.
+2. Dime qué principio expliqué de memoria y cuál expliqué entendiéndolo. Se nota en si di un ejemplo propio o uno de libro.
+3. Dame un fragmento de código que viole dos principios a la vez y que yo diga cuáles.
+4. Dime sin suavizar si puedo pasar al bloque 4.
+
+Empiezo:</pre>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================== Bloque 4 -->
+<section id="b4">
+  <h2>Bloque 4 · El lenguaje y la plataforma</h2>
+  <p>Tres lecciones sobre las partes de C# y .NET que usas todos los días sin poder explicar del todo, y que son la causa de los bugs que aparecen solo en producción: consultas que se ejecutan cuando no esperabas, asincronía mal entendida y objetos que viven más de lo que deberían.</p>
+
+<article class="lesson" id="l14">
+  <div class="l-head">
+    <div><span class="n">Lección 14</span><h3>Genéricos, colecciones y LINQ <span class="badge gen">GENERAL</span></h3></div>
+    <div class="l-status"></div>
+  </div>
+  <div class="l-body">
+    <h4>Al terminar tienes que poder</h4>
+    <ul class="know">
+      <li>Explicar qué es la ejecución diferida y nombrar tres cosas que materializan una consulta.</li>
+      <li>Elegir entre <code>IEnumerable</code>, <code>IQueryable</code>, <code>ICollection</code> y <code>List</code> con criterio.</li>
+      <li>Decir por qué existen los genéricos, más allá de «para no repetir código».</li>
+    </ul>
+    <h4>Temario · esto es lo que le pegas a Claude</h4>
+    <ul class="concepts">
+      <li>Genéricos<small>Qué problema resolvieron. Restricciones (<code>where T : ...</code>). Covarianza y contravarianza, por encima.</small></li>
+      <li>La jerarquía de colecciones<small><code>IEnumerable</code>, <code>ICollection</code>, <code>IList</code>, <code>IQueryable</code>: qué promete cada interfaz. Vuelve el bloque 2.</small></li>
+      <li>Ejecución diferida<small>Qué hace y qué no hace un <code>Where</code>. Cuándo se recorre la secuencia.</small></li>
+      <li>Materializar<small><code>ToList</code>, <code>First</code>, <code>Count</code>, <code>foreach</code>: qué dispara la ejecución.</small></li>
+      <li>Iterar dos veces<small>El coste escondido de recorrer un <code>IEnumerable</code> dos veces.</small></li>
+      <li>LINQ a objetos contra LINQ a SQL<small>Por qué el mismo código hace cosas distintas según el proveedor.</small></li>
+    </ul>
+    <h4>Prompt para estudiarla</h4>
+    <div class="prompt">
+      <div class="bar"><span>estudiar · L14 Genéricos, colecciones y LINQ</span><button type="button" data-copy>Copiar</button></div>
+<pre>Soy desarrollador .NET reaprendiendo fundamentos. Enséñame la lección 14: genéricos, colecciones y LINQ.
+
+Temario:
+- Genéricos: qué problema resolvieron, restricciones de tipo, y una idea clara de covarianza y contravarianza
+- IEnumerable, ICollection, IList e IQueryable: qué promete cada interfaz y qué le permito al que llama según cuál devuelva
+- Ejecución diferida: qué hace realmente un Where cuando se escribe
+- Qué operaciones materializan una consulta
+- El coste de iterar dos veces la misma secuencia
+- Por qué el mismo LINQ hace cosas distintas sobre objetos y sobre SQL
+
+Enséñamelo con ejemplos donde yo tenga que predecir cuántas veces se recorre la colección o cuántas consultas salen a la base de datos. Espera mi respuesta antes de decírmelo.
+
+Corrígeme sin suavizar. No me felicites.</pre>
+    </div>
+    <h4>La prueba · contesta sin mirar nada</h4>
+    <ol class="diag">
+      <li>¿Qué diferencia hay entre devolver <code>IEnumerable</code> y devolver <code>List</code> desde un servicio? Di qué le estás permitiendo hacer al que llama en cada caso.</li>
+      <li>Un método filtra con <code>Where</code> y devuelve; el que llama itera dos veces. ¿Qué pasa si la fuente era una consulta a base de datos?</li>
+    </ol>
+    <div class="drill"><b>Ejercicio con las manos:</b> Escribe una consulta LINQ sobre una lista con un <code>Where</code> que imprima por consola cada vez que se evalúa. Itérala dos veces. Cuenta las líneas impresas y explica el número.</div>
+  </div>
+</article>
+
+<article class="lesson" id="l15">
+  <div class="l-head">
+    <div><span class="n">Lección 15</span><h3>async, await y concurrencia <span class="badge gen">GENERAL</span></h3></div>
+    <div class="l-status"></div>
+  </div>
+  <div class="l-body">
+    <h4>Al terminar tienes que poder</h4>
+    <ul class="know">
+      <li>Explicar qué hace <code>await</code> sin decir «espera a que termine».</li>
+      <li>Decir por qué <code>async void</code> es peligroso y dónde es la única opción.</li>
+      <li>Detectar un bloqueo por <code>.Result</code> antes de que ocurra.</li>
+    </ul>
+    <h4>Temario · esto es lo que le pegas a Claude</h4>
+    <ul class="concepts">
+      <li>Qué es una <code>Task</code><small>Una promesa de resultado, no un hilo. La confusión más cara del tema.</small></li>
+      <li>Qué hace <code>await</code><small>Cede el control y registra una continuación. Qué pasa con el hilo mientras tanto.</small></li>
+      <li><code>async void</code><small>Por qué no se puede esperar ni capturar su excepción.</small></li>
+      <li>Bloqueo y deadlock<small><code>.Result</code> y <code>.Wait()</code>: por qué a veces cuelgan y a veces no.</small></li>
+      <li>Paralelo contra asíncrono<small>No es lo mismo. <code>Task.WhenAll</code> contra <code>Parallel.ForEach</code>.</small></li>
+      <li>Cancelación<small><code>CancellationToken</code>: por qué se propaga hasta el fondo o no sirve.</small></li>
+    </ul>
+    <h4>Prompt para estudiarla</h4>
+    <div class="prompt">
+      <div class="bar"><span>estudiar · L15 async, await y concurrencia</span><button type="button" data-copy>Copiar</button></div>
+<pre>Soy desarrollador .NET reaprendiendo fundamentos. Enséñame la lección 15: async, await y concurrencia.
+
+Temario:
+- Qué es una Task: por qué no es un hilo
+- Qué hace await por debajo: continuaciones, y qué pasa con el hilo que llamaba
+- async void: por qué es peligroso y dónde es la única opción
+- .Result y .Wait(): por qué a veces provocan deadlock y a veces no
+- Asíncrono contra paralelo: Task.WhenAll contra Parallel.ForEach
+- CancellationToken: por qué hay que propagarlo hasta el final
+
+Enséñame el modelo mental correcto con un diagrama en texto de qué pasa en el tiempo, y desmonta explícitamente la idea de que await &quot;espera&quot; o de que async crea un hilo.
+
+Ponme tres fragmentos y que yo diga si se bloquean, si se ejecutan en paralelo o si lanzan excepción sin que nadie se entere. Espera mi respuesta.
+
+Corrígeme sin suavizar. No me felicites.</pre>
+    </div>
+    <h4>La prueba · contesta sin mirar nada</h4>
+    <ol class="diag">
+      <li>Explica qué le pasa al hilo cuando el código llega a un <code>await</code>. Si tu respuesta incluye «se queda esperando», está mal.</li>
+      <li>¿Por qué un doble clic puede disparar dos veces el mismo POST y cómo lo evitas en el front y en el back?</li>
+    </ol>
+    <div class="drill"><b>Ejercicio con las manos:</b> Escribe tres versiones del mismo trabajo: secuencial con <code>await</code> en bucle, con <code>Task.WhenAll</code>, y bloqueando con <code>.Result</code>. Mide los tres. Explica los números antes de mirarlos.</div>
+  </div>
+</article>
+
+<article class="lesson" id="l16">
+  <div class="l-head">
+    <div><span class="n">Lección 16</span><h3>Ciclos de vida y el contenedor de dependencias <span class="badge relo">RELOLINK</span></h3></div>
+    <div class="l-status"></div>
+  </div>
+  <div class="l-body">
+    <h4>Al terminar tienes que poder</h4>
+    <ul class="know">
+      <li>Explicar qué objeto vive cuánto con <code>Singleton</code>, <code>Scoped</code> y <code>Transient</code>.</li>
+      <li>Decir qué se rompe al inyectar un scoped dentro de un singleton, y por qué a veces tarda días en verse.</li>
+      <li>Justificar el ciclo de vida de un servicio concreto de tu sistema.</li>
+    </ul>
+    <h4>Temario · esto es lo que le pegas a Claude</h4>
+    <ul class="concepts">
+      <li>Los tres ciclos de vida<small>Qué significa cada uno y quién crea y destruye el objeto.</small></li>
+      <li>Captive dependency<small>El scoped atrapado en un singleton: el bug que aparece bajo carga y no en local.</small></li>
+      <li><code>DbContext</code><small>Por qué es scoped y qué pasa exactamente si lo haces singleton.</small></li>
+      <li><code>IDisposable</code><small>Quién libera qué, y qué pasa con los <code>using</code> dentro de servicios inyectados.</small></li>
+      <li>Registro por interfaz<small>Volver a mirar <code>AddScoped&lt;IAlgo, Algo&gt;</code> entendiendo las dos partes.</small></li>
+      <li>Service locator<small>Por qué inyectar <code>IServiceProvider</code> es casi siempre una derrota.</small></li>
+    </ul>
+    <h4>Prompt para estudiarla</h4>
+    <div class="prompt">
+      <div class="bar"><span>estudiar · L16 Ciclos de vida y el contenedor de dependencias</span><button type="button" data-copy>Copiar</button></div>
+<pre>Soy desarrollador .NET reaprendiendo fundamentos. Enséñame la lección 16: ciclos de vida en el contenedor de dependencias de .NET.
+
+Temario:
+- Singleton, Scoped y Transient: quién crea el objeto, cuánto vive y quién lo destruye
+- Captive dependency: qué pasa al inyectar un scoped dentro de un singleton y por qué el bug no aparece en local
+- Por qué DbContext es scoped y qué falla exactamente si lo registro como singleton
+- IDisposable dentro del contenedor: quién libera qué
+- Volver a leer AddScoped&lt;IAlgo, Algo&gt; entendiendo las dos partes
+- Service locator: por qué inyectar IServiceProvider suele ser una derrota
+
+Enséñame el problema de la captive dependency con un escenario concreto de concurrencia donde dos peticiones se pisan, con la secuencia paso a paso.
+
+Después dame cinco servicios de ejemplo y que yo elija el ciclo de vida de cada uno, corrigiéndome uno a uno.
+
+Corrígeme sin suavizar. No me felicites.</pre>
+    </div>
+    <h4>La prueba · contesta sin mirar nada</h4>
+    <ol class="diag">
+      <li>¿Qué diferencia hay entre <code>AddScoped</code>, <code>AddTransient</code> y <code>AddSingleton</code>? ¿Y qué se rompe al inyectar scoped en singleton?</li>
+      <li>Elige tres servicios de tu <code>Program.cs</code> y justifica su ciclo de vida. Si alguno no lo puedes justificar, está registrado por copiar y pegar.</li>
+    </ol>
+    <div class="drill"><b>Ejercicio con las manos:</b> Abre <code>Program.cs</code>, busca cada <code>AddSingleton</code> y escribe qué estado guarda ese servicio. Si guarda algo que dependa de la petición o del usuario, acabas de encontrar un bug latente.</div>
+    <div class="anchor">
+      <h5>Dónde vive en Relolink</h5>
+      <ul>
+        <li><code>APIs/RLL.Api/Program.cs</code> — el ciclo de vida de cada servicio está declarado ahí. Es el mejor ejercicio de esta lección y no requiere ejecutar nada.</li>
+      </ul>
+    </div>
+  </div>
+</article>
+
+  <div class="check">
+    <h4>Cierre del bloque 4 · explícaselo tú</h4>
+    <p>Cuando las 3 lecciones estén en «lo puedo explicar», abre una conversación nueva y pega esto. No lo hagas en el mismo hilo donde estudiaste: ahí Claude ya sabe lo que te enseñó y tú ya lo tienes delante.</p>
+    <div class="prompt">
+      <div class="bar"><span>cierre · bloque 4</span><button type="button" data-copy>Copiar</button></div>
+<pre>Voy a explicarte con mis palabras el bloque 4: genéricos y LINQ con ejecución diferida, async/await y concurrencia, y ciclos de vida del contenedor.
+
+Escúchame entero y después:
+1. Corrige mis imprecisiones citando mis frases.
+2. Ponme tres fragmentos de código donde yo tenga que predecir el comportamiento: uno de LINQ, uno de async y uno de ciclos de vida.
+3. Dime sin suavizar si puedo pasar al bloque 5.
+
+Empiezo:</pre>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================== Bloque 5 -->
+<section id="b5">
+  <h2>Bloque 5 · Los datos</h2>
+  <p>El modelo de datos es la decisión más cara de revertir de todo el Hub. Estas tres lecciones son las que sostienen el módulo 2 de la vía de arquitectura: si el modelo relacional y las transacciones están flojas, ese módulo se convierte en adivinar.</p>
+
+<article class="lesson" id="l17">
+  <div class="l-head">
+    <div><span class="n">Lección 17</span><h3>Modelo relacional, claves y normalización <span class="badge gen">GENERAL</span></h3></div>
+    <div class="l-status"></div>
+  </div>
+  <div class="l-body">
+    <h4>Al terminar tienes que poder</h4>
+    <ul class="know">
+      <li>Justificar cada clave primaria y foránea de una tabla tuya.</li>
+      <li>Normalizar hasta la tercera forma normal y saber cuándo parar.</li>
+      <li>Explicar qué te cuesta un índice y cuándo lo aceptas.</li>
+    </ul>
+    <h4>Temario · esto es lo que le pegas a Claude</h4>
+    <ul class="concepts">
+      <li>Relación, tupla, clave<small>El vocabulario exacto, porque «tabla» y «fila» esconden lo importante.</small></li>
+      <li>Claves primarias<small>Natural contra sustituta. <code>int</code> contra <code>Guid</code>: qué pagas con cada una.</small></li>
+      <li>Claves foráneas e integridad referencial<small>Qué garantiza la base de datos que tu código ya no tiene que garantizar.</small></li>
+      <li>Normalización<small>Primera, segunda y tercera forma normal, con el problema que resuelve cada paso.</small></li>
+      <li>Desnormalizar a propósito<small>Cuándo, y qué te obligas a mantener a cambio.</small></li>
+      <li>Índices<small>Qué estructura hay detrás, por qué acelera lecturas y frena escrituras.</small></li>
+    </ul>
+    <h4>Prompt para estudiarla</h4>
+    <div class="prompt">
+      <div class="bar"><span>estudiar · L17 Modelo relacional, claves y normalización</span><button type="button" data-copy>Copiar</button></div>
+<pre>Soy desarrollador .NET reaprendiendo fundamentos de datos. Enséñame la lección 17: modelo relacional, claves y normalización.
+
+Temario:
+- El vocabulario exacto: relación, tupla, atributo, clave
+- Clave primaria natural contra sustituta, e int contra Guid con sus costes reales (fragmentación, tamaño de índice, legibilidad)
+- Claves foráneas e integridad referencial: qué deja de tener que garantizar mi código
+- Primera, segunda y tercera forma normal, cada una con la anomalía concreta que evita
+- Cuándo desnormalizar a propósito y qué me obligo a mantener a cambio
+- Qué estructura hay detrás de un índice y por qué acelera lecturas y frena escrituras
+
+Enséñamelo sobre un dominio de marketplace B2B con proveedores, productos, precios por cliente y pedidos, porque es lo que estoy diseñando.
+
+Dame un modelo mal normalizado y pídeme que yo encuentre las anomalías antes de explicármelas.
+
+Corrígeme sin suavizar. No me felicites.</pre>
+    </div>
+    <h4>La prueba · contesta sin mirar nada</h4>
+    <ol class="diag">
+      <li>Diseña sobre papel el modelo de un catálogo con proveedores, productos y precios por cliente. Justifica cada clave. Después pregúntale a Claude qué se te olvidó.</li>
+      <li>¿Por qué un índice puede hacer más lenta una escritura, y cuándo aceptarías ese coste?</li>
+    </ol>
+    <div class="drill"><b>Ejercicio con las manos:</b> Coge tres tablas reales de tu copia local y escribe para cada columna si podría ser nula y por qué. Compara con lo que dice el esquema. Cada diferencia es una regla de negocio que no está escrita en ningún sitio.</div>
+    <div class="anchor">
+      <h5>Dónde vive en Relolink</h5>
+      <ul>
+        <li>Tu copia local de <code>relolink-prod1</code>: volumen real para mirar planes de ejecución sin tocar producción. Y ojo con la <b>collation</b> al comparar contra cadena vacía, que ya te mordió una vez.</li>
+      </ul>
+    </div>
+  </div>
+</article>
+
+<article class="lesson" id="l18">
+  <div class="l-head">
+    <div><span class="n">Lección 18</span><h3>Transacciones, ACID y concurrencia <span class="badge relo">RELOLINK</span></h3></div>
+    <div class="l-status"></div>
+  </div>
+  <div class="l-body">
+    <h4>Al terminar tienes que poder</h4>
+    <ul class="know">
+      <li>Explicar la I de ACID con la anomalía que previene cada nivel de aislamiento.</li>
+      <li>Elegir entre concurrencia optimista y pesimista para un caso concreto.</li>
+      <li>Decir qué queda a medias si un proceso muere en mitad de una transacción.</li>
+    </ul>
+    <h4>Temario · esto es lo que le pegas a Claude</h4>
+    <ul class="concepts">
+      <li>ACID<small>Las cuatro letras, y cuál de ellas es la que de verdad te va a doler.</small></li>
+      <li>Niveles de aislamiento<small>Read committed, repeatable read, snapshot, serializable. Qué anomalía corta cada uno.</small></li>
+      <li>Lecturas sucias, no repetibles y fantasma<small>Los tres problemas con nombre, con ejemplo.</small></li>
+      <li>Bloqueos y deadlocks<small>Por qué ocurren y qué hace el motor cuando los detecta.</small></li>
+      <li>Optimista contra pesimista<small>Versionado de fila contra bloqueo. Qué le muestras al segundo usuario.</small></li>
+      <li>Alcance de la transacción<small>Por qué una transacción abierta durante una llamada HTTP es un problema.</small></li>
+    </ul>
+    <h4>Prompt para estudiarla</h4>
+    <div class="prompt">
+      <div class="bar"><span>estudiar · L18 Transacciones, ACID y concurrencia</span><button type="button" data-copy>Copiar</button></div>
+<pre>Soy desarrollador .NET reaprendiendo fundamentos de datos. Enséñame la lección 18: transacciones, ACID y concurrencia, sobre SQL Server.
+
+Temario:
+- Las cuatro letras de ACID, con lo que significa cada una en la práctica
+- Niveles de aislamiento y qué anomalía previene cada uno exactamente
+- Lecturas sucias, no repetibles y fantasma, con un ejemplo de cada una en forma de línea de tiempo de dos sesiones
+- Bloqueos y deadlocks: por qué ocurren y qué hace el motor al detectarlos
+- Concurrencia optimista contra pesimista: cómo se implementa cada una y qué ve el segundo usuario
+- Por qué mantener una transacción abierta durante una llamada externa es un problema
+
+Quiero las líneas de tiempo de dos sesiones concurrentes dibujadas en texto, paso a paso. Es la única forma en que estos conceptos se me quedan.
+
+Ponme tres escenarios y que yo elija el nivel de aislamiento y la estrategia de concurrencia, uno a uno, corrigiéndome antes del siguiente.
+
+Corrígeme sin suavizar. No me felicites.</pre>
+    </div>
+    <h4>La prueba · contesta sin mirar nada</h4>
+    <ol class="diag">
+      <li>Dos usuarios editan el mismo registro a la vez. ¿Qué estrategia usas y qué ve el segundo?</li>
+      <li>Toma un método con <code>BeginTransaction</code> y escribe qué pasa si el proceso muere después de cada instrucción. ¿Queda la base consistente en todos los casos?</li>
+    </ol>
+    <div class="drill"><b>Ejercicio con las manos:</b> Abre un método con <code>BeginTransaction</code> y escribe paso por paso qué queda a medias si el proceso muere después de cada instrucción. Si en algún punto la base queda inconsistente, acabas de encontrar un bug real sin ejecutar nada.</div>
+    <div class="anchor">
+      <h5>Dónde vive en Relolink</h5>
+      <ul>
+        <li>Transacciones reales: <code>RLL.SERV.Services/Admin/UserServices.cs</code>, <code>Assignee/InitiationServices.cs</code> y <code>Admin/SubscriptionServices.cs</code> usan <code>BeginTransaction</code>.</li>
+      </ul>
+    </div>
+  </div>
+</article>
+
+<article class="lesson" id="l19">
+  <div class="l-head">
+    <div><span class="n">Lección 19</span><h3>EF Core: tracking, materialización y N+1 <span class="badge relo">RELOLINK</span></h3></div>
+    <div class="l-status"></div>
+  </div>
+  <div class="l-body">
+    <h4>Al terminar tienes que poder</h4>
+    <ul class="know">
+      <li>Decir en qué línea exacta de un método se ejecuta la consulta.</li>
+      <li>Detectar un N+1 leyendo código, sin perfilador.</li>
+      <li>Explicar qué hace el change tracker y cuándo estorba.</li>
+    </ul>
+    <h4>Temario · esto es lo que le pegas a Claude</h4>
+    <ul class="concepts">
+      <li>El change tracker<small>Qué guarda, cuándo, y por qué <code>AsNoTracking</code> cambia el rendimiento.</small></li>
+      <li><code>IQueryable</code> y el árbol de expresión<small>Cómo tu LINQ se convierte en SQL y qué no se puede traducir.</small></li>
+      <li>Materialización<small>Dónde termina la consulta y empieza la memoria. El error de filtrar después de <code>ToList</code>.</small></li>
+      <li>N+1<small>Cómo aparece, cómo se ve en el log de SQL, cómo se arregla con <code>Include</code> o proyección.</small></li>
+      <li>Proyectar a DTO<small>Por qué traer la entidad entera casi nunca es lo que quieres.</small></li>
+      <li>Migraciones<small>Qué son y por qué el orden importa cuando hay más de una rama.</small></li>
+    </ul>
+    <h4>Prompt para estudiarla</h4>
+    <div class="prompt">
+      <div class="bar"><span>estudiar · L19 EF Core: tracking, materialización y N+1</span><button type="button" data-copy>Copiar</button></div>
+<pre>Soy desarrollador .NET reaprendiendo EF Core en serio. Enséñame la lección 19.
+
+Temario:
+- El change tracker: qué guarda, cuándo y qué cambia AsNoTracking
+- IQueryable y árboles de expresión: cómo se traduce mi LINQ a SQL y qué no se puede traducir
+- Materialización: dónde termina la consulta y empieza la memoria, y por qué filtrar después de ToList es un desastre
+- N+1: cómo aparece, cómo se ve en el log de SQL y las dos formas de arreglarlo
+- Proyectar a DTO contra traer la entidad entera
+- Migraciones y qué pasa cuando hay varias ramas
+
+Para cada punto enséñame el SQL que genera EF. Quiero ver la traducción, no solo el C#.
+
+Dame cuatro métodos de repositorio y que yo diga cuántas consultas salen a la base de datos en cada uno antes de que me lo digas.
+
+Corrígeme sin suavizar. No me felicites.</pre>
+    </div>
+    <h4>La prueba · contesta sin mirar nada</h4>
+    <ol class="diag">
+      <li>Elige un endpoint de listado y sigue el dato de punta a punta: servicio → consulta EF → DTO → componente. Señala la línea exacta donde se materializa la consulta.</li>
+      <li>¿Qué SQL genera un <code>Where</code> aplicado después de un <code>ToList</code>? La respuesta correcta explica por qué eso es un desastre con muchas filas.</li>
+    </ol>
+    <div class="drill"><b>Ejercicio con las manos:</b> Activa el log de SQL de EF en tu entorno local y abre una pantalla de listado. Cuenta las consultas. Si hay más de tres, busca el N+1 y escribe en qué línea del código está.</div>
+    <div class="anchor">
+      <h5>Dónde vive en Relolink</h5>
+      <ul>
+        <li><code>RLL.DOM.Helpers/TimeZoneHelper.cs</code> — el punto donde se decide UTC contra hora local. Detrás de él hay una familia entera de bugs reales de fechas corridas un día.</li>
+      </ul>
+    </div>
+  </div>
+</article>
+
+  <div class="check">
+    <h4>Cierre del bloque 5 · explícaselo tú</h4>
+    <p>Cuando las 3 lecciones estén en «lo puedo explicar», abre una conversación nueva y pega esto. No lo hagas en el mismo hilo donde estudiaste: ahí Claude ya sabe lo que te enseñó y tú ya lo tienes delante.</p>
+    <div class="prompt">
+      <div class="bar"><span>cierre · bloque 5</span><button type="button" data-copy>Copiar</button></div>
+<pre>Voy a explicarte con mis palabras el bloque 5: modelo relacional y claves, normalización, ACID y niveles de aislamiento, concurrencia, y EF Core con tracking, materialización y N+1.
+
+Escúchame entero y después corrige mis imprecisiones citándome, dime qué me falté, ponme dos casos de diagnóstico (uno de concurrencia y uno de N+1) y dime sin suavizar si puedo pasar al bloque 6.
+
+Empiezo:</pre>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================== Bloque 6 -->
+<section id="b6">
+  <h2>Bloque 6 · La red y la identidad</h2>
+  <p>Todo lo que pasa entre el navegador y tu API. Estas tres lecciones son las que el módulo 1 de la vía de arquitectura da por sabidas: hazlas antes de tomar la decisión de identidad del Hub, no después.</p>
+
+<article class="lesson" id="l20">
+  <div class="l-head">
+    <div><span class="n">Lección 20</span><h3>HTTP y diseño de APIs REST <span class="badge gen">GENERAL</span></h3></div>
+    <div class="l-status"></div>
+  </div>
+  <div class="l-body">
+    <h4>Al terminar tienes que poder</h4>
+    <ul class="know">
+      <li>Elegir código de estado en los casos ambiguos y defenderlo.</li>
+      <li>Explicar idempotencia y decir qué verbos lo son.</li>
+      <li>Diseñar los recursos de un área sin caer en verbos en la URL.</li>
+    </ul>
+    <h4>Temario · esto es lo que le pegas a Claude</h4>
+    <ul class="concepts">
+      <li>Anatomía de una petición<small>Método, ruta, cabeceras, cuerpo. Qué es un recurso y qué no.</small></li>
+      <li>Verbos e idempotencia<small>Qué significa que repetir una petición no cambie el resultado, y por qué importa con reintentos.</small></li>
+      <li>Códigos de estado<small>400, 401, 403, 404, 409, 422, 500. El 409 es el que más se confunde.</small></li>
+      <li>Diseño de recursos<small>Sustantivos, jerarquía, filtros y paginación. Cuándo una acción no encaja en un recurso.</small></li>
+      <li>Versionado de API<small>Las tres formas y lo que cuesta cada una.</small></li>
+      <li>Caché HTTP<small><code>ETag</code> y <code>Cache-Control</code>: la optimización que casi nadie usa.</small></li>
+    </ul>
+    <h4>Prompt para estudiarla</h4>
+    <div class="prompt">
+      <div class="bar"><span>estudiar · L20 HTTP y diseño de APIs REST</span><button type="button" data-copy>Copiar</button></div>
+<pre>Soy desarrollador .NET reaprendiendo fundamentos de red. Enséñame la lección 20: HTTP y diseño de APIs REST.
+
+Temario:
+- Anatomía de una petición y qué es realmente un recurso
+- Verbos e idempotencia, y por qué la idempotencia importa en cuanto hay reintentos
+- Códigos de estado en los casos ambiguos: 400 contra 422, 401 contra 403, y cuándo 409
+- Diseño de recursos: jerarquía, filtros, paginación, y qué hacer con las acciones que no son CRUD
+- Versionado de API: las tres formas y su coste
+- ETag y Cache-Control
+
+Dame diez situaciones reales y que yo elija el código de estado en cada una, corrigiéndome una a una. Ese es el ejercicio que más falta me hace.
+
+Después revisa conmigo el diseño de recursos de un marketplace B2B con proveedores, catálogos, pedidos y reseñas.
+
+Corrígeme sin suavizar. No me felicites.</pre>
+    </div>
+    <h4>La prueba · contesta sin mirar nada</h4>
+    <ol class="diag">
+      <li>¿Cuándo devuelves 400, 401, 403, 409 y 422? Da un caso real de 409.</li>
+      <li>Un cliente reintenta un POST por timeout y crea dos pedidos. ¿Cómo lo evitas sin cambiar el verbo?</li>
+    </ol>
+    <div class="drill"><b>Ejercicio con las manos:</b> Abre los controladores de tu API y anota qué códigos devuelven de verdad, no cuáles deberían. Cuenta cuántos endpoints devuelven 200 con un mensaje de error dentro. Ese número es la deuda.</div>
+    <div class="anchor">
+      <h5>Dónde vive en Relolink</h5>
+      <ul>
+        <li><code>APIs/RLL.Api/Controllers</code> — revisa qué códigos de estado devuelve cada acción realmente.</li>
+      </ul>
+    </div>
+  </div>
+</article>
+
+<article class="lesson" id="l21">
+  <div class="l-head">
+    <div><span class="n">Lección 21</span><h3>TLS, CORS, cookies y dónde vive el token <span class="badge relo">RELOLINK</span></h3></div>
+    <div class="l-status"></div>
+  </div>
+  <div class="l-body">
+    <h4>Al terminar tienes que poder</h4>
+    <ul class="know">
+      <li>Explicar el handshake de TLS y qué se cifra con qué.</li>
+      <li>Decir qué NO te protege CORS.</li>
+      <li>Elegir dónde guardar un token y nombrar el ataque que habilita cada opción.</li>
+    </ul>
+    <h4>Temario · esto es lo que le pegas a Claude</h4>
+    <ul class="concepts">
+      <li>TLS<small>El handshake en cinco pasos. Asimétrico para acordar, simétrico para transmitir.</small></li>
+      <li>Certificados<small>Qué firma quién y qué significa que el navegador confíe.</small></li>
+      <li>HSTS<small>Qué añade sobre la redirección a HTTPS.</small></li>
+      <li>CORS<small>Por qué es una protección del navegador y no de tu API. Qué no previene.</small></li>
+      <li>Preflight<small>Qué la dispara y qué se pregunta exactamente.</small></li>
+      <li>Cookies contra almacenamiento local<small><code>HttpOnly</code>, <code>SameSite</code>, <code>Secure</code>. XSS contra CSRF: cuál mitiga qué.</small></li>
+      <li>Orden del middleware<small>Por qué cambiar dos líneas de sitio en <code>Program.cs</code> desactiva la seguridad.</small></li>
+    </ul>
+    <h4>Prompt para estudiarla</h4>
+    <div class="prompt">
+      <div class="bar"><span>estudiar · L21 TLS, CORS, cookies y dónde vive el token</span><button type="button" data-copy>Copiar</button></div>
+<pre>Soy desarrollador .NET y Angular reaprendiendo fundamentos de red. Enséñame la lección 21: TLS, CORS, cookies y almacenamiento de tokens.
+
+Temario:
+- El handshake de TLS en cinco pasos: qué se cifra con clave asimétrica y qué con simétrica
+- Certificados y cadena de confianza
+- HSTS: qué añade sobre UseHttpsRedirection
+- CORS: por qué es una protección del navegador, qué previene y qué NO previene
+- Preflight: qué la dispara exactamente
+- Cookies HttpOnly, SameSite y Secure contra localStorage, con XSS y CSRF y cuál mitiga qué
+- El orden del middleware en Program.cs y qué se desactiva al moverlo
+
+En el punto de CORS, desmonta explícitamente la creencia de que protege la API, porque quiero quitarme esa idea de encima.
+
+Al final ponme cuatro escenarios de ataque y que yo diga qué mecanismo lo habría parado.
+
+Corrígeme sin suavizar. No me felicites.</pre>
+    </div>
+    <h4>La prueba · contesta sin mirar nada</h4>
+    <ol class="diag">
+      <li>¿Qué es CORS y qué exactamente NO te protege? Si tu respuesta es «protege la API», está mal.</li>
+      <li>¿Dónde guardas el token y qué ataque habilita cada opción? Defiende la elección para tu caso.</li>
+    </ol>
+    <div class="drill"><b>Ejercicio con las manos:</b> Abre las herramientas de desarrollo en la aplicación real y observa una petición autenticada completa: cabeceras, preflight si la hay, cookies, dónde viaja el token. Después revisa la política de CORS del <code>Program.cs</code> y contesta si es tan permisiva como parece.</div>
+    <div class="anchor">
+      <h5>Dónde vive en Relolink</h5>
+      <ul>
+        <li><code>APIs/RLL.Api/Program.cs</code> — <code>UseHttpsRedirection</code>, la política de <code>UseCors</code> y el orden de <code>UseAuthentication</code> / <code>UseAuthorization</code>. El orden del middleware es el ejercicio: cambia dos líneas mentalmente y di qué deja de funcionar.</li>
+        <li><code>MapHub&lt;ChatHub&gt;("/hubs/chat")</code> — WebSockets sobre la misma cadena. Averigua cómo se autentica esa conexión, porque no es igual que una petición normal.</li>
+      </ul>
+    </div>
+  </div>
+</article>
+
+<article class="lesson" id="l22">
+  <div class="l-head">
+    <div><span class="n">Lección 22</span><h3>OAuth2, OIDC, JWT y modelos de autorización <span class="badge relo">RELOLINK</span></h3></div>
+    <div class="l-status"></div>
+  </div>
+  <div class="l-body">
+    <p class="why">Lo trabajaste en el banco con Keycloak hace años y está oxidado. El módulo 1 de la vía de arquitectura lo da por recuperado: haz esta lección antes de empezarlo.</p>
+    <h4>Al terminar tienes que poder</h4>
+    <ul class="know">
+      <li>Dibujar Authorization Code con PKCE y decir qué viaja por el navegador.</li>
+      <li>Distinguir ID token de access token y saber cuál va a tu API.</li>
+      <li>Modelar permisos de un usuario que pertenece a dos organizaciones.</li>
+    </ul>
+    <h4>Temario · esto es lo que le pegas a Claude</h4>
+    <ul class="concepts">
+      <li>Autenticación contra autorización<small>Dos preguntas distintas que se confunden todo el tiempo.</small></li>
+      <li>OAuth2 y OIDC<small>Qué resuelve cada uno. OIDC es la capa de identidad sobre OAuth2.</small></li>
+      <li>Authorization Code con PKCE<small>Paso a paso, y qué ataque concreto corta el PKCE.</small></li>
+      <li>ID token contra access token<small>Para quién es cada uno y cuál mandas a tu API.</small></li>
+      <li>JWT<small>Qué lleva dentro, quién lo firma, por qué revocarlo es difícil y las dos salidas prácticas.</small></li>
+      <li>Refresh tokens<small>Rotación y detección de reutilización.</small></li>
+      <li>RBAC, ABAC y autorización por recurso<small>Qué pregunta contesta cada uno y por qué hacen falta las tres.</small></li>
+      <li>Multi-tenant<small>Un usuario en dos organizaciones: qué se rompe en el modelo ingenuo.</small></li>
+    </ul>
+    <h4>Prompt para estudiarla</h4>
+    <div class="prompt">
+      <div class="bar"><span>estudiar · L22 OAuth2, OIDC, JWT y modelos de autorización</span><button type="button" data-copy>Copiar</button></div>
+<pre>Soy desarrollador .NET. Trabajé con Keycloak en banca hace tres años y estoy oxidado. Enséñame la lección 22: OAuth2, OIDC, JWT y modelos de autorización, desde el principio y sin dar nada por sabido.
+
+Temario:
+- Autenticación contra autorización
+- Qué resuelve OAuth2 y qué añade OIDC encima
+- Authorization Code con PKCE paso a paso, con qué viaja por el navegador en cada paso y qué ataque corta el PKCE
+- ID token contra access token: para quién es cada uno y cuál mando a mi API
+- Anatomía de un JWT, quién lo firma, y por qué revocarlo es difícil, con las dos salidas prácticas
+- Refresh tokens, rotación y detección de reutilización
+- RBAC, ABAC y autorización por recurso: qué pregunta contesta cada uno
+- Multi-tenant: un usuario que pertenece a dos organizaciones, y qué se rompe en el modelo ingenuo
+
+Dibuja los flujos como diagramas de secuencia en texto. Después ponme el caso de un marketplace B2B donde el mismo usuario es comprador en una empresa y proveedor en otra, y guíame para que yo diseñe el modelo de permisos, sin dármelo hecho.
+
+Corrígeme sin suavizar. No me felicites.</pre>
+    </div>
+    <h4>La prueba · contesta sin mirar nada</h4>
+    <ol class="diag">
+      <li>Dibuja Authorization Code con PKCE. ¿Qué viaja por el navegador y qué no? ¿Qué problema exacto resuelve el PKCE?</li>
+      <li>Si mañana hay que cerrar la sesión de alguien ahora mismo, ¿qué pasa exactamente con su JWT?</li>
+    </ol>
+    <div class="drill"><b>Ejercicio con las manos:</b> Traza el login completo de Relolink de punta a punta y marca en qué punto interviene cada uno de los dos sistemas de identidad. Después contesta: si hay que cerrar la sesión de un usuario despedido ahora mismo, ¿qué pasa?</div>
+    <div class="anchor">
+      <h5>Dónde vive en Relolink</h5>
+      <ul>
+        <li><b>Dos emisores conviviendo:</b> un JWT propio (<code>IJwtProvider</code>, <code>Jwt:Issuer = relolink-authentication</code>, sesión de 8 h) y <b>Entra ID</b> vía MSAL en el front (<code>AzureAd:ClientId</code>). Entender por qué hay dos, y qué pasa cuando uno expira y el otro no, es el ejercicio entero.</li>
+        <li><code>RLL.DOM.Helpers/RoleHelper.cs</code> y los <code>ValidateRoles</code> repartidos por los servicios: autorización por rol hecha a mano, endpoint por endpoint.</li>
+        <li><code>SubscriptionProvider</code> y <code>SubscriptionBase</code>: el aislamiento entre clientes. Lo que hereda solo de <code>EntityBase</code> no trae tenant.</li>
+      </ul>
+    </div>
+  </div>
+</article>
+
+  <div class="check">
+    <h4>Cierre del bloque 6 · explícaselo tú</h4>
+    <p>Cuando las 3 lecciones estén en «lo puedo explicar», abre una conversación nueva y pega esto. No lo hagas en el mismo hilo donde estudiaste: ahí Claude ya sabe lo que te enseñó y tú ya lo tienes delante.</p>
+    <div class="prompt">
+      <div class="bar"><span>cierre · bloque 6</span><button type="button" data-copy>Copiar</button></div>
+<pre>Voy a explicarte con mis palabras el bloque 6: HTTP y REST, códigos de estado e idempotencia, TLS, CORS, cookies y almacenamiento de tokens, OAuth2, OIDC, JWT y modelos de autorización.
+
+Escúchame entero. Después corrígeme citando mis frases, señala lo que no dije, ponme tres casos de diagnóstico y dime sin suavizar si puedo pasar al bloque 7.
+
+Empiezo:</pre>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================== Bloque 7 -->
+<section id="b7">
+  <h2>Bloque 7 · Cómo se ordena un sistema</h2>
+  <p>Del objeto al sistema. Este bloque es el puente directo con la vía A: las decisiones de arquitectura del Hub se toman con este vocabulario, y sin él se toman por imitación.</p>
+
+<article class="lesson" id="l23">
+  <div class="l-head">
+    <div><span class="n">Lección 23</span><h3>Capas y reglas de dependencia <span class="badge relo">RELOLINK</span></h3></div>
+    <div class="l-status"></div>
+  </div>
+  <div class="l-body">
+    <h4>Al terminar tienes que poder</h4>
+    <ul class="know">
+      <li>Enunciar la regla de dependencia, no dibujar el diagrama.</li>
+      <li>Decidir dónde va una validación de negocio y defenderlo.</li>
+      <li>Reconocer una capa de paso y decir por qué es un olor.</li>
+    </ul>
+    <h4>Temario · esto es lo que le pegas a Claude</h4>
+    <ul class="concepts">
+      <li>Qué es una capa<small>Y qué es exactamente lo que una capa no puede hacer. La regla, no el dibujo.</small></li>
+      <li>Presentación, aplicación, dominio, infraestructura<small>Qué vive en cada una.</small></li>
+      <li>La regla de dependencia<small>Hacia dónde apuntan las flechas y cómo se invierte una con una interfaz. Vuelve el bloque 3.</small></li>
+      <li>Modelo de dominio anémico<small>Qué es, por qué es tan común y cuándo da igual.</small></li>
+      <li>Dónde van las validaciones<small>Controlador, servicio o entidad: el criterio.</small></li>
+      <li>Capa de paso<small>La que solo reenvía. Por qué es un olor y no una virtud.</small></li>
+    </ul>
+    <h4>Prompt para estudiarla</h4>
+    <div class="prompt">
+      <div class="bar"><span>estudiar · L23 Capas y reglas de dependencia</span><button type="button" data-copy>Copiar</button></div>
+<pre>Soy desarrollador .NET reaprendiendo arquitectura. Enséñame la lección 23: capas y reglas de dependencia.
+
+Temario:
+- Qué es una capa y cuál es la regla exacta que la define (no el dibujo)
+- Presentación, aplicación, dominio e infraestructura: qué vive en cada una
+- La regla de dependencia y cómo se invierte una flecha con una interfaz
+- Modelo de dominio anémico: qué es, por qué es tan común, cuándo da igual y cuándo duele
+- Dónde va una validación de negocio: controlador, servicio o entidad, con criterio
+- La capa de paso que solo reenvía llamadas: por qué es un olor
+
+Usa como ejemplo una solución .NET con proyectos separados de API, servicios y dominio, que es exactamente lo que tengo.
+
+Después dame seis piezas de código sueltas y que yo diga en qué capa va cada una, corrigiéndome una a una.
+
+Corrígeme sin suavizar. No me felicites.</pre>
+    </div>
+    <h4>La prueba · contesta sin mirar nada</h4>
+    <ol class="diag">
+      <li>En una arquitectura en capas, ¿qué es exactamente lo que una capa no puede hacer? Enuncia la regla.</li>
+      <li>¿Dónde va una validación de negocio y por qué? Defiende la respuesta contra las otras dos opciones.</li>
+    </ol>
+    <div class="drill"><b>Ejercicio con las manos:</b> Elige dos áreas de tu solución y busca las referencias cruzadas entre sus servicios. Dibuja el grafo. ¿Es un árbol o una maraña? Ese dibujo te dice si en el Hub las fronteras van a aguantar.</div>
+    <div class="anchor">
+      <h5>Dónde vive en Relolink</h5>
+      <ul>
+        <li>La solución está en capas de verdad: <code>APIs/*</code> (controladores) &rarr; <code>RLL.SERV.*</code> (servicios) &rarr; <code>Domain/*</code> (entidades y helpers).</li>
+        <li>La grieta a buscar: servicios que se llaman entre sí saltándose su frontera, y helpers de dominio que saben de HTTP.</li>
+      </ul>
+    </div>
+  </div>
+</article>
+
+<article class="lesson" id="l24">
+  <div class="l-head">
+    <div><span class="n">Lección 24</span><h3>Monolito modular contra microservicios <span class="badge relo">RELOLINK</span></h3></div>
+    <div class="l-status"></div>
+  </div>
+  <div class="l-body">
+    <h4>Al terminar tienes que poder</h4>
+    <ul class="know">
+      <li>Nombrar tres costes concretos de los microservicios para un equipo de una persona.</li>
+      <li>Definir una frontera de módulo y decir qué la rompe en la práctica.</li>
+      <li>Sostener la decisión de monolito modular ante quien te diga que no es moderno.</li>
+    </ul>
+    <h4>Temario · esto es lo que le pegas a Claude</h4>
+    <ul class="concepts">
+      <li>Monolito modular<small>Qué lo hace modular de verdad y no solo carpetas con nombre.</small></li>
+      <li>Fronteras de módulo<small>Qué entra y qué sale. Quién puede llamar a quién.</small></li>
+      <li>El coste real de los microservicios<small>Red, despliegue, datos distribuidos, observabilidad, transacciones repartidas.</small></li>
+      <li>Cuándo se parte de verdad<small>Las señales legítimas: equipos, escalado desigual, ritmos de despliegue distintos.</small></li>
+      <li>Consistencia eventual<small>Qué le estás pidiendo al negocio cuando la aceptas.</small></li>
+      <li>La tentación<small>CQRS, event sourcing y microservicios en una V1 hecha por una persona.</small></li>
+    </ul>
+    <h4>Prompt para estudiarla</h4>
+    <div class="prompt">
+      <div class="bar"><span>estudiar · L24 Monolito modular contra microservicios</span><button type="button" data-copy>Copiar</button></div>
+<pre>Soy desarrollador .NET diseñando la primera versión de un marketplace B2B multi-tenant, y lo voy a construir prácticamente solo. Enséñame la lección 24: monolito modular contra microservicios.
+
+Temario:
+- Qué hace modular a un monolito de verdad, más allá de la organización en carpetas
+- Fronteras de módulo: cómo se definen, qué entra, qué sale y quién puede llamar a quién
+- El coste real de los microservicios: red, despliegue, datos distribuidos, observabilidad y transacciones repartidas
+- Las señales legítimas para partir un sistema
+- Consistencia eventual: qué le estoy pidiendo al negocio cuando la acepto
+- Por qué CQRS y event sourcing son la tentación equivocada en una V1
+
+No me vendas ninguna de las dos opciones. Quiero los costes de cada una con números u órdenes de magnitud donde se pueda.
+
+Al final, hazme de abogado del diablo: defiende los microservicios para mi caso con los mejores argumentos que haya, y yo tengo que contestarte. Después dime si mis contraargumentos se sostienen.
+
+Corrígeme sin suavizar. No me felicites.</pre>
+    </div>
+    <h4>La prueba · contesta sin mirar nada</h4>
+    <ol class="diag">
+      <li>¿Qué gana un monolito modular frente a microservicios para un equipo de una persona? Tres cosas concretas.</li>
+      <li>¿Cómo se ve una frontera de módulo bien puesta? ¿Qué la rompe en la práctica?</li>
+    </ol>
+    <div class="drill"><b>Ejercicio con las manos:</b> Escribe en una página la decisión «monolito modular para la V1» en formato ADR: contexto, decisión, alternativas descartadas y consecuencias. Ese documento es reutilizable en el módulo 10 de la vía A.</div>
+    <div class="anchor">
+      <h5>Dónde vive en Relolink</h5>
+      <ul>
+        <li>Doce proyectos de API separados por área (CRM, Documents, Intranet, Assignee, Calendar, Catalogs, Dashboard, User…). Eso es, en la práctica, un monolito modular: estudia dónde funciona y dónde se filtra.</li>
+      </ul>
+    </div>
+  </div>
+</article>
+
+<article class="lesson" id="l25">
+  <div class="l-head">
+    <div><span class="n">Lección 25</span><h3>Mensajería asíncrona: colas, idempotencia y fallos <span class="badge relo">RELOLINK</span></h3></div>
+    <div class="l-status"></div>
+  </div>
+  <div class="l-body">
+    <h4>Al terminar tienes que poder</h4>
+    <ul class="know">
+      <li>Decir por qué un consumidor siempre tiene que ser idempotente.</li>
+      <li>Explicar qué pasa si el consumidor tarda más que el tiempo de visibilidad.</li>
+      <li>Saber qué haces con lo que cae en la dead-letter.</li>
+    </ul>
+    <h4>Temario · esto es lo que le pegas a Claude</h4>
+    <ul class="concepts">
+      <li>Cola contra tema<small>Un consumidor contra muchos. Cuándo cada uno.</small></li>
+      <li>Garantías de entrega<small>Al menos una vez, como máximo una vez, exactamente una vez: cuál existe de verdad.</small></li>
+      <li>Idempotencia en el consumidor<small>Por qué hace falta siempre. Cómo se implementa con una clave de deduplicación.</small></li>
+      <li>Visibilidad y reintentos<small>Qué pasa si el consumidor tarda demasiado. Retroceso exponencial.</small></li>
+      <li>Dead-letter<small>Qué cae ahí, quién se entera y qué se hace después.</small></li>
+      <li>Outbox<small>El problema de escribir en la base y publicar el mensaje de forma atómica.</small></li>
+      <li>API gateway<small>Qué resuelve que no resuelva un balanceador.</small></li>
+    </ul>
+    <h4>Prompt para estudiarla</h4>
+    <div class="prompt">
+      <div class="bar"><span>estudiar · L25 Mensajería asíncrona: colas, idempotencia y fallos</span><button type="button" data-copy>Copiar</button></div>
+<pre>Soy desarrollador .NET con colas de Azure Storage y Azure Functions en producción. Enséñame la lección 25: mensajería asíncrona.
+
+Temario:
+- Cola contra tema: un consumidor contra varios, con un caso real de cada uno
+- Garantías de entrega: al menos una vez, como máximo una vez, exactamente una vez, y cuál existe de verdad
+- Idempotencia en el consumidor: por qué siempre hace falta y cómo se implementa con clave de deduplicación
+- Tiempo de visibilidad, reintentos y retroceso exponencial
+- Dead-letter queue: qué cae ahí, quién se entera y qué se hace con eso
+- El patrón outbox: escribir en la base y publicar el mensaje de forma atómica
+- Qué añade un API gateway que no dé un balanceador
+
+Para cada fallo posible, dame la línea de tiempo de lo que ocurre paso a paso. Quiero ver el fallo, no solo el patrón que lo evita.
+
+Después dame un consumidor de ejemplo con tres bugs de concurrencia y que yo los encuentre.
+
+Corrígeme sin suavizar. No me felicites.</pre>
+    </div>
+    <h4>La prueba · contesta sin mirar nada</h4>
+    <ol class="diag">
+      <li>¿Qué es idempotencia en un consumidor y por qué hace falta incluso con entrega «exactamente una vez»?</li>
+      <li>Elige un consumidor real y contesta: qué pasa si el mensaje se procesa dos veces, si falla a la mitad, a dónde va tras N reintentos y quién se entera.</li>
+    </ol>
+    <div class="drill"><b>Ejercicio con las manos:</b> Con Azurite corriendo en tu máquina, encola y consume mensajes sin tocar nada de la empresa. Fuerza un fallo a la mitad del consumidor y observa qué pasa con el mensaje.</div>
+    <div class="anchor">
+      <h5>Dónde vive en Relolink</h5>
+      <ul>
+        <li><b>Colas:</b> <code>send-notification-email</code> y <code>reminders</code>, con <code>QueueHelper</code> en <code>Domain/RLL.DOM.Shares/NotificationCenter/</code>.</li>
+        <li><b>Consumidores:</b> <code>AzureFunctions/NotificationCenter</code> con <code>QueueTrigger</code> (<code>SendNotification</code>, <code>SaveNotification</code>, <code>ReminderProcessor</code>) y varios <code>TimerTrigger</code> de madrugada.</li>
+        <li><b>Trabajo programado:</b> <code>AzureFunctions/BillingProcessor/InvoicingFunction</code>.</li>
+      </ul>
+    </div>
+  </div>
+</article>
+
+  <div class="check">
+    <h4>Cierre del bloque 7 · explícaselo tú</h4>
+    <p>Cuando las 3 lecciones estén en «lo puedo explicar», abre una conversación nueva y pega esto. No lo hagas en el mismo hilo donde estudiaste: ahí Claude ya sabe lo que te enseñó y tú ya lo tienes delante.</p>
+    <div class="prompt">
+      <div class="bar"><span>cierre · bloque 7</span><button type="button" data-copy>Copiar</button></div>
+<pre>Voy a explicarte con mis palabras el bloque 7: capas y regla de dependencia, dónde van las validaciones, monolito modular contra microservicios, fronteras de módulo, y mensajería asíncrona con idempotencia, reintentos y dead-letter.
+
+Escúchame entero. Después corrígeme citando mis frases, ponme dos casos de diseño donde yo tenga que decidir, y dime sin suavizar si puedo pasar al bloque 8.
+
+Empiezo:</pre>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================== Bloque 8 -->
+<section id="b8">
+  <h2>Bloque 8 · El oficio</h2>
+  <p>Lo que convierte el conocimiento en trabajo entregable: pruebas que dicen la verdad y un proceso de entrega que no dependa de que te acuerdes de los pasos. La profundidad de la parte de entrega está en la <a href="devops.html">vía B</a>; aquí van los cimientos.</p>
+
+<article class="lesson" id="l26">
+  <div class="l-head">
+    <div><span class="n">Lección 26</span><h3>Pruebas: dobles, unidad, integración y TDD <span class="badge relo">RELOLINK</span></h3></div>
+    <div class="l-status"></div>
+  </div>
+  <div class="l-body">
+    <h4>Al terminar tienes que poder</h4>
+    <ul class="know">
+      <li>Escribir un test que falle por la razón correcta.</li>
+      <li>Nombrar una categoría entera de tests que no escribirías.</li>
+      <li>Explicar qué bug concreto previene el paso de ver el test en rojo.</li>
+    </ul>
+    <h4>Temario · esto es lo que le pegas a Claude</h4>
+    <ul class="concepts">
+      <li>Qué es una prueba unitaria<small>Qué es la unidad, y por qué la respuesta «una clase» es demasiado simple.</small></li>
+      <li>Dobles<small>Stub, fake, mock y spy, con la diferencia exacta. Aquí se cobra lo del bloque 2.</small></li>
+      <li>Unidad contra integración<small>Qué prueba cada una y qué NO prueba. La pirámide y sus críticas.</small></li>
+      <li>TDD<small>Rojo, verde, refactor. Por qué el test tiene que fallar primero y qué previene ese paso.</small></li>
+      <li>Qué no testear<small>Getters, framework, código sin decisiones. La cobertura como medida, no como meta.</small></li>
+      <li>Tests frágiles<small>El que se rompe al refactorizar sin que cambie el comportamiento.</small></li>
+    </ul>
+    <h4>Prompt para estudiarla</h4>
+    <div class="prompt">
+      <div class="bar"><span>estudiar · L26 Pruebas: dobles, unidad, integración y TDD</span><button type="button" data-copy>Copiar</button></div>
+<pre>Soy desarrollador .NET reaprendiendo a probar en serio. Enséñame la lección 26: pruebas y TDD.
+
+Temario:
+- Qué es realmente la unidad en una prueba unitaria
+- Stub, fake, mock y spy: la diferencia exacta entre los cuatro, con ejemplo de cada uno escrito a mano sin librería
+- Unitaria contra integración: qué prueba cada una y qué no prueba
+- TDD: rojo, verde, refactor, y qué bug concreto previene ver el test fallar primero
+- Qué NO testear, y por qué la cobertura es una medida y no una meta
+- Tests frágiles: los que se rompen al refactorizar aunque el comportamiento no cambie
+
+Enséñamelo sobre una regla de negocio real con cálculo (facturación con descuentos y prorrateo), no sobre una calculadora.
+
+Hazme TDD contigo: tú me das el requisito, yo escribo el test, tú me dices si está mal y por qué, y solo entonces escribo la implementación. Una iteración cada vez.
+
+Corrígeme sin suavizar. No me felicites.</pre>
+    </div>
+    <h4>La prueba · contesta sin mirar nada</h4>
+    <ol class="diag">
+      <li>En TDD, ¿por qué el test tiene que fallar primero? ¿Qué bug concreto previene ese paso?</li>
+      <li>¿Qué test NO escribirías aunque suba la cobertura? Si no puedes nombrar una categoría entera, todavía ves la cobertura como una meta.</li>
+    </ol>
+    <div class="drill"><b>Ejercicio con las manos:</b> Toma una regla de negocio con cálculo de tu sistema y escribe tres tests: uno del caso normal, uno del borde y uno del caso imposible. Ejecuta primero en rojo. Si alguno pasa en verde antes de implementar nada, ese test no prueba nada.</div>
+    <div class="anchor">
+      <h5>Dónde vive en Relolink</h5>
+      <ul>
+        <li><code>RLL.UnitTesting/ConsultantBillingMathTests.cs</code> y <code>Helpers/PasswordValidatorTests.cs</code> — tests que prueban reglas de negocio, no getters. Son tu punto de referencia de cómo se ve uno bueno.</li>
+      </ul>
+    </div>
+  </div>
+</article>
+
+<article class="lesson" id="l27">
+  <div class="l-head">
+    <div><span class="n">Lección 27</span><h3>Git y entrega continua <span class="badge relo">RELOLINK</span></h3></div>
+    <div class="l-status"></div>
+  </div>
+  <div class="l-body">
+    <p class="why">Lo usas a diario de forma operativa. Esta lección es el cimiento; la profundidad, con tu Azure real, está en la <a href="devops.html">vía B completa</a>.</p>
+    <h4>Al terminar tienes que poder</h4>
+    <ul class="know">
+      <li>Explicar qué hace <code>rebase</code> que no hace <code>merge</code> y cuándo no debes rebasear.</li>
+      <li>Decidir entre <code>revert</code> y <code>reset</code> con criterio.</li>
+      <li>Defender por qué se construye una vez y se despliega el mismo paquete.</li>
+    </ul>
+    <h4>Temario · esto es lo que le pegas a Claude</h4>
+    <ul class="concepts">
+      <li>El modelo de Git<small>Commits como instantáneas, ramas como punteros. Entender esto resuelve el 80% del miedo.</small></li>
+      <li><code>merge</code> contra <code>rebase</code><small>Qué historia produce cada uno y cuándo rebasear es peligroso.</small></li>
+      <li><code>revert</code> contra <code>reset</code><small>Ramas compartidas contra ramas propias.</small></li>
+      <li>Estrategias de rama<small>Qué conviene a un equipo pequeño y qué fricción añade cada política.</small></li>
+      <li>Artifact contra release<small>Por qué se construye una vez y se despliega el mismo paquete a todos los entornos.</small></li>
+      <li>Environments y aprobaciones<small>Qué te dan que no te da un stage suelto.</small></li>
+    </ul>
+    <h4>Prompt para estudiarla</h4>
+    <div class="prompt">
+      <div class="bar"><span>estudiar · L27 Git y entrega continua</span><button type="button" data-copy>Copiar</button></div>
+<pre>Soy desarrollador .NET que usa Git y Azure DevOps a diario de forma operativa, pero sin entender el modelo por debajo. Enséñame la lección 27.
+
+Temario:
+- El modelo de datos de Git: commits como instantáneas, ramas como punteros, HEAD
+- merge contra rebase: qué historia produce cada uno y cuándo rebasear es peligroso
+- revert contra reset en ramas compartidas y en ramas propias
+- Estrategias de rama para equipos pequeños y la fricción de cada política
+- Artifact contra release, y por qué se construye una vez y se despliega el mismo paquete
+- Environments y aprobaciones: qué dan que no dé un stage suelto
+
+Empieza por el modelo de datos. Quiero entender qué es un commit antes de hablar de comandos, porque sospecho que ahí está mi laguna.
+
+Después ponme cinco situaciones de &quot;la he liado&quot; y que yo diga qué comando usaría, corrigiéndome una a una.
+
+Corrígeme sin suavizar. No me felicites.</pre>
+    </div>
+    <h4>La prueba · contesta sin mirar nada</h4>
+    <ol class="diag">
+      <li>Un commit entró a QA y no debía. ¿<code>revert</code> o <code>reset</code>? ¿Por qué?</li>
+      <li>¿Por qué importa construir una sola vez y desplegar el mismo artifact a todos los entornos?</li>
+    </ol>
+    <div class="drill"><b>Ejercicio con las manos:</b> Crea un repositorio de juguete y provoca a propósito los cinco líos más comunes: commit en la rama equivocada, merge con conflicto, rebase de una rama ya publicada, reset con trabajo sin guardar y commit con datos sensibles. Sal de cada uno.</div>
+    <div class="anchor">
+      <h5>Dónde vive en Relolink</h5>
+      <ul>
+        <li><code>back-deploy-qa.yml</code> y <code>back-deploy-prod.yml</code>: un solo stage, sin environments ni aprobaciones, y reconstruyen en vez de reutilizar el artifact ya validado en QA.</li>
+        <li><code>VSTest@2</code> corre en el pipeline, pero nada exige que pase para mergear.</li>
+      </ul>
+    </div>
+  </div>
+</article>
+
+  <div class="check">
+    <h4>Cierre del bloque 8 · explícaselo tú</h4>
+    <p>Cuando las 2 lecciones estén en «lo puedo explicar», abre una conversación nueva y pega esto. No lo hagas en el mismo hilo donde estudiaste: ahí Claude ya sabe lo que te enseñó y tú ya lo tienes delante.</p>
+    <div class="prompt">
+      <div class="bar"><span>cierre · bloque 8</span><button type="button" data-copy>Copiar</button></div>
+<pre>Voy a explicarte con mis palabras el bloque 8: pruebas unitarias y de integración, dobles, TDD, el modelo de datos de Git, merge contra rebase, y build una vez y despliega el mismo artifact.
+
+Escúchame entero, corrígeme citando mis frases y dime sin suavizar si ya tengo los cimientos completos o qué lección tengo que repetir.
+
+Empiezo:</pre>
+    </div>
+  </div>
+</section>
+
+<section id="control">
+  <h2>El control final</h2>
+
+  <p>Cuando los ocho bloques estén cerrados, este es el control: preguntas mezcladas, sin avisar de qué tema viene cada una. Es como funciona una entrevista y como funciona un incidente en producción — nadie te dice de qué capítulo es el problema.</p>
+
+    <div class="prompt">
+      <div class="bar"><span>control final · los ocho bloques mezclados</span><button type="button" data-copy>Copiar</button></div>
+<pre>Hazme un control final de veinte preguntas mezclando estos temas, sin decirme de cuál viene cada una y sin agruparlas:
+
+objetos y encapsulamiento · referencias, null e igualdad · herencia y polimorfismo · composición · interfaces en C# y en TypeScript · SOLID · patrones · genéricos y LINQ · async/await · ciclos de vida del contenedor · modelo relacional · transacciones y aislamiento · EF Core · HTTP y REST · TLS, CORS y tokens · OAuth2, OIDC y JWT · capas y fronteras · monolito modular · colas y idempotencia · pruebas y TDD · Git y entrega continua
+
+Reglas: una pregunta a la vez, dificultad creciente, sin pistas. Califica cada respuesta de 0 a 2 con máximo tres líneas explicando qué faltó.
+
+La mitad de las preguntas tienen que ser de caso (&quot;te pasa esto, qué haces&quot; o &quot;qué imprime este código&quot;), no de definición.
+
+Al final dame: puntaje total, el desglose por bloque, y los tres temas que debo repetir primero ordenados por impacto en el diseño de un marketplace B2B multi-tenant. No me felicites y no suavices.</pre>
+    </div>
+
+  <div class="artifact"><b>Cuándo se dan por cerradas las bases:</b> cuando saques 34 de 40 o más en este control dos veces seguidas con un mes de diferencia. A partir de ahí esta página ya cumplió, y todo tu tiempo debería estar en la <a href="arquitectura.html">vía de arquitectura</a> y en la <a href="devops.html">vía de DevOps</a>.</div>
+
+  <div class="bridge"><span class="ico">&rarr;</span><p>Y un aviso de orden: el <a href="arquitectura.html#m1">módulo 1 de la vía A</a> decide la identidad y la tenencia del Hub. Esa decisión se apoya en la <a href="#l22">lección 22</a>. Si vas a llegar a ese módulo antes de terminar el bloque 6, adelanta esa lección sola: es la única excepción razonable al orden del temario.</p></div>
+</section>
+
+</main>
+</div></div>
+
+<footer>
+  <div class="shell">
+    Bases · temario de fundamentos &nbsp;·&nbsp; El estado se guarda solo en este navegador &nbsp;·&nbsp;
+    <a href="index.html">Hoy</a> · <a href="arquitectura.html">Arquitectura</a> · <a href="devops.html">DevOps<span class="wide"> y Azure</span></a>
+  </div>
+</footer>
+
+<script src="assets/app.js?v=6"></script>
+</body>
+</html>

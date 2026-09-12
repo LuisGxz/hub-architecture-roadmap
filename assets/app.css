@@ -125,7 +125,7 @@
   @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 
   /* ==========================================================
-     Anadidos v2: sitio multi-pagina, vias, repaso y progreso
+     Anadidos v2: sitio multi-pagina, vias, bases y progreso
      ========================================================== */
 
   :root{
@@ -226,31 +226,43 @@
   .timeline tr.now td{background:var(--teal-wash)}
   .timeline tr.now td:first-child{color:var(--teal-deep);font-weight:500}
 
-  /* --- Zona de repaso --- */
-  .due{background:var(--clay-wash);border:1px solid #EFCFCB;border-radius:var(--radius);padding:18px 22px;margin:0 0 24px}
-  .due h3{margin:0 0 8px;font-size:18px;color:var(--clay)}
+  /* --- Temario de bases --- */
+  /* El panel superior ya no avisa de vencimientos: senala la leccion que toca,
+     que es siempre la primera sin cerrar. Ambar de "estas aqui", no rojo de
+     alarma; el verde queda para el temario terminado. */
+  .due{background:var(--amber-wash);border:1px solid #E8D2AC;border-radius:var(--radius);padding:18px 22px;margin:0 0 24px}
+  .due h3{margin:0 0 8px;font-size:18px;color:var(--amber)}
   .due p{margin:0 0 10px;font-size:14.5px}
   .due ul{margin:0;padding-left:18px}
   .due.empty{background:var(--teal-wash);border-color:#BFDED8}
   .due.empty h3{color:var(--teal-deep)}
 
-  .rcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);margin-bottom:20px;overflow:hidden;scroll-margin-top:70px}
-  .rcard>.r-head{padding:16px 22px;background:var(--paper);border-bottom:1px solid var(--line);display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
-  .rcard>.r-head h3{margin:0;font-size:18px;font-weight:700}
-  .rcard>.r-head .n{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);display:block;margin-bottom:3px;letter-spacing:.05em}
-  .rcard .r-status{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--muted);text-align:right;line-height:1.5}
-  .rcard .r-status b{display:block;color:var(--ink-soft);font-weight:500}
-  .rcard.mastered>.r-head{background:#E9F3EE}
-  .rcard.mastered>.r-head h3::after{content:" \2713";color:var(--ok)}
-  .rcard.duenow>.r-head{background:var(--clay-wash)}
-  .rcard .r-body{padding:4px 22px 22px}
-  .rcard .r-body h4{font-family:'IBM Plex Mono',monospace;font-size:11.5px;font-weight:500;color:var(--muted);letter-spacing:.04em;margin:22px 0 9px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+  .lesson{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);margin-bottom:20px;overflow:hidden;scroll-margin-top:70px}
+  .lesson>.l-head{padding:16px 22px;background:var(--paper);border-bottom:1px solid var(--line);display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
+  .lesson>.l-head h3{margin:0;font-size:18px;font-weight:700}
+  .lesson>.l-head .n{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);display:block;margin-bottom:3px;letter-spacing:.05em}
+  .lesson .l-status{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--muted);text-align:right;line-height:1.5}
+  .lesson .l-status b{display:block;color:var(--ink-soft);font-weight:500}
+  .lesson.closed>.l-head{background:#E9F3EE}
+  .lesson.closed>.l-head h3::after{content:" \2713";color:var(--ok)}
+  .lesson.open>.l-head{background:var(--amber-wash)}
+  .lesson .l-body{padding:4px 22px 22px}
+  .lesson .l-body h4{font-family:'IBM Plex Mono',monospace;font-size:11.5px;font-weight:500;color:var(--muted);letter-spacing:.04em;margin:22px 0 9px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+  .lesson .why{font-size:15px;color:var(--ink-soft);margin-top:16px}
+
+  /* La prueba: se contesta sin mirar, por eso se marca distinto del temario. */
   ol.diag{counter-reset:d;list-style:none;padding:0;margin:10px 0}
   ol.diag li{counter-increment:d;padding-left:34px;position:relative;margin-bottom:10px;font-size:15px}
-  ol.diag li::before{content:"Q" counter(d);position:absolute;left:0;top:2px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--clay);background:var(--clay-wash);border-radius:4px;padding:2px 5px}
+  ol.diag li::before{content:"P" counter(d);position:absolute;left:0;top:2px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--clay);background:var(--clay-wash);border-radius:4px;padding:2px 5px}
   ol.diag li small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
   .drill{background:var(--teal-wash);border-radius:8px;padding:14px 18px;font-size:15px;margin:10px 0}
   .drill b{font-family:'Space Grotesk',sans-serif;color:var(--teal-deep)}
+
+  /* Cierre de bloque: el momento en que el alumno explica y la IA corrige. */
+  .check{background:var(--surface);border:1px solid var(--ink);border-radius:var(--radius);padding:18px 22px;margin:26px 0 0}
+  .check h4{margin:0 0 8px;font-size:15px;font-family:'Space Grotesk',sans-serif}
+  .check p{font-size:14.5px;color:var(--ink-soft)}
+  .check .prompt{margin-bottom:0}
 
   .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin:14px 0 24px;padding:12px 16px;background:var(--surface);border:1px solid var(--line);border-radius:8px}
   .legend span{display:flex;gap:6px;align-items:center}
@@ -261,8 +273,8 @@
   @media (max-width:900px){
     .vias{grid-template-columns:1fr}
     .glossary div{grid-template-columns:1fr;gap:2px}
-    .rcard>.r-head{grid-template-columns:1fr}
-    .rcard .r-status{text-align:left}
+    .lesson>.l-head{grid-template-columns:1fr}
+    .lesson .l-status{text-align:left}
     .sitebar .shell{height:auto;padding-top:8px;padding-bottom:8px}
     .sitebar .pct{display:none}
   }
@@ -341,8 +353,9 @@
     .module-body{padding:6px 16px 20px}
     .module-head{padding:16px 17px}
     .module-head h3{font-size:19px}
-    .rcard .r-body{padding:4px 16px 20px}
-    .rcard>.r-head{padding:14px 17px}
+    .lesson .l-body{padding:4px 16px 20px}
+    .lesson>.l-head{padding:14px 17px}
+    .check{padding:16px 17px}
     .anchor{padding:13px 15px}
     .drill,.artifact{padding:13px 15px}
     .bridge{padding:11px 14px}
@@ -386,5 +399,5 @@
   @media (max-width:640px){
     /* La barra pegajosa mide ~78px en movil: los anclajes tienen que
        dejarle sitio o el titulo del modulo queda oculto debajo. */
-    section,article.module,.rcard{scroll-margin-top:88px}
+    section,article.module,.lesson{scroll-margin-top:88px}
   }

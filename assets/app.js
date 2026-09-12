@@ -1,5 +1,5 @@
 /* ============================================================
-   Hub roadmap - estado local, repeticion espaciada y utilidades
+   Hub roadmap - estado local, progreso del temario y utilidades
    Todo vive en localStorage del navegador. No sale de tu maquina.
    ============================================================ */
 (function () {
@@ -8,7 +8,7 @@
   var K = {
     start: 'hub.start',
     prog: 'hub.progress',
-    rep: 'hub.repaso',
+    bases: 'hub.bases',
     log: 'hub.log'
   };
 
@@ -34,16 +34,47 @@
     { id: 'f5', via: 'b', n: 'F5', t: 'Calidad y branch policies' }
   ];
 
-  // Tarjetas de repaso. El orden es el de la columna "Ya lo tienes".
-  var CARDS = [
-    { id: 'r1', t: 'OOP, SOLID y TDD' },
-    { id: 'r2', t: '.NET, TypeScript y Angular' },
-    { id: 'r3', t: 'REST, SQL y ACID' },
-    { id: 'r4', t: 'Auth strategies e IAM' },
-    { id: 'r5', t: 'API gateway, colas y event bus' },
-    { id: 'r6', t: 'Capas y cliente-servidor' },
-    { id: 'r7', t: 'Git, CI/CD, Scrum y Azure DevOps' },
-    { id: 'r8', t: 'HTTP y HTTPS' }
+  // Temario de bases. El orden es el del estudio: cada bloque se apoya en el
+  // anterior, asi que la "siguiente" leccion es siempre la primera sin cerrar.
+  var LESSONS = [
+    { id: 'l1', b: 'b1', n: 'L1', t: 'Clase, objeto, estado y encapsulamiento' },
+    { id: 'l2', b: 'b1', n: 'L2', t: 'Referencias, valores, null e igualdad' },
+    { id: 'l3', b: 'b1', n: 'L3', t: 'Métodos, firmas y contratos' },
+    { id: 'l4', b: 'b1', n: 'L4', t: 'Herencia y polimorfismo' },
+    { id: 'l5', b: 'b1', n: 'L5', t: 'Composición' },
+    { id: 'l6', b: 'b2', n: 'L6', t: 'Qué es una interfaz, exactamente' },
+    { id: 'l7', b: 'b2', n: 'L7', t: 'Interfaz contra clase abstracta' },
+    { id: 'l8', b: 'b2', n: 'L8', t: 'Para qué sirven de verdad' },
+    { id: 'l9', b: 'b2', n: 'L9', t: 'Interfaces en TypeScript' },
+    { id: 'l10', b: 'b3', n: 'L10', t: 'SRP, cohesión y acoplamiento' },
+    { id: 'l11', b: 'b3', n: 'L11', t: 'OCP y LSP' },
+    { id: 'l12', b: 'b3', n: 'L12', t: 'ISP y DIP' },
+    { id: 'l13', b: 'b3', n: 'L13', t: 'Patrones que sí vas a usar' },
+    { id: 'l14', b: 'b4', n: 'L14', t: 'Genéricos, colecciones y LINQ' },
+    { id: 'l15', b: 'b4', n: 'L15', t: 'async, await y concurrencia' },
+    { id: 'l16', b: 'b4', n: 'L16', t: 'Ciclos de vida y contenedor' },
+    { id: 'l17', b: 'b5', n: 'L17', t: 'Modelo relacional y normalización' },
+    { id: 'l18', b: 'b5', n: 'L18', t: 'Transacciones, ACID y concurrencia' },
+    { id: 'l19', b: 'b5', n: 'L19', t: 'EF Core: tracking, N+1' },
+    { id: 'l20', b: 'b6', n: 'L20', t: 'HTTP y diseño de APIs REST' },
+    { id: 'l21', b: 'b6', n: 'L21', t: 'TLS, CORS, cookies y tokens' },
+    { id: 'l22', b: 'b6', n: 'L22', t: 'OAuth2, OIDC, JWT y autorización' },
+    { id: 'l23', b: 'b7', n: 'L23', t: 'Capas y reglas de dependencia' },
+    { id: 'l24', b: 'b7', n: 'L24', t: 'Monolito modular contra microservicios' },
+    { id: 'l25', b: 'b7', n: 'L25', t: 'Mensajería asíncrona' },
+    { id: 'l26', b: 'b8', n: 'L26', t: 'Pruebas, dobles y TDD' },
+    { id: 'l27', b: 'b8', n: 'L27', t: 'Git y entrega continua' }
+  ];
+
+  var BLOQUES = [
+    { id: 'b1', n: 'Bloque 1', t: 'Objetos' },
+    { id: 'b2', n: 'Bloque 2', t: 'Interfaces' },
+    { id: 'b3', n: 'Bloque 3', t: 'SOLID y diseño' },
+    { id: 'b4', n: 'Bloque 4', t: 'Lenguaje y plataforma' },
+    { id: 'b5', n: 'Bloque 5', t: 'Datos' },
+    { id: 'b6', n: 'Bloque 6', t: 'Red e identidad' },
+    { id: 'b7', n: 'Bloque 7', t: 'Arquitectura' },
+    { id: 'b8', n: 'Bloque 8', t: 'Oficio' }
   ];
 
   // Que toca cada semana. Las seis primeras llevan las dos vias en paralelo.
@@ -63,9 +94,6 @@
     keys.forEach(function (k) { if (k <= week) found = k; });
     return found ? WEEKPLAN[found] : null;
   }
-
-  // Escalera de repeticion espaciada, en dias.
-  var LADDER = [1, 3, 7, 21, 60];
 
   /* ---------- almacenamiento ---------- */
   function read(key, fallback) {
@@ -164,104 +192,173 @@
     });
   }
 
+  /**
+   * Pinta el contador de la barra superior: modulos con artefacto entregado y
+   * lecciones de bases cerradas. Se llama tras cada cambio de estado, asi que
+   * no hace consultas al DOM mas alla del propio contador.
+   */
   function paintHeaderPct() {
     var el = document.querySelector('.sitebar .pct');
     if (!el) return;
     var pr = progressPct();
-    var due = dueCards().length;
-    el.textContent = pr.done + '/' + pr.total + ' módulos' + (due ? '  ·  ' + due + ' de repaso' : '');
+    var bs = basesStats();
+    el.textContent = pr.done + '/' + pr.total + ' módulos  ·  ' + bs.done + '/' + bs.total + ' bases';
   }
 
-  /* ---------- repeticion espaciada ---------- */
-  function getRep() { return read(K.rep, {}); }
+  /* ---------- temario de bases ---------- */
+  function getBases() { return read(K.bases, {}); }
 
-  function cardState(id) {
-    var r = getRep()[id];
-    if (!r) return { lvl: -1, last: null, next: null, status: 'nunca' };
-    var next = r.next ? parse(r.next) : null;
-    var due = !next || next <= today();
-    return {
-      lvl: r.lvl,
-      last: r.last ? parse(r.last) : null,
-      next: next,
-      status: r.lvl >= LADDER.length - 1 ? 'dominado' : (due ? 'toca' : 'al dia')
-    };
+  /**
+   * Estado de una leccion del temario. Solo hay tres y no dependen de fechas:
+   * el temario se estudia en orden, no por vencimiento.
+   * @param {string} id identificador de la leccion, por ejemplo 'l6'.
+   * @returns {string} 'pendiente', 'estudiando' o 'explicado'.
+   */
+  function lessonState(id) {
+    return getBases()[id] || 'pendiente';
   }
 
-  function dueCards() {
-    return CARDS.filter(function (c) {
-      var s = cardState(c.id);
-      return s.status === 'nunca' || s.status === 'toca';
+  /**
+   * Guarda el estado de una leccion y repinta todo lo que depende de el.
+   * @param {string} id identificador de la leccion.
+   * @param {string} state 'pendiente', 'estudiando' o 'explicado'.
+   */
+  function setLesson(id, state) {
+    var b = getBases();
+    if (state === 'pendiente') { delete b[id]; } else { b[id] = state; }
+    write(K.bases, b);
+    paintBases();
+    paintHeaderPct();
+    paintToday();
+  }
+
+  /**
+   * Cuenta las lecciones cerradas sobre el total. Sirve al contador de la barra,
+   * a la barra de progreso de la portada y a la tarjeta de la via.
+   * @returns {{done:number,total:number,pct:number}}
+   */
+  function basesStats() {
+    var done = 0;
+    LESSONS.forEach(function (l) { if (lessonState(l.id) === 'explicado') done++; });
+    return { done: done, total: LESSONS.length, pct: Math.round((done / LESSONS.length) * 100) };
+  }
+
+  /**
+   * Devuelve la primera leccion sin cerrar. Como el temario es progresivo, esa
+   * es siempre la que toca: no hay cola de vencidas ni seleccion por fecha.
+   * Prioriza la que ya este en curso para no abrir dos frentes a la vez.
+   * @returns {object|null} la leccion, o null si el temario esta completo.
+   */
+  function nextLesson() {
+    var curso = null, pend = null;
+    LESSONS.forEach(function (l) {
+      var st = lessonState(l.id);
+      if (!curso && st === 'estudiando') curso = l;
+      if (!pend && st === 'pendiente') pend = l;
+    });
+    return curso || pend;
+  }
+
+  /**
+   * Cuenta las lecciones cerradas de un bloque concreto.
+   * @param {string} bid identificador del bloque, por ejemplo 'b2'.
+   * @returns {{done:number,total:number}}
+   */
+  function blockStats(bid) {
+    var list = LESSONS.filter(function (l) { return l.b === bid; });
+    var done = list.filter(function (l) { return lessonState(l.id) === 'explicado'; }).length;
+    return { done: done, total: list.length };
+  }
+
+  /**
+   * Inyecta los tres botones de estado al final de cada leccion del temario.
+   * Se hace desde JavaScript para que el HTML de bases.html se mantenga legible
+   * y para que anadir una leccion sea solo anadir su articulo y su entrada en
+   * LESSONS.
+   */
+  function injectLessonStates() {
+    Array.prototype.forEach.call(document.querySelectorAll('article.lesson[id]'), function (art) {
+      var id = art.id;
+      if (!LESSONS.some(function (l) { return l.id === id; })) return;
+      if (art.querySelector('.state')) return;
+      var body = art.querySelector('.l-body') || art;
+      var wrap = document.createElement('div');
+      wrap.className = 'state';
+      wrap.setAttribute('data-lesson-for', id);
+      wrap.innerHTML =
+        '<span class="lbl">ESTADO</span>' +
+        '<button type="button" data-lset="pendiente">Pendiente</button>' +
+        '<button type="button" data-lset="estudiando">Estudiando</button>' +
+        '<button type="button" data-lset="explicado">Lo puedo explicar sin mirar</button>';
+      body.appendChild(wrap);
     });
   }
 
-  // result: 'ok' sube un escalon, 'flojo' baja a 1 dia, 'dominado' salta al final.
-  function gradeCard(id, result) {
-    var rep = getRep();
-    var cur = rep[id] ? rep[id].lvl : -1;
-    var lvl;
-    if (result === 'dominado') lvl = LADDER.length - 1;
-    else if (result === 'flojo') lvl = 0;
-    else lvl = Math.min(cur + 1, LADDER.length - 1);
-    var t = today();
-    rep[id] = { lvl: lvl, last: iso(t), next: iso(addDays(t, LADDER[lvl])) };
-    write(K.rep, rep);
-    paintRepaso();
-    paintHeaderPct();
-    paintToday();
-  }
-
-  function resetCard(id) {
-    var rep = getRep();
-    delete rep[id];
-    write(K.rep, rep);
-    paintRepaso();
-    paintHeaderPct();
-    paintToday();
-  }
-
-  function paintRepaso() {
-    Array.prototype.forEach.call(document.querySelectorAll('.rcard[id]'), function (card) {
-      var s = cardState(card.id);
-      var box = card.querySelector('.r-status');
+  /**
+   * Repinta la pagina de bases: el estado de cada leccion, el resumen de cada
+   * bloque y el panel superior con la leccion que toca. Es idempotente, asi que
+   * se puede llamar en cada cambio sin acumular nodos.
+   */
+  function paintBases() {
+    Array.prototype.forEach.call(document.querySelectorAll('article.lesson[id]'), function (art) {
+      var st = lessonState(art.id);
+      var box = art.querySelector('.l-status');
       if (box) {
-        if (s.status === 'nunca') {
-          box.innerHTML = '<b>Sin diagnosticar</b>Contesta las 5 preguntas';
-        } else if (s.status === 'dominado') {
-          box.innerHTML = '<b>Dominado</b>Vuelve el ' + fmt(s.next);
-        } else if (s.status === 'toca') {
-          box.innerHTML = '<b>Toca repasar</b>Último: ' + fmt(s.last);
+        if (st === 'explicado') {
+          box.innerHTML = '<b>Lo puedo explicar</b>Cerrada';
+        } else if (st === 'estudiando') {
+          box.innerHTML = '<b>Estudiando</b>Falta pasar la prueba';
         } else {
-          box.innerHTML = '<b>Al día</b>Vuelve el ' + fmt(s.next);
+          box.innerHTML = '<b>Pendiente</b>Sin abrir';
         }
       }
-      card.classList.toggle('mastered', s.status === 'dominado');
-      card.classList.toggle('duenow', s.status === 'toca' || s.status === 'nunca');
+      art.classList.toggle('closed', st === 'explicado');
+      art.classList.toggle('open', st === 'estudiando');
     });
 
-    var panel = document.getElementById('due');
+    Array.prototype.forEach.call(document.querySelectorAll('.state[data-lesson-for]'), function (w) {
+      var st = lessonState(w.getAttribute('data-lesson-for'));
+      Array.prototype.forEach.call(w.querySelectorAll('button[data-lset]'), function (b) {
+        b.setAttribute('aria-pressed', String(b.getAttribute('data-lset') === st));
+      });
+    });
+
+    var panel = document.getElementById('siguiente');
     if (panel) {
-      var due = dueCards();
-      if (!due.length) {
+      var next = nextLesson();
+      if (!next) {
         panel.className = 'due empty';
-        panel.innerHTML = '<h3>Nada que repasar hoy</h3><p>Las ocho tarjetas están al día. Vuelve cuando el panel te llame; repasar lo que ya sabes es tiempo robado a lo que no.</p>';
+        panel.innerHTML = '<h3>Temario completo</h3><p>Las veintisiete lecciones están cerradas. ' +
+          'Lo que queda es el <a href="#control">control final</a>: dos veces con un mes de diferencia, ' +
+          'y las bases dejan de ocupar tiempo del plan.</p>';
       } else {
+        var bs = basesStats();
+        var bl = blockStats(next.b);
+        var bn = null;
+        BLOQUES.forEach(function (b) { if (b.id === next.b) bn = b; });
         panel.className = 'due';
-        panel.innerHTML = '<h3>Hoy toca repasar: ' + due.length + (due.length === 1 ? ' tarjeta' : ' tarjetas') + '</h3>' +
-          '<p>Veinte minutos, no más. Contesta las preguntas de diagnóstico en voz alta antes de mirar nada.</p><ul>' +
-          due.map(function (c) { return '<li><a href="#' + c.id + '">' + c.t + '</a></li>'; }).join('') +
-          '</ul>';
+        panel.innerHTML = '<h3>Te toca la ' + next.n + ' · ' + next.t + '</h3>' +
+          '<p>' + (bn ? bn.n + ' · ' + bn.t + ': ' + bl.done + ' de ' + bl.total + ' lecciones cerradas. ' : '') +
+          bs.done + ' de ' + bs.total + ' en total. Una sesión de 45 minutos: pega el ' +
+          '<a href="#arranque">prompt de arranque</a> si abres conversación nueva, y después el de la lección.</p>' +
+          '<ul><li><a href="#' + next.id + '">Ir a la ' + next.n + '</a></li></ul>';
       }
     }
   }
 
   /* ---------- panel "que hago hoy" ---------- */
+  /**
+   * Pinta el panel del dia de la portada: el modulo que toca esta semana y, en
+   * paralelo, la leccion de bases que sigue. Las bases ya no vencen ni
+   * interrumpen: acompanan al modulo como segunda accion, porque el temario se
+   * estudia en orden y no por fecha.
+   */
   function paintToday() {
     var el = document.getElementById('today');
     if (!el) return;
     var w = currentWeek();
     var p = getProg();
-    var due = dueCards().length;
+    var lec = nextLesson();
     var start = startDate();
 
     var titulo, texto, acciones = [];
@@ -269,7 +366,7 @@
     if (w === 0) {
       titulo = 'El plan arranca el ' + fmt(start);
       texto = 'Faltan ' + daysBetween(today(), start) + ' días. Lo único útil de aquí a entonces: crear el repo <code>hub-lab</code> vacío y la organización personal en dev.azure.com. Cinco minutos, y la semana 1 empieza sin fricción.';
-      acciones.push(['repaso.html', 'Diagnosticar el repaso', 'ghost']);
+      acciones.push(['bases.html#l1', 'Empezar por las bases', 'ghost']);
     } else {
       var byId = function (id) {
         var hit = null;
@@ -286,18 +383,17 @@
         if (!focus && id && p[id] !== 'done') focus = byId(id);
       });
       focus = focus || doing[0] || pend[0];
+      var enBases = lec ? ' En paralelo, la <b>' + lec.n + ' · ' + lec.t + '</b> de bases: 45 minutos, dos veces por semana.' : '';
       if (!focus) {
         titulo = 'Terminaste las dos vías';
-        texto = 'Diez módulos y seis fases con artefacto entregado. Lo que sigue está en las etapas post-V1 de la vía de arquitectura.';
-      } else if (due > 0) {
-        titulo = 'Repaso primero: ' + due + (due === 1 ? ' tarjeta' : ' tarjetas') + ' vencidas';
-        texto = 'Veinte minutos de repaso y después sigues con <b>' + focus.n + ' · ' + focus.t + '</b>. El repaso vencido se acumula y deja de servir.';
-        acciones.push(['repaso.html', 'Ir al repaso', '']);
-        acciones.push([(focus.via === 'a' ? 'arquitectura.html' : 'devops.html') + '#' + focus.id, 'Seguir con ' + focus.n, 'ghost']);
+        texto = 'Diez módulos y seis fases con artefacto entregado. Lo que sigue está en las etapas post-V1 de la vía de arquitectura.' +
+          (lec ? ' Y el temario de bases sigue abierto por la <b>' + lec.n + '</b>.' : '');
+        if (lec) acciones.push(['bases.html#' + lec.id, 'Seguir con ' + lec.n, '']);
       } else {
         titulo = focus.n + ' · ' + focus.t;
-        texto = 'Semana ' + w + '. ' + (doing.length ? 'Lo tienes marcado en curso: cierra el artefacto antes del domingo.' : 'Sin empezar. Abre el módulo y arranca por el bloque de estudio.');
+        texto = 'Semana ' + w + '. ' + (doing.length ? 'Lo tienes marcado en curso: cierra el artefacto antes del domingo.' : 'Sin empezar. Abre el módulo y arranca por el bloque de estudio.') + enBases;
         acciones.push([(focus.via === 'a' ? 'arquitectura.html' : 'devops.html') + '#' + focus.id, 'Abrir ' + focus.n, '']);
+        if (lec) acciones.push(['bases.html#' + lec.id, 'Bases · ' + lec.n, 'ghost']);
       }
     }
 
@@ -325,8 +421,8 @@
     Array.prototype.forEach.call(vias, function (node) {
       var via = node.getAttribute('data-via-count');
       if (via === 'r') {
-        var dom = CARDS.filter(function (c) { return cardState(c.id).status === 'dominado'; }).length;
-        node.textContent = dom + ' de ' + CARDS.length + ' tarjetas dominadas';
+        var bs = basesStats();
+        node.textContent = bs.done + ' de ' + bs.total + ' lecciones cerradas';
       } else {
         var list = MODULES.filter(function (m) { return m.via === via; });
         var d = list.filter(function (m) { return getProg()[m.id] === 'done'; }).length;
@@ -542,7 +638,7 @@
         var data = {
           start: read(K.start, DEFAULT_START),
           progress: getProg(),
-          repaso: getRep(),
+          bases: getBases(),
           exported: iso(today())
         };
         var ta = document.getElementById('export-out');
@@ -558,7 +654,7 @@
           var d = JSON.parse(ta.value);
           if (d.start) write(K.start, d.start);
           if (d.progress) write(K.prog, d.progress);
-          if (d.repaso) write(K.rep, d.repaso);
+          if (d.bases) write(K.bases, d.bases);
           location.reload();
         } catch (e) { ta.value = 'JSON inválido: ' + e.message; }
       });
@@ -574,15 +670,10 @@
         setState(wrap.getAttribute('data-state-for'), st.getAttribute('data-set'));
         return;
       }
-      var g = e.target.closest('[data-grade]');
-      if (g) {
-        var card = g.closest('.rcard');
-        gradeCard(card.id, g.getAttribute('data-grade'));
-        return;
-      }
-      var r = e.target.closest('[data-reset-card]');
-      if (r) {
-        resetCard(r.closest('.rcard').id);
+      var ls = e.target.closest('.state button[data-lset]');
+      if (ls) {
+        var box = ls.closest('.state');
+        setLesson(box.getAttribute('data-lesson-for'), ls.getAttribute('data-lset'));
       }
     });
   }
@@ -590,6 +681,7 @@
   /* ---------- arranque ---------- */
   document.addEventListener('DOMContentLoaded', function () {
     injectStates();
+    injectLessonStates();
     labelTables();
     collapsibleToc();
     mobileTodayFirst();
@@ -599,7 +691,7 @@
     initBitacora();
     initToolbar();
     paintStates();
-    paintRepaso();
+    paintBases();
     paintToday();
     paintTimeline();
     paintHeaderPct();

@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ruta del Hub · qué toca hoy</title>
-<meta name="description" content="Tres vías en paralelo: arquitectura del producto, dueño del pipeline y repaso activo de lo que ya sabes. Con progreso, calendario y bitácora.">
+<meta name="description" content="Tres vías en paralelo: los fundamentos reaprendidos, la arquitectura del producto y la propiedad del pipeline. Con progreso, calendario y bitácora.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/app.css?v=5">
+<link rel="stylesheet" href="assets/app.css?v=6">
 </head>
 <body>
 
@@ -17,9 +17,9 @@
     <a class="brand" href="index.html">Ruta del Hub <span>v2</span></a>
     <nav>
       <a href="index.html" aria-current="page">Hoy</a>
+      <a href="bases.html">Bases</a>
       <a href="arquitectura.html">Arquitectura</a>
       <a href="devops.html">DevOps<span class="wide"> y Azure</span></a>
-      <a href="repaso.html">Repaso</a>
     </nav>
     <span class="spacer"></span>
     <span class="pct"></span>
@@ -29,11 +29,11 @@
 <header class="hero">
   <div class="shell">
     <h1>Tres vías, un solo plan</h1>
-    <p class="lede">Arquitectura del producto, propiedad del proceso de release, y recuperación de lo que ya sabías. Corren en paralelo porque se alimentan entre sí: no se puede diseñar para la nube sin entender cómo se despliega, ni montar staging sin saber qué hace la aplicación. Arranca el <strong>lunes 14 de septiembre</strong>.</p>
+    <p class="lede">Arquitectura del producto, propiedad del proceso de release, y un temario de fundamentos para volver a tener debajo lo que se oxidó. Corren en paralelo porque se alimentan entre sí: no se puede decidir un modelo de identidad sin entender autorización, ni diseñar módulos sin entender interfaces. Arranca el <strong>lunes 14 de septiembre</strong>.</p>
     <div class="budget">
-      <div><div class="k">7-8 h</div><div class="l">Por semana, las primeras seis. Cinco de arquitectura, dos de DevOps, cuarenta minutos de repaso.</div></div>
+      <div><div class="k">8-9 h</div><div class="l">Por semana, las primeras seis. Cinco de arquitectura, dos de DevOps, hora y media de bases.</div></div>
       <div><div class="k">16</div><div class="l">Módulos y fases con artefacto obligatorio. Sin artefacto, la semana no cuenta.</div></div>
-      <div><div class="k">8</div><div class="l">Tarjetas de repaso. El objetivo no es estudiarlas: es deshacerte de ellas.</div></div>
+      <div><div class="k">27</div><div class="l">Lecciones de fundamentos, en orden. Cerradas cuando puedes explicarlas sin mirar.</div></div>
       <div><div class="k">6 meses</div><div class="l">Hasta la V1 del Hub. Después, siete etapas más hasta sostener el título de arquitecto.</div></div>
     </div>
   </div>
@@ -68,7 +68,7 @@
 <section id="vias">
   <h2>Las tres vías</h2>
 
-  <p>La vía A decide <strong>qué</strong> construir y por qué. La vía B decide <strong>cómo llega</strong> a los clientes sin romperse. El repaso desatasca lo que ya sabías y está oxidado, para que no frene a las otras dos. Si una semana no alcanza el tiempo, <strong>lo que se sacrifica es la vía B</strong>, nunca la A ni el repaso: la vía B se puede recuperar; una decisión de arquitectura mal tomada en septiembre se paga hasta marzo.</p>
+  <p>La vía A decide <strong>qué</strong> construir y por qué. La vía B decide <strong>cómo llega</strong> a los clientes sin romperse. Las bases sostienen a las dos: son los fundamentos que se oxidaron y que hoy te obligan a aceptar decisiones que no puedes defender. Si una semana no alcanza el tiempo, <strong>lo que se sacrifica es la vía B</strong>, nunca la A ni las bases: un pipeline se aprende en cualquier momento; un fundamento que falta se paga en cada decisión que tomes hasta que lo recuperes.</p>
 
   <div class="vias">
     <div class="via">
@@ -86,11 +86,11 @@
       <a class="btn" href="devops.html">Abrir la vía B</a>
     </div>
     <div class="via">
-      <h3>Repaso</h3>
-      <p class="sub">LO OXIDADO · 40 MIN/SEMANA</p>
-      <p>Ocho tarjetas de diagnóstico sobre lo que tu roadmap marcó como "se recupera con uso": SOLID, EF, ACID, OAuth2, colas, capas, Git y HTTP. Con repetición espaciada, para no repasar lo que ya está.</p>
+      <h3>Bases · Los pilares</h3>
+      <p class="sub">LOS FUNDAMENTOS · 1,5 H/SEMANA</p>
+      <p>Temario de veintisiete lecciones en ocho bloques: objetos, <strong>interfaces</strong>, SOLID, C# y la plataforma, datos, red e identidad, arquitectura y oficio. Cada una con su temario copiable y su prompt para estudiarla en conversación.</p>
       <p class="st" data-via-count="r">—</p>
-      <a class="btn" href="repaso.html">Abrir el repaso</a>
+      <a class="btn" href="bases.html">Abrir las bases</a>
     </div>
   </div>
 
@@ -104,6 +104,20 @@
       <tr><td><a href="arquitectura.html#m6">M6 · Seguridad aplicada</a></td><td><a href="devops.html#f2">F2 · Secrets</a></td><td>Allá decides qué proteger; aquí aprendes la mecánica de Key Vault y la rotación.</td></tr>
       <tr><td><a href="arquitectura.html#m8">M8 · Patrones cloud</a></td><td><a href="devops.html#f4">F4 · Staging</a></td><td>Blue-green y despliegue sin caída. El slot swap es la versión sensata para el tamaño de Relolink.</td></tr>
       <tr><td><a href="arquitectura.html#m9">M9 · Observabilidad</a></td><td><a href="devops.html#f5">F5 · Runbook</a></td><td>El mismo documento visto desde dos lados: qué hacer cuando falla el deploy, y cuando falla el sistema ya desplegado.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Qué lección sostiene qué módulo</h3>
+  <p>Las bases no son un curso aparte: cada bloque paga una factura concreta de la vía A. Esta tabla es la que decide qué lección adelantar si un módulo se te acerca antes de tiempo.</p>
+  <table>
+    <thead><tr><th>Bloque de bases</th><th>Sostiene</th><th>Qué pasa si falta</th></tr></thead>
+    <tbody>
+      <tr><td><a href="bases.html#b2">B2 · Interfaces</a></td><td><a href="arquitectura.html#m5">M5 · Estándares</a> y todo el diseño del Hub</td><td>Escribes las fronteras por imitación y no puedes defender ninguna en una revisión.</td></tr>
+      <tr><td><a href="bases.html#b3">B3 · SOLID</a></td><td><a href="arquitectura.html#m5">M5</a> y el copiloto de revisión de PRs</td><td>El <code>STANDARDS.md</code> sale de opiniones copiadas, no de criterio.</td></tr>
+      <tr><td><a href="bases.html#b5">B5 · Datos</a></td><td><a href="arquitectura.html#m2">M2 · Modelo del catálogo</a> y <a href="arquitectura.html#m7">M7 · Performance</a></td><td>La decisión más cara de revertir de todo el plan se toma a ciegas.</td></tr>
+      <tr><td><a href="bases.html#b6">B6 · Red e identidad</a></td><td><a href="arquitectura.html#m1">M1 · Identidad y tenencia</a> y <a href="arquitectura.html#m6">M6 · Seguridad</a></td><td>El M1 se convierte en elegir entre opciones que no entiendes. Adelanta la <a href="bases.html#l22">L22</a> si llegas antes.</td></tr>
+      <tr><td><a href="bases.html#b7">B7 · Arquitectura</a></td><td><a href="arquitectura.html#m8">M8 · Patrones cloud</a> y la decisión de monolito modular</td><td>Te comes la tentación de los microservicios sin argumentos para resistirla.</td></tr>
+      <tr><td><a href="bases.html#b8">B8 · Oficio</a></td><td>Toda la <a href="devops.html">vía B</a></td><td>Ejecutas pasos de pipeline sin entender qué garantiza cada uno.</td></tr>
     </tbody>
   </table>
 
@@ -128,47 +142,52 @@
 
   <div class="timeline" id="timeline">
     <table>
-      <thead><tr><th>Semana</th><th>Vía A · arquitectura</th><th>Vía B · DevOps</th><th>Repaso</th></tr></thead>
+      <thead><tr><th>Semana</th><th>Vía A · arquitectura</th><th>Vía B · DevOps</th><th>Bases · temario</th></tr></thead>
       <tbody>
         <tr data-week="1"><td data-weekdate="1">Sem 1</td>
           <td><b><a href="arquitectura.html#m1">M1 · Identidad y tenencia</a></b><small>La decisión más cara de revertir</small></td>
           <td><b><a href="devops.html#f0">F0 · Flujo y vocabulario</a></b><small>Solo lectura, sin riesgo</small></td>
-          <td><a href="repaso.html#r4">Auth e IAM</a> · <a href="repaso.html#r6">Capas</a></td></tr>
+          <td><b><a href="bases.html#b1">B1 · Objetos</a></b><small>L1 y L2</small></td></tr>
         <tr data-week="2"><td data-weekdate="2">Sem 2</td>
           <td><b><a href="arquitectura.html#m2">M2 · Modelo del catálogo</a></b><small>El primer esquema que diseñas sin heredar nada</small></td>
           <td><b><a href="devops.html#f1">F1 · Tu primer build</a></b><small>En tu Azure personal</small></td>
-          <td><a href="repaso.html#r3">REST, SQL y ACID</a></td></tr>
+          <td><b><a href="bases.html#b1">B1 · Objetos</a></b><small>L3 y L4</small></td></tr>
         <tr data-week="3"><td data-weekdate="3">Sem 3</td>
           <td><b><a href="arquitectura.html#m3">M3 · Búsqueda y reviews</a></b><small>Lo único realmente nuevo</small></td>
           <td><b><a href="devops.html#f2">F2 · Variables y secrets</a></b><small>El hallazgo de mayor riesgo</small></td>
-          <td><a href="repaso.html#r1">OOP, SOLID y TDD</a></td></tr>
+          <td><b><a href="bases.html#l5">L5</a> y <a href="bases.html#b2">B2 · Interfaces</a></b><small>Empieza lo que más falta hace</small></td></tr>
         <tr data-week="4"><td data-weekdate="4">Sem 4</td>
           <td><b><a href="arquitectura.html#m4">M4 · Azure y estimación</a></b><small>Inventario y costo de la infraestructura</small></td>
           <td><b><a href="devops.html#f3">F3 · Environments</a></b><small>Aprobación antes de producción</small></td>
-          <td><a href="repaso.html#r7">Git, CI/CD y ADO</a></td></tr>
+          <td><b><a href="bases.html#b2">B2 · Interfaces</a></b><small>L7 y L8</small></td></tr>
         <tr data-week="5"><td data-weekdate="5">Sem 5</td>
           <td><b><a href="arquitectura.html#m5">M5 · Fase 0 y estándares</a></b><small>Empieza el mes 1 de construcción</small></td>
           <td><b><a href="devops.html#f4">F4 · Montar staging</a></b><small>El slot que ya existe y nadie usa</small></td>
-          <td><a href="repaso.html#r5">Colas y event bus</a></td></tr>
+          <td><b><a href="bases.html#l9">L9</a> y <a href="bases.html#b3">B3 · SOLID</a></b><small>Interfaces cerradas</small></td></tr>
         <tr data-week="6"><td data-weekdate="6">Sem 6</td>
           <td><b><a href="arquitectura.html#m5">M5 · cierre</a></b><small>STANDARDS.md terminado</small></td>
           <td><b><a href="devops.html#f5">F5 · Branch policies</a></b><small>Y el runbook. Vía B completa</small></td>
-          <td><a href="repaso.html#r2">.NET y Angular</a> · <a href="repaso.html#r8">HTTP</a></td></tr>
+          <td><b><a href="bases.html#b3">B3 · SOLID</a></b><small>L11 y L12</small></td></tr>
         <tr data-week="9"><td>Mes 2</td>
           <td><b><a href="arquitectura.html#m6">M6 · Seguridad aplicada</a></b><small>Autorización por recurso</small></td>
-          <td colspan="2"><small>Vía B terminada. A partir de aquí: el copiloto de revisión de PRs corriendo a diario, y repaso cuando el panel lo pida.</small></td></tr>
+          <td><small>Vía B terminada. El copiloto de revisión de PRs, corriendo a diario.</small></td>
+          <td><b><a href="bases.html#b4">B4 · Lenguaje y plataforma</a></b><small>Y lo que quede del B3</small></td></tr>
         <tr data-week="13"><td>Mes 3</td>
           <td><b><a href="arquitectura.html#m7">M7 · Performance de datos</a></b><small>Medir antes de opinar</small></td>
-          <td colspan="2"><small>&nbsp;</small></td></tr>
+          <td><small>&nbsp;</small></td>
+          <td><b><a href="bases.html#b5">B5 · Datos</a></b><small>Sostiene el M7</small></td></tr>
         <tr data-week="17"><td>Mes 4</td>
           <td><b><a href="arquitectura.html#m8">M8 · Patrones cloud</a></b><small>Auditar las colas y funciones que ya corren</small></td>
-          <td colspan="2"><small>&nbsp;</small></td></tr>
+          <td><small>&nbsp;</small></td>
+          <td><b><a href="bases.html#b6">B6 · Red e identidad</a></b><small>&nbsp;</small></td></tr>
         <tr data-week="21"><td>Mes 5</td>
           <td><b><a href="arquitectura.html#m9">M9 · Observabilidad</a></b><small>La brecha más grande de Relolink</small></td>
-          <td colspan="2"><small>&nbsp;</small></td></tr>
+          <td><small>&nbsp;</small></td>
+          <td><b><a href="bases.html#b7">B7 · Arquitectura</a></b><small>&nbsp;</small></td></tr>
         <tr data-week="25"><td>Mes 6</td>
           <td><b><a href="arquitectura.html#m10">M10 · Documentar</a></b><small>C4 y ADRs. Entrega de la V1</small></td>
-          <td colspan="2"><small>&nbsp;</small></td></tr>
+          <td><small>&nbsp;</small></td>
+          <td><b><a href="bases.html#b8">B8 · Oficio</a></b><small>Y el control final</small></td></tr>
       </tbody>
     </table>
   </div>
@@ -185,8 +204,8 @@
   <ol class="steps">
     <li><strong>Sin artefacto, la semana no cuenta.</strong> Da igual cuánto hayas leído. Un diagrama, un ADR, un pipeline que corre, un inventario, un runbook. Algo que se le pueda enseñar a alguien.</li>
     <li><strong>Tú produces primero, la IA corrige después.</strong> Cuando el orden se invierte —la IA produce y tú apruebas— no aprendes nada, porque aprobar no es decidir. Esta es la regla que protege lo único que te va a diferenciar.</li>
-    <li><strong>El repaso solo cuando el panel lo pida.</strong> Repasar lo que ya sabes se siente productivo y es la forma más cómoda de posponer lo que no sabes.</li>
-    <li><strong>Si falta tiempo, cae la vía B.</strong> Nunca la A ni el repaso. Un pipeline se aprende en cualquier momento; un modelo de datos mal decidido en septiembre se paga hasta marzo.</li>
+    <li><strong>Las bases se estudian en orden y se cierran explicándolas.</strong> Una lección no termina cuando acabas de leer la explicación: termina cuando se la cuentas tú a Claude sin mirar y te corrige poco. Leer produce la sensación de entender; explicar es lo único que produce entendimiento.</li>
+    <li><strong>Si falta tiempo, cae la vía B.</strong> Nunca la A ni las bases. Un pipeline se aprende en cualquier momento; un modelo de datos mal decidido en septiembre se paga hasta marzo, y un fundamento que falta se paga en cada decisión.</li>
   </ol>
 
   <div class="stop">
@@ -225,7 +244,7 @@
 
 <section id="estado">
   <h2>Tu estado</h2>
-  <p>El progreso, la fecha de arranque y el estado de las tarjetas de repaso se guardan <strong>solo en este navegador</strong>. No se suben a ningún sitio y nadie más los ve. Si cambias de equipo o limpias el navegador, exporta antes y pega el JSON en el otro.</p>
+  <p>El progreso, la fecha de arranque y el estado de las lecciones de bases se guardan <strong>solo en este navegador</strong>. No se suben a ningún sitio y nadie más los ve. Si cambias de equipo o limpias el navegador, exporta antes y pega el JSON en el otro.</p>
 
   <div class="toolbar">
     <span class="lbl">COPIA DE SEGURIDAD</span>
@@ -241,10 +260,10 @@
 
 <footer>
   <div class="shell">
-    Ruta del Hub · documento personal &nbsp;·&nbsp; Tres vías: <a href="arquitectura.html">arquitectura</a>, <a href="devops.html">DevOps<span class="wide"> y Azure</span></a>, <a href="repaso.html">repaso</a>.
+    Ruta del Hub · documento personal &nbsp;·&nbsp; Tres vías: <a href="bases.html">bases</a>, <a href="arquitectura.html">arquitectura</a>, <a href="devops.html">DevOps<span class="wide"> y Azure</span></a>.
   </div>
 </footer>
 
-<script src="assets/app.js?v=5"></script>
+<script src="assets/app.js?v=6"></script>
 </body>
 </html>

@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/app.css?v=5">
+<link rel="stylesheet" href="assets/app.css?v=6">
 </head>
 <body>
 
@@ -17,9 +17,9 @@
     <a class="brand" href="index.html">Ruta del Hub <span>v2</span></a>
     <nav>
       <a href="index.html">Hoy</a>
+      <a href="bases.html">Bases</a>
       <a href="arquitectura.html" aria-current="page">Arquitectura</a>
       <a href="devops.html">DevOps<span class="wide"> y Azure</span></a>
-      <a href="repaso.html">Repaso</a>
     </nav>
     <span class="spacer"></span>
     <span class="pct"></span>
@@ -155,8 +155,8 @@
     <tbody>
       <tr><td>Backend .NET, EF Core, T-SQL</td><td>Sólido, uso diario</td><td>No se estudia. Se usa como herramienta para aprender lo demás.</td></tr>
       <tr><td>Angular, Ionic</td><td>Sólido, uso diario</td><td>Igual. El frontend del Hub no es el riesgo.</td></tr>
-      <tr><td>IAM, Keycloak, OAuth2, roles, tenancy</td><td>Trabajado en el banco, oxidado</td><td>Se recupera en una semana. El módulo 1 es repaso con profundidad, no aprendizaje desde cero.</td></tr>
-      <tr><td>API gateway, event bus, colas</td><td>Trabajado en el banco, oxidado</td><td>Se recupera en el módulo 8, cuando haga falta. Antes no.</td></tr>
+      <tr><td>IAM, Keycloak, OAuth2, roles, tenancy</td><td>Trabajado en el banco, oxidado</td><td>Se estudia en la <a href="bases.html#l22">lección 22 de bases</a>, y conviene adelantarla si el módulo 1 llega antes.</td></tr>
+      <tr><td>API gateway, event bus, colas</td><td>Trabajado en el banco, oxidado</td><td>Se estudia en la <a href="bases.html#l25">lección 25 de bases</a> y se aplica en el módulo 8.</td></tr>
       <tr><td>Azure DevOps, pipelines, PRs</td><td>Operativo, no profundo</td><td>Se profundiza en el módulo 4 con despliegue real.</td></tr>
       <tr><td>Azure como plataforma</td><td>Superficial</td><td>Es la brecha más grande y la más fácil de cerrar, porque la documentación es buena.</td></tr>
       <tr><td>Modelado de datos desde cero</td><td>Hecho, pero siempre partiendo de algo</td><td>El módulo 2 es el primer esquema que diseñas sin heredar nada. Ahí se ve el nivel real.</td></tr>
@@ -184,7 +184,7 @@
   <div class="prune">
     <div class="keep">
       <h4>Ya lo tienes</h4>
-      <p class="sub">Se recupera con uso, no se estudia. <a href="repaso.html">Zona de repaso &rarr;</a></p>
+      <p class="sub">Se dio por recuperable con el uso. No lo fue: ahora se estudia en orden. <a href="bases.html">Temario de bases &rarr;</a></p>
       <ul>
         <li>OOP, SOLID, TDD (a nivel de uso)</li>
         <li>.NET, TypeScript, Angular</li>
@@ -262,7 +262,7 @@
         </ul>
         <p><b>Ejercicio (60 min, solo lectura):</b> elige tres endpoints de <code>APIs/RLL.Api/Controllers</code> y sigue la cadena hasta el SQL generado. ¿Cuáles filtran por suscripción y cuáles confían en que el <code>id</code> que llega ya es del tenant correcto? Escribe la respuesta antes de preguntarle a la IA.</p>
       </div>
-      <div class="bridge"><span class="ico">&rarr;</span><p>Cuando termines, el repaso de <a href="repaso.html#r4">Auth strategies e IAM</a> te va a costar diez minutos en vez de una hora. Hazlo la misma semana.</p></div>
+      <div class="bridge"><span class="ico">&rarr;</span><p>Este módulo da por sabida la <a href="bases.html#l22">lección 22 de bases</a> (OAuth2, OIDC, JWT y modelos de autorización). Si todavía no la has cerrado, hazla <b>antes</b> de empezar aquí: es la única excepción razonable al orden del temario.</p></div>
 
       <h4>Conceptos que hay que dominar</h4>
       <ul class="concepts">
@@ -1486,10 +1486,10 @@ Lo que cambio la semana que viene: {una cosa}</pre>
 <footer>
   <div class="shell">
     V&iacute;a A &middot; Arquitectura del producto &nbsp;&middot;&nbsp; Documento personal &nbsp;&middot;&nbsp;
-    <a href="index.html">Hoy</a> &middot; <a href="devops.html">DevOps<span class="wide"> y Azure</span></a> &middot; <a href="repaso.html">Repaso</a>
+    <a href="index.html">Hoy</a> &middot; <a href="bases.html">Bases</a> &middot; <a href="devops.html">DevOps<span class="wide"> y Azure</span></a>
   </div>
 </footer>
 
-<script src="assets/app.js?v=5"></script>
+<script src="assets/app.js?v=6"></script>
 </body>
 </html>
